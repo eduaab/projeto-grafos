@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Link, useNavigate } from 'react-router-dom'
 import manifest from '../data/mapas.manifest.json'
 import { parseMaze, type ParsedMaze } from '../lib/parseMaze'
@@ -11,6 +12,39 @@ import './MazeGallery.css'
 type ManifestEntry = (typeof manifest)[number]
 type GalleryItem = ManifestEntry & { maze: ParsedMaze }
 type View = 'carousel' | 'grid'
+type GroupFilter = 'all' | ManifestEntry['group']
+
+const GROUP_FILTERS: { value: GroupFilter; label: string }[] = [
+  { value: 'all', label: 'Todos' },
+  { value: 'oficial', label: 'Mapas Oficiais' },
+  { value: 'grupo', label: 'Mapas do Grupo' },
+  { value: 'criado', label: 'Mapas Criados' },
+]
+
+// Exit simultaneous and plain (the user already decided to filter it out);
+// entrance gets a short stagger capped at the first handful of cards so a
+// big result set doesn't make the last card wait through a long queue.
+type CardVariantArgs = { index: number; reduced: boolean }
+
+const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
+
+const cardVariants = {
+  hidden: ({ reduced }: CardVariantArgs) => ({ opacity: 0, scale: reduced ? 1 : 0.95 }),
+  visible: ({ index, reduced }: CardVariantArgs) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: reduced ? 0.12 : 0.2,
+      ease: EASE_OUT,
+      delay: reduced ? 0 : Math.min(index, 6) * 0.03,
+    },
+  }),
+  exit: ({ reduced }: CardVariantArgs) => ({
+    opacity: 0,
+    scale: reduced ? 1 : 0.95,
+    transition: { duration: reduced ? 0.12 : 0.15, ease: EASE_OUT },
+  }),
+}
 
 // CircularCarousel's cards share one aspect ratio — generate every thumbnail
 // at that same ratio so each maze's own letterboxing already matches the
@@ -29,9 +63,11 @@ export function MazeGallery() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [view, setView] = useState<View>('carousel')
   const [query, setQuery] = useState('')
+  const [groupFilter, setGroupFilter] = useState<GroupFilter>('all')
   const navigate = useNavigate()
   const carouselRef = useRef<CircularCarouselHandle>(null)
   const gridRefs = useRef<(HTMLAnchorElement | null)[]>([])
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     let cancelled = false
@@ -56,26 +92,40 @@ export function MazeGallery() {
     }
   }, [])
 
+  // The group filter narrows what the carousel/grid actually render — search
+  // and the active-index bookkeeping below all operate on this, not on the
+  // full `items`, so an index always points at something currently visible.
+  const visibleItems = useMemo(
+    () => (items ? (groupFilter === 'all' ? items : items.filter((item) => item.group === groupFilter)) : null),
+    [items, groupFilter],
+  )
+
+  // Filtering changes which indices exist — land back on the first card
+  // instead of keeping a now-meaningless offset into the new subset.
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [groupFilter])
+
   const carouselItems: CircularCarouselItem[] = useMemo(
     () =>
-      items
-        ? items.map((item) => ({
+      visibleItems
+        ? visibleItems.map((item) => ({
             src: mazeThumbnailDataUrl(item.maze, 480, 480 / CARD_ASPECT),
             title: item.title,
             alt: item.title,
           }))
         : [],
-    [items],
+    [visibleItems],
   )
 
   // Live search: the first map whose name/id contains the typed text, and
   // it recomputes on every keystroke, driving whichever view is showing.
   const matchIndex = useMemo(() => {
-    if (!items || !query.trim()) return null
+    if (!visibleItems || !query.trim()) return null
     const needle = normalize(query)
-    const found = items.findIndex((item) => normalize(`${item.id} ${item.title}`).includes(needle))
+    const found = visibleItems.findIndex((item) => normalize(`${item.id} ${item.title}`).includes(needle))
     return found === -1 ? null : found
-  }, [items, query])
+  }, [visibleItems, query])
 
   useEffect(() => {
     if (matchIndex === null) return
@@ -86,7 +136,7 @@ export function MazeGallery() {
     }
   }, [matchIndex, view])
 
-  const active = items?.[activeIndex]
+  const active = visibleItems?.[activeIndex]
 
   return (
     <section className="maze-gallery">
@@ -100,8 +150,23 @@ export function MazeGallery() {
 
       {error && <p className="maze-gallery-error">{error}</p>}
 
-      {items && (
+      {items && visibleItems && (
         <>
+          <div className="maze-gallery-filters" role="tablist" aria-label="Filtrar por catálogo">
+            {GROUP_FILTERS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                role="tab"
+                aria-selected={groupFilter === option.value}
+                className={'maze-filter' + (groupFilter === option.value ? ' is-active' : '')}
+                onClick={() => setGroupFilter(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+
           <div className="maze-gallery-toolbar">
             <label className="maze-search">
               <SearchIcon className="maze-search-icon" />
@@ -124,7 +189,9 @@ export function MazeGallery() {
             </button>
           </div>
 
-          {view === 'carousel' ? (
+          {visibleItems.length === 0 ? (
+            <p className="maze-gallery-empty">Nenhum labirinto neste filtro ainda.</p>
+          ) : view === 'carousel' ? (
             <div className="maze-gallery-stage-group">
               <div className="maze-gallery-carousel">
                 <CircularCarousel
@@ -138,7 +205,7 @@ export function MazeGallery() {
                   aspectRatio={CARD_ASPECT}
                   gap={36}
                   onChange={setActiveIndex}
-                  onItemClick={(_, index) => navigate(`/labirintos/${items[index].id}`)}
+                  onItemClick={(_, index) => navigate(`/labirintos/${visibleItems[index].id}`)}
                 />
               </div>
 
@@ -147,7 +214,7 @@ export function MazeGallery() {
                   <h2>{active.title}</h2>
                   <p className="maze-gallery-active-desc">{describeMaze(active)}</p>
                   <p className="maze-gallery-active-count">
-                    {String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+                    {String(activeIndex + 1).padStart(2, '0')} / {String(visibleItems.length).padStart(2, '0')}
                   </p>
                   <Link to={`/labirintos/${active.id}`} className="maze-gallery-open">
                     Abrir mapa
@@ -157,24 +224,36 @@ export function MazeGallery() {
             </div>
           ) : (
             <div className="maze-gallery-grid">
-              {items.map((item, index) => (
-                <Link
-                  key={item.id}
-                  ref={(element) => {
-                    gridRefs.current[index] = element
-                  }}
-                  to={`/labirintos/${item.id}`}
-                  className={'maze-gallery-card' + (index === matchIndex ? ' is-matched' : '')}
-                >
-                  <img className="maze-gallery-card-thumb" src={carouselItems[index]?.src} alt="" />
-                  <div className="maze-gallery-card-body">
-                    <h2>{item.title}</h2>
-                    <p>
-                      {item.cols}×{item.rows}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+              <AnimatePresence mode="popLayout">
+                {visibleItems.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    layout={!reducedMotion}
+                    custom={{ index, reduced: Boolean(reducedMotion) }}
+                    variants={cardVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ layout: { duration: 0.2, ease: EASE_OUT } }}
+                  >
+                    <Link
+                      ref={(element) => {
+                        gridRefs.current[index] = element
+                      }}
+                      to={`/labirintos/${item.id}`}
+                      className={'maze-gallery-card' + (index === matchIndex ? ' is-matched' : '')}
+                    >
+                      <img className="maze-gallery-card-thumb" src={carouselItems[index]?.src} alt="" />
+                      <div className="maze-gallery-card-body">
+                        <h2>{item.title}</h2>
+                        <p>
+                          {item.cols}×{item.rows}
+                        </p>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           )}
         </>

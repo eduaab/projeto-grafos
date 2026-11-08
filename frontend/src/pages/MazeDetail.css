@@ -8,6 +8,13 @@
   gap: 24px;
 }
 
+.maze-detail-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
 .maze-detail-back {
   align-self: flex-start;
   font-size: 0.8rem;
@@ -19,6 +26,32 @@
   .maze-detail-back:hover {
     color: var(--gold-bright);
   }
+}
+
+.maze-detail-delete {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-faint);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  transition: color 160ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .maze-detail-delete:hover {
+    color: var(--crimson);
+  }
+}
+
+.maze-detail-delete-icon {
+  width: 14px;
+  height: 14px;
 }
 
 .maze-detail-header {

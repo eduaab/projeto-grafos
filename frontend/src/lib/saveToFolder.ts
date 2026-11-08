@@ -63,3 +63,35 @@ export async function saveToMapasCriados(filename: string, text: string): Promis
   await saveViaFileSystemAccess(filename, text)
   return { via: 'file-system-access' }
 }
+
+async function deleteViaDevServer(filename: string): Promise<boolean> {
+  try {
+    const response = await fetch('/__delete-mapa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename }),
+    })
+    if (!response.ok) return false
+    const result = (await response.json()) as { ok: boolean }
+    return result.ok
+  } catch {
+    return false // no dev server listening (production build, vite preview, …)
+  }
+}
+
+async function deleteViaFileSystemAccess(filename: string): Promise<void> {
+  const dir = await ensureWritableDir()
+  const name = filename.endsWith('.txt') ? filename : `${filename}.txt`
+  await dir.removeEntry(name)
+}
+
+/** Same two-route fallback as saveToMapasCriados — only ever reaches
+ * data/mapas_criados/ (the dev-server route hardcodes that directory;
+ * the File System Access route reuses the same handle the user already
+ * granted for saving). Official and group maps aren't deletable through
+ * either path. */
+export async function deleteFromMapasCriados(filename: string): Promise<SaveResult> {
+  if (await deleteViaDevServer(filename)) return { via: 'dev-server' }
+  await deleteViaFileSystemAccess(filename)
+  return { via: 'file-system-access' }
+}

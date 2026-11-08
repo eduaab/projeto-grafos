@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
@@ -68,7 +68,61 @@ function saveMapaCriadoPlugin(): Plugin {
   }
 }
 
+/**
+ * Dev-only sibling of saveMapaCriadoPlugin: lets MazeDetail's "Deletar
+ * mapa" button (shown only for group === 'criado') remove a file the user
+ * made — hardcoded to MAPAS_CRIADOS_DIR, so there's no way for this route
+ * to ever touch data/mapas or data/mapas_grupo.
+ */
+function deleteMapaCriadoPlugin(): Plugin {
+  return {
+    name: 'delete-mapa-criado',
+    configureServer(server) {
+      server.middlewares.use('/__delete-mapa', (req, res) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end('Method not allowed')
+          return
+        }
+
+        let body = ''
+        req.on('data', (chunk) => {
+          body += chunk
+        })
+        req.on('end', () => {
+          try {
+            const { filename } = JSON.parse(body) as { filename?: string }
+            if (typeof filename !== 'string') throw new Error('filename é obrigatório')
+            const safeName = filename.replace(/[\\/]/g, '').replace(/\.\./g, '').trim()
+            if (!safeName) throw new Error('nome de arquivo inválido')
+            const finalName = safeName.endsWith('.txt') ? safeName : `${safeName}.txt`
+
+            const sourcePath = join(MAPAS_CRIADOS_DIR, finalName)
+            if (!existsSync(sourcePath)) throw new Error(`"${finalName}" não existe em data/mapas_criados`)
+            unlinkSync(sourcePath)
+
+            // Best-effort — the synced copy in public/mapas/ is a cache of
+            // the source, so a missing one here is fine either way.
+            const publicPath = join(__dirname, 'public', 'mapas', finalName)
+            if (existsSync(publicPath)) unlinkSync(publicPath)
+
+            syncMapas()
+
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: true }))
+          } catch (error) {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: false, error: error instanceof Error ? error.message : 'erro desconhecido' }))
+          }
+        })
+      })
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), saveMapaCriadoPlugin()],
+  plugins: [react(), saveMapaCriadoPlugin(), deleteMapaCriadoPlugin()],
 })

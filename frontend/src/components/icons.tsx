@@ -98,3 +98,19 @@ export function CloseIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function TrashIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        d="M5 7 H19 M9 7 V5 Q9 4 10 4 H14 Q15 4 15 5 V7 M7 7 L8 20 Q8 21 9 21 H15 Q16 21 16 20 L17 7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M10 11 V17 M14 11 V17" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  )
+}
