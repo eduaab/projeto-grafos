@@ -2,21 +2,16 @@ import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { Home } from './pages/Home'
 import { ComingSoon } from './pages/ComingSoon'
+import { MazeGallery } from './pages/MazeGallery'
+import { MazeDetail } from './pages/MazeDetail'
 
 function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
-        <Route
-          path="labirintos"
-          element={
-            <ComingSoon
-              title="Sala de Mapas"
-              description="A visualização dos labirintos catalogados chega na próxima parte do frontend."
-            />
-          }
-        />
+        <Route path="labirintos" element={<MazeGallery />} />
+        <Route path="labirintos/:id" element={<MazeDetail />} />
         <Route
           path="editor"
           element={

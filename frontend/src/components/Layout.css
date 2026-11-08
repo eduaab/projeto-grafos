@@ -39,8 +39,9 @@
 }
 
 .brand-subtitle {
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  /* was 0.68rem (10.88px) — under the 11px floor for functional text */
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-muted);
 }

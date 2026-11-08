@@ -1,0 +1,83 @@
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import type { Cell, ParsedMaze } from '../lib/parseMaze'
+import { BonusIcon, ConveyorArrowIcon, GoalFlagIcon, SourceIcon, StartFlagIcon } from './mazeIcons'
+import './MazeGrid.css'
+
+function CellContent({ cell }: { cell: Cell }) {
+  switch (cell.type) {
+    case 'key':
+      return <span className="maze-cell-letter">{cell.char}</span>
+    case 'door':
+      return <span className="maze-cell-letter">{cell.char}</span>
+    case 'conveyor':
+      return cell.direction ? <ConveyorArrowIcon className="maze-cell-icon" direction={cell.direction} /> : null
+    case 'bonus':
+      return <BonusIcon className="maze-cell-icon" />
+    case 'source':
+      return <SourceIcon className="maze-cell-icon" />
+    case 'start':
+      return <StartFlagIcon className="maze-cell-icon" />
+    case 'goal':
+      return <GoalFlagIcon className="maze-cell-icon" />
+    default:
+      return null
+  }
+}
+
+type MazeGridProps = {
+  maze: ParsedMaze
+}
+
+// Never smaller than the size already confirmed legible (m08, 71 cols), but
+// free to grow when a small map has room to spare — that's the "mal dá pra
+// ver os símbolos" complaint on maps like m01 (13 cols) sitting in a much
+// wider column.
+const MIN_CELL = 22
+const MAX_CELL = 46
+
+// No entrance animation here on purpose: the route curtain already is this
+// page's entrance. A per-cell stagger on top would be a second entrance
+// layered on the first — the grid should just already be there once revealed.
+export function MazeGrid({ maze }: MazeGridProps) {
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const [cellSize, setCellSize] = useState(MIN_CELL)
+
+  useEffect(() => {
+    const el = viewportRef.current
+    if (!el || maze.cols === 0) return
+
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width
+      if (!width) return
+      const ideal = Math.floor(width / maze.cols)
+      setCellSize(Math.max(MIN_CELL, Math.min(MAX_CELL, ideal)))
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [maze.cols])
+
+  const gridStyle = {
+    '--maze-cell-size': `${cellSize}px`,
+    gridTemplateColumns: `repeat(${maze.cols}, var(--maze-cell-size))`,
+    gridTemplateRows: `repeat(${maze.rows}, var(--maze-cell-size))`,
+  } as CSSProperties
+
+  return (
+    <div ref={viewportRef} className="maze-grid-viewport">
+      <div
+        className="maze-grid"
+        style={gridStyle}
+        role="img"
+        aria-label={`Grade do labirinto, ${maze.cols} por ${maze.rows} células`}
+      >
+        {maze.grid.map((row, r) =>
+          row.map((cell, c) => (
+            <div key={`${r}-${c}`} className={`maze-cell maze-cell--${cell.type}`}>
+              <CellContent cell={cell} />
+            </div>
+          )),
+        )}
+      </div>
+    </div>
+  )
+}

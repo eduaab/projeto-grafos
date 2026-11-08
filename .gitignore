@@ -41,3 +41,8 @@ frontend/node_modules/
 frontend/dist/
 frontend/dist-ssr/
 frontend/*.local
+
+# Gerados por frontend/scripts/sync-mapas.mjs (predev/prebuild) a partir de
+# data/mapas/ e data/mapas_grupo/ — não commitar, ou os dois acabam divergindo.
+frontend/public/mapas/
+frontend/src/data/mapas.manifest.json

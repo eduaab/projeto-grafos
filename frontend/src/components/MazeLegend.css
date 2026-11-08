@@ -1,0 +1,40 @@
+.maze-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 260px;
+  min-width: 220px;
+}
+
+.maze-legend-item {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.maze-legend-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  border-radius: var(--radius);
+  /* .maze-cell-letter/.maze-cell-icon (shared with MazeGrid) size themselves
+     off this custom property — fix it here since the legend isn't measured
+     by MazeGrid's ResizeObserver. */
+  --maze-cell-size: 30px;
+}
+
+.maze-legend-name {
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.maze-legend-cost {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}

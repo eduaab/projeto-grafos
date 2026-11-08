@@ -8,8 +8,9 @@ type ComingSoonProps = {
 export function ComingSoon({ title, description }: ComingSoonProps) {
   return (
     <section className="coming-soon">
-      <span className="coming-soon-ribbon">Em breve</span>
-      <h1>{title}</h1>
+      <h1>
+        {title} <span className="coming-soon-tag">Em breve</span>
+      </h1>
       <p>{description}</p>
     </section>
   )

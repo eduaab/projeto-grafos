@@ -1,0 +1,229 @@
+/* Plain-CSS port of the Tailwind classes in the original CircularCarousel —
+   see the attribution comment at the top of CircularCarousel.tsx. */
+
+.cc-root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  touch-action: pan-y;
+  user-select: none;
+  overflow: hidden;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cc-root:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(128, 128, 140, 0.55);
+}
+
+.cc-root[data-axis='x'] {
+  touch-action: pan-x;
+}
+
+.cc-root[data-draggable] {
+  cursor: grab;
+}
+
+.cc-root[data-dragging] {
+  cursor: grabbing;
+}
+
+.cc-mask {
+  position: absolute;
+  inset: 0;
+}
+
+.cc-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 450ms ease;
+}
+
+.cc-root[data-ready] .cc-stage {
+  opacity: 1;
+}
+
+.cc-camera {
+  position: relative;
+  height: 0;
+  width: 0;
+  transform-style: preserve-3d;
+}
+
+.cc-ring,
+.cc-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 0;
+  width: 0;
+  transform-style: preserve-3d;
+}
+
+.cc-tile {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  outline: 1px solid transparent;
+}
+
+.cc-tile-inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.cc-img {
+  pointer-events: none;
+  position: absolute;
+  display: block;
+  max-width: none;
+  user-select: none;
+  object-fit: cover;
+  -webkit-user-drag: none;
+}
+
+.cc-img-leaving {
+  animation: cc-leave 700ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+.cc-inner-shade {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: var(--cc-inner);
+}
+
+.cc-depth-fade {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: var(--cc-fade);
+  opacity: var(--cc-depth, 0);
+}
+
+.cc-captions {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  text-align: center;
+  animation: cc-reveal 900ms ease both;
+}
+
+.cc-caption-title {
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  animation: cc-title 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cc-caption-sub {
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.cc-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.5;
+  color: var(--ink);
+}
+
+.cc-counter-slash {
+  opacity: 0.6;
+}
+
+.cc-digits {
+  display: inline-flex;
+}
+
+.cc-digit-slot {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+}
+
+.cc-digit-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cc-digit-cell {
+  height: 1em;
+}
+
+.cc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes cc-title {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cc-leave {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes cc-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-stage,
+  .cc-digit-strip {
+    transition: none;
+  }
+  .cc-captions,
+  .cc-caption-title {
+    animation: none;
+  }
+}

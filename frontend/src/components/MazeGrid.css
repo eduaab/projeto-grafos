@@ -1,0 +1,99 @@
+.maze-grid-viewport {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.maze-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--surface-border);
+  border: 1px solid var(--surface-border);
+  width: max-content;
+}
+
+.maze-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Letter/icon size follows the cell size (set by MazeGrid from available
+   width), so a small map that gets to render bigger also gets symbols big
+   enough to actually read — not just a bigger empty-looking box. */
+.maze-cell-letter {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(var(--maze-cell-size) * 0.42);
+}
+
+.maze-cell-icon {
+  width: calc(var(--maze-cell-size) * 0.6);
+  height: calc(var(--maze-cell-size) * 0.6);
+}
+
+/* --- Per-type surface: a textured material instead of a flat slide-color
+   swatch, while every combination still holds >=4.5:1 contrast against its
+   glyph/icon color (checked against the gradient's lightest stop). --- */
+
+.maze-cell--wall {
+  background: linear-gradient(135deg, #1a1510, #0d0a06);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.7);
+}
+
+.maze-cell--floor {
+  background: linear-gradient(160deg, #efe3ca, #e2d4b5);
+  color: var(--ink-on-light-tile);
+}
+
+.maze-cell--mud {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.22) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 65%, rgba(0, 0, 0, 0.18) 0 2px, transparent 3px),
+    linear-gradient(160deg, #8d6a3f, #83633b);
+  color: var(--ink-on-dark-tile);
+}
+
+.maze-cell--water {
+  /* a plain two-stop gradient, not repeating stripes — same depth cue
+     without reading as a generic decorative pattern */
+  background: linear-gradient(135deg, #436f79, #3f6b73);
+  color: var(--ink-on-dark-tile);
+}
+
+.maze-cell--key {
+  background: var(--tile-key);
+  color: var(--ink-on-light-tile);
+}
+
+.maze-cell--door {
+  background: linear-gradient(160deg, #84453f, #6e3326);
+  color: var(--ink-on-dark-tile);
+}
+
+.maze-cell--conveyor {
+  background: var(--tile-conveyor);
+  color: var(--ink-on-dark-tile);
+}
+
+.maze-cell--bonus {
+  background: var(--tile-bonus);
+  color: var(--ink-on-dark-tile);
+}
+
+.maze-cell--source {
+  background: radial-gradient(circle at 50% 35%, #d08a44, var(--tile-source) 75%);
+  color: var(--ink-on-light-tile);
+}
+
+.maze-cell--start {
+  background: var(--tile-start);
+  color: var(--ink-on-dark-tile);
+}
+
+.maze-cell--goal {
+  background: var(--tile-goal);
+  color: var(--ink-on-light-tile);
+}

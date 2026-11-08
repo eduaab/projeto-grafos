@@ -5,24 +5,32 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 16px;
-  padding: 64px 24px;
-  max-width: 560px;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-5);
+  max-width: 60ch;
   margin: 0 auto;
-}
-
-.coming-soon-ribbon {
-  font-size: 0.72rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--crimson);
-  border: 1px solid var(--crimson);
-  padding: 4px 12px;
-  border-radius: var(--radius);
 }
 
 .coming-soon h1 {
   font-size: clamp(1.6rem, 4vw, 2.2rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* A status chip beside the heading, not a kicker stacked above it. */
+.coming-soon-tag {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  border: 1px solid var(--crimson);
+  padding: 3px 10px;
+  border-radius: var(--radius);
+  white-space: nowrap;
 }
 
 .coming-soon p {

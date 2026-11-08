@@ -13,13 +13,18 @@
   /* ink */
   --ink: #e9dcc3;
   --ink-muted: #a5917a;
-  --ink-faint: #6e5f4d;
+  /* Brightened from the original #6e5f4d: that tone read as 2.7-3.1:1 against
+     every surface in this theme, below the 4.5:1 floor for body/label text.
+     Same hue family, just lifted until it clears the floor on --surface. */
+  --ink-faint: #97826a;
 
   /* accents */
   --gold: #c9a44a;
   --gold-bright: #e6c46a;
-  --olive: #74824f;
-  --crimson: #9a3324;
+  /* Also brightened for the same reason — #74824f sat at 4.07:1 on --surface,
+     just under the floor. */
+  --olive: #7c8c55;
+  --crimson: #d66251;
 
   /* type */
   --font-display: 'Cinzel', 'Georgia', serif;
@@ -29,9 +34,35 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
+  /* spacing — 4px base, use these instead of one-off values */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
   /* layout */
   --radius: 3px;
   --content-width: 1180px;
+
+  /* maze tiles — contrast-checked (text on tile >=4.5:1) */
+  --tile-wall: #130f0a;
+  --tile-floor: #e9dcc3;
+  --tile-mud: #82633b;
+  --tile-water: #3f6b73;
+  --tile-key: #c9a44a;
+  --tile-door: #7a3b2e;
+  --tile-conveyor: #5c6b3f;
+  --tile-bonus: #3c744e;
+  --tile-source: #b96e30;
+  --tile-start: #4b733c;
+  --tile-goal: #c77a2e;
+  --ink-on-dark-tile: #f3ead8;
+  --ink-on-light-tile: #1a1510;
 }
 
 * {
@@ -96,6 +127,15 @@ h3 {
   letter-spacing: 0.02em;
 }
 
+/* A page-context label (breadcrumb-like: "Sala de Mapas", "Mapa oficial")
+   placed above a heading. Deliberately NOT the tiny tracked-uppercase
+   eyebrow/kicker shape that craft-floor bans — normal case, no letter
+   tracking, reads as a label, not a hero chip. */
+.context-label {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
 p {
   margin: 0;
 }
@@ -107,14 +147,6 @@ a {
 
 button {
   font-family: inherit;
-}
-
-.eyebrow {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--olive);
 }
 
 ::selection {
