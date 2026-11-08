@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #130f0a;
+  --bg-raised: #1c1611;
+  --surface: #241b13;
+  --surface-border: #4a3c26;
+  --surface-border-strong: #6b5832;
+
+  /* ink */
+  --ink: #e9dcc3;
+  --ink-muted: #a5917a;
+  --ink-faint: #6e5f4d;
+
+  /* accents */
+  --gold: #c9a44a;
+  --gold-bright: #e6c46a;
+  --olive: #74824f;
+  --crimson: #9a3324;
+
+  /* type */
+  --font-display: 'Cinzel', 'Georgia', serif;
+  --font-body: 'Courier Prime', ui-monospace, 'Courier New', monospace;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* layout */
+  --radius: 3px;
+  --content-width: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* subtle paper-grain overlay, fixed so it never affects layout/scroll perf */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% -10%, rgba(201, 164, 74, 0.08), transparent 60%),
+    radial-gradient(ellipse at 50% 110%, rgba(0, 0, 0, 0.6), transparent 55%);
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--olive);
+}
+
+::selection {
+  background: var(--gold);
+  color: #1a1510;
+}
+
+/*
+ * No blanket reduced-motion override here on purpose: each animated piece
+ * (see Home.css, IntroOverlay) ships its own reduced-motion variant that
+ * collapses its specific choreography instead of just speeding it up.
+ */

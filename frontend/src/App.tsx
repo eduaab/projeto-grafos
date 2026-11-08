@@ -1,0 +1,43 @@
+import { Route, Routes } from 'react-router-dom'
+import { Layout } from './components/Layout'
+import { Home } from './pages/Home'
+import { ComingSoon } from './pages/ComingSoon'
+
+function App() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route
+          path="labirintos"
+          element={
+            <ComingSoon
+              title="Sala de Mapas"
+              description="A visualização dos labirintos catalogados chega na próxima parte do frontend."
+            />
+          }
+        />
+        <Route
+          path="editor"
+          element={
+            <ComingSoon
+              title="Oficina de Campo"
+              description="O editor interativo de labirintos chega numa próxima parte do frontend."
+            />
+          }
+        />
+        <Route
+          path="importar-exportar"
+          element={
+            <ComingSoon
+              title="Arquivo & Transmissão"
+              description="A importação e exportação de labirintos em .txt chega numa próxima parte do frontend."
+            />
+          }
+        />
+      </Route>
+    </Routes>
+  )
+}
+
+export default App

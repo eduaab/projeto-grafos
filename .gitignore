@@ -34,3 +34,10 @@ desktop.ini
 *.part
 *.tmp
 *.log
+
+# --- Frontend (Node/Vite) ---
+# frontend/.gitignore já cobre isso, repetido aqui só pra ficar visível
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
