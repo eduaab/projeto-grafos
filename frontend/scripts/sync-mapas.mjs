@@ -109,7 +109,7 @@ function prettifyTitle(id) {
   return titleCaseWords(id)
 }
 
-function main() {
+export function syncMapas() {
   mkdirSync(PUBLIC_MAPAS_DIR, { recursive: true })
   mkdirSync(dirname(MANIFEST_PATH), { recursive: true })
 
@@ -150,6 +150,14 @@ function main() {
   manifest.sort((a, b) => a.id.localeCompare(b.id))
   writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n', 'utf8')
   console.log(`[sync-mapas] ${manifest.length} mapa(s) sincronizado(s) -> ${MANIFEST_PATH}`)
+  return manifest
 }
 
-main()
+// Only auto-run when executed directly (`node scripts/sync-mapas.mjs`, the
+// predev/prebuild hook) — vite.config.ts also imports syncMapas() to rerun
+// it right after the editor's "Salvar" writes a new file, so a freshly
+// saved map shows up in the Sala de Mapas without restarting the dev
+// server; that import must not trigger a second, redundant run here.
+if (process.argv[1] && import.meta.url === new URL(process.argv[1], 'file:').href) {
+  syncMapas()
+}

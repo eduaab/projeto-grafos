@@ -1,0 +1,33 @@
+.maze-palette {
+  /* explicit width — an auto-fill grid with no size of its own, sitting in
+     a flex row, otherwise can't tell how many columns fit and collapses to
+     one (same class of bug as the gallery grid earlier). */
+  flex: 0 0 200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 44px);
+  gap: 6px;
+  align-content: flex-start;
+}
+
+.maze-palette-tool {
+  --maze-cell-size: 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  outline-offset: 2px;
+  transition: transform 140ms var(--ease-out), border-color 140ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .maze-palette-tool:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.maze-palette-tool.is-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold);
+}

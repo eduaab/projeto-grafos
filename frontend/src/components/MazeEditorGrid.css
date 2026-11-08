@@ -1,0 +1,17 @@
+.maze-editor-grid {
+  touch-action: none; /* dragging paints — don't let the page scroll under the finger */
+}
+
+.maze-editor-cell {
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .maze-editor-cell:hover {
+    outline: 2px solid var(--gold);
+    outline-offset: -2px;
+    z-index: 1;
+    position: relative;
+  }
+}

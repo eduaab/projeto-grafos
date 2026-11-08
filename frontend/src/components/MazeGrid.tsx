@@ -1,28 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import type { Cell, ParsedMaze } from '../lib/parseMaze'
-import { BonusIcon, ConveyorArrowIcon, GoalFlagIcon, SourceIcon, StartFlagIcon } from './mazeIcons'
+import type { ParsedMaze } from '../lib/parseMaze'
+import { MazeCellContent } from './MazeCellContent'
 import './MazeGrid.css'
-
-function CellContent({ cell }: { cell: Cell }) {
-  switch (cell.type) {
-    case 'key':
-      return <span className="maze-cell-letter">{cell.char}</span>
-    case 'door':
-      return <span className="maze-cell-letter">{cell.char}</span>
-    case 'conveyor':
-      return cell.direction ? <ConveyorArrowIcon className="maze-cell-icon" direction={cell.direction} /> : null
-    case 'bonus':
-      return <BonusIcon className="maze-cell-icon" />
-    case 'source':
-      return <SourceIcon className="maze-cell-icon" />
-    case 'start':
-      return <StartFlagIcon className="maze-cell-icon" />
-    case 'goal':
-      return <GoalFlagIcon className="maze-cell-icon" />
-    default:
-      return null
-  }
-}
 
 type MazeGridProps = {
   maze: ParsedMaze
@@ -49,7 +28,12 @@ export function MazeGrid({ maze }: MazeGridProps) {
     const observer = new ResizeObserver((entries) => {
       const width = entries[0]?.contentRect.width
       if (!width) return
-      const ideal = Math.floor(width / maze.cols)
+      // .maze-grid adds a 1px gap between columns plus a 2px border — left
+      // out of this math, cellSize*cols alone comes out a few px wider than
+      // the box actually measured, so a "perfectly fitting" grid still grew
+      // a sliver of unwanted horizontal scroll.
+      const overhead = (maze.cols - 1) * 1 + 2
+      const ideal = Math.floor((width - overhead) / maze.cols)
       setCellSize(Math.max(MIN_CELL, Math.min(MAX_CELL, ideal)))
     })
     observer.observe(el)
@@ -73,7 +57,7 @@ export function MazeGrid({ maze }: MazeGridProps) {
         {maze.grid.map((row, r) =>
           row.map((cell, c) => (
             <div key={`${r}-${c}`} className={`maze-cell maze-cell--${cell.type}`}>
-              <CellContent cell={cell} />
+              <MazeCellContent cell={cell} />
             </div>
           )),
         )}

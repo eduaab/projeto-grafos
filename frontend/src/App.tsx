@@ -4,6 +4,7 @@ import { Home } from './pages/Home'
 import { ComingSoon } from './pages/ComingSoon'
 import { MazeGallery } from './pages/MazeGallery'
 import { MazeDetail } from './pages/MazeDetail'
+import { Editor } from './pages/Editor'
 
 function App() {
   return (
@@ -12,15 +13,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="labirintos" element={<MazeGallery />} />
         <Route path="labirintos/:id" element={<MazeDetail />} />
-        <Route
-          path="editor"
-          element={
-            <ComingSoon
-              title="Oficina de Campo"
-              description="O editor interativo de labirintos chega numa próxima parte do frontend."
-            />
-          }
-        />
+        <Route path="editor" element={<Editor />} />
         <Route
           path="importar-exportar"
           element={

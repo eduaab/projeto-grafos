@@ -22,11 +22,16 @@
 
 /* Letter/icon size follows the cell size (set by MazeGrid from available
    width), so a small map that gets to render bigger also gets symbols big
-   enough to actually read — not just a bigger empty-looking box. */
+   enough to actually read — not just a bigger empty-looking box.
+
+   font-body (Courier Prime), not font-display: Cinzel is a small-caps-style
+   face with no real lowercase glyphs — a/b/c/d rendered in it just look
+   like small A/B/C/D, which is exactly the opposite of "letras minúsculas
+   de verdade" the keys need to read as distinct from the door letters. */
 .maze-cell-letter {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 700;
-  font-size: calc(var(--maze-cell-size) * 0.42);
+  font-size: calc(var(--maze-cell-size) * 0.46);
 }
 
 .maze-cell-icon {

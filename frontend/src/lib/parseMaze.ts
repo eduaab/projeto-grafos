@@ -35,7 +35,7 @@ const CONVEYOR_DIRECTION: Record<string, Direction> = {
   '<': 'W',
 }
 
-function cellFromChar(char: string): Cell {
+export function cellFromChar(char: string): Cell {
   if (char === '#') return { type: 'wall', char }
   if (char === '.') return { type: 'floor', char }
   if (char === ',') return { type: 'mud', char }

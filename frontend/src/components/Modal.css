@@ -1,0 +1,155 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 8, 5, 0.72);
+  perspective: 1000px; /* closer vanishing point = more noticeable tilt for .modal-card's rotateX/Y */
+  animation: modal-overlay-in 180ms var(--ease-out) both;
+}
+
+/* No dialog shell/background of its own — just a layout column. The close
+   button and footer sit in this flow, outside .modal-card, so they float
+   directly on the dark overlay instead of inside a second static panel. */
+.modal-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+  width: min(94vw, 760px);
+  max-height: 90vh;
+}
+
+.modal-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-muted);
+  padding: 4px;
+  transition: color 160ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-close:hover {
+    color: var(--ink);
+  }
+}
+
+.modal-close-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* The "catches the light as it tilts" card: title + maze preview, tilting
+   together as one piece (inspired by reactbits.dev's ReflectiveCard — that
+   one drives the reflection from a WebGL shader compositing your webcam or
+   a video; this is a plain CSS/pointer version — no camera, no GPU shader,
+   just a subtle tilt + a glare highlight that follows the cursor). One
+   single element owns its own border/background/shadow/content together,
+   so it tilts as one rigid object with nothing static left poking through
+   it. The close button and footer actions live outside, in .modal-stage,
+   so they never move with it. */
+.modal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  /* A vh value, not a percentage: .modal-stage's height is auto (bounded
+     only by max-height), so a percentage here wouldn't resolve against
+     anything definite and this card would never actually clip/scroll. */
+  max-height: 75vh;
+  overflow-y: auto;
+  padding: var(--space-5);
+  background: linear-gradient(165deg, #241c14 0%, var(--bg-raised) 45%, #140f0a 100%);
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius);
+  box-shadow:
+    0 32px 64px -24px rgba(0, 0, 0, 0.7),
+    0 1px 0 0 rgba(233, 220, 195, 0.08) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  transform: scale(1) translateY(0) rotateX(var(--rc-rotate-x, 0deg)) rotateY(var(--rc-rotate-y, 0deg));
+  transition: opacity 220ms var(--ease-out), transform 150ms var(--ease-out);
+}
+
+@starting-style {
+  .modal-card {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+.modal-card-title {
+  font-size: 1.2rem;
+}
+
+/* The title/body get a z-index:auto stacking position (painted above
+   non-positioned, negative-z-index content) so the glare below can sit at
+   z-index:-1 and stay BEHIND them. Without this, position:absolute alone
+   already puts the glare above plain in-flow content regardless of source
+   order — the glare was washing out the maze preview instead of just
+   catching light on the card's frame around it. */
+.modal-card > * {
+  position: relative;
+}
+
+.modal-card::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--rc-glare-x, 50%) var(--rc-glare-y, 50%), rgba(233, 220, 195, 0.3), transparent 60%);
+  opacity: var(--rc-glare-opacity, 0);
+  transition: opacity 150ms var(--ease-out);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+@keyframes modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay {
+    animation: modal-fade-only 150ms ease both;
+  }
+
+  /* Fade only — no scale/translateY/rotate delta to transition at all, so
+     there's nothing left to drop for the tilt specifically (it's already
+     gated off in Modal.tsx's handlePointerMove). */
+  .modal-card {
+    transition: opacity 150ms ease;
+  }
+
+  @starting-style {
+    .modal-card {
+      opacity: 0;
+      transform: none;
+    }
+  }
+}
+
+@keyframes modal-fade-only {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

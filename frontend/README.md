@@ -23,7 +23,7 @@ Instala as dependências (só precisa rodar de novo se o `package.json` mudar).
 npm run dev
 ```
 
-Sobe o servidor de desenvolvimento (Vite) com hot-reload. O terminal mostra o endereço, normalmente `http://localhost:5173/`. Antes de subir, isso roda automaticamente `scripts/sync-mapas.mjs`, que lê os `.txt` de `../data/mapas/` e `../data/mapas_grupo/`, valida cada um (grade retangular, símbolos válidos, exatamente um `S`) e copia os válidos para `public/mapas/` + gera `src/data/mapas.manifest.json` — é assim que a Sala de Mapas sempre mostra os mapas reais e atualizados, sem precisar duplicar os arquivos manualmente. Esses dois (`public/mapas/`, `src/data/mapas.manifest.json`) são gerados e ficam fora do Git.
+Sobe o servidor de desenvolvimento (Vite) com hot-reload. O terminal mostra o endereço, normalmente `http://localhost:5173/`. Antes de subir, isso roda automaticamente `scripts/sync-mapas.mjs`, que lê os `.txt` de `../data/mapas/`, `../data/mapas_grupo/` e `../data/mapas_criados/`, valida cada um (grade retangular, símbolos válidos, exatamente um `S`) e copia os válidos para `public/mapas/` + gera `src/data/mapas.manifest.json` — é assim que a Sala de Mapas sempre mostra os mapas reais e atualizados, sem precisar duplicar os arquivos manualmente. Esses dois (`public/mapas/`, `src/data/mapas.manifest.json`) são gerados e ficam fora do Git.
 
 ```bash
 npm run build
@@ -58,5 +58,9 @@ frontend/
 
 - **Base** (`/`) — página inicial, com a apresentação do projeto e navegação para as demais seções.
 - **Sala de Mapas** (`/labirintos`, detalhe em `/labirintos/:id`) — galeria dos labirintos catalogados (lidos de verdade a partir dos `.txt`) com miniatura de cada um; ao abrir um, mostra a grade completa com legenda dos símbolos.
-- **Oficina de Campo** (`/editor`) — criar o seu próprio labirinto numa grade interativa. *Em breve.*
+- **Oficina de Campo** (`/editor`) — desenhe o seu próprio labirinto numa grade interativa (clique/arraste para pintar com os mesmos símbolos dos mapas oficiais). Baixar, salvar e importar sempre abrem antes um modal de prévia (a grade como vai ficar + validação) com um botão de confirmar. "Salvar" grava o `.txt` direto em `data/mapas_criados/`, sem passar pela pasta de downloads:
+  - Rodando com `npm run dev`, é direto — o próprio servidor de desenvolvimento escreve o arquivo (sem nenhum seletor de pasta). Esse endpoint (`vite.config.ts`) só existe em modo dev; some sozinho do build de produção.
+  - Sem o servidor de dev (`vite preview`, build publicado), cai para a File System Access API do navegador: você escolhe a pasta uma vez (só em Chrome/Edge — não existe forma de um site escrever num caminho fixo do disco sem essa permissão explícita). Em navegadores sem nenhum dos dois, o botão mostra um aviso pra usar "Baixar .txt".
+
+  Valida ao vivo as mesmas regras do `sync-mapas.mjs` (um único `S`, pelo menos um `G`).
 - **Arquivo & Transmissão** (`/importar-exportar`) — importar/exportar labirintos em `.txt`. *Em breve.*

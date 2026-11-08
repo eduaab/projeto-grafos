@@ -1,0 +1,39 @@
+.maze-preview-pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.maze-preview-grid {
+  /* no align-self:center here — that shrinks this to its content's own
+     width, which starves MazeGrid's "fill available width" ResizeObserver
+     of a real width to measure (same class of bug fixed twice already this
+     session: an auto-sizing child needs a determinate parent). Letting it
+     stretch is what lets a normal-sized map grow to fill the modal instead
+     of rendering small and scrolling sideways; MazeGrid's own
+     .maze-grid-viewport (overflow-x: auto) still kicks in on its own for a
+     map wide enough that it genuinely can't fit (m08, 71 cols). */
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.maze-preview-ok {
+  color: var(--olive);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.maze-preview-issues {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.maze-preview-issues li {
+  color: var(--crimson);
+}
