@@ -79,9 +79,44 @@ def bfs(grafo, v0):
 
     return d, p
 
+#DFS
+def dfs(grafo, v0):
+    estado = {}
+    p = {}
+    d = {}
+    f = {}
+    arestas = {"arvore": [], "retorno": [], "avanco": [], "cruzamento": []}
+    tempo = -1
 
+    for v in grafo:
+        estado[v] = NAO_VISITADO
+        p[v] = None
+        d[v] = None
+        f[v] = None
 
+    def visita(vi):
+        nonlocal tempo
+        tempo += 1
+        estado[vi] = VISITADO
+        d[vi] = tempo
 
+        for vj, peso in grafo[vi]:
+            if estado[vj] == NAO_VISITADO:
+                arestas["arvore"].append((vi, vj))
+                p[vj] = vi
+                visita(vj)
+            elif estado[vj] == VISITADO:
+                arestas["retorno"].append((vi, vj))
+            elif d[vi] < d[vj]:
+                arestas["avanco"].append((vi, vj))
+            else:
+                arestas["cruzamento"].append((vi, vj))
 
+        estado[vi] = ENCERRADO
+        tempo += 1
+        f[vi] = tempo
 
+    visita(v0)
+    tem_ciclo = len(arestas["retorno"]) > 0
 
+    return d, f, p, arestas, tem_ciclo
