@@ -2,6 +2,9 @@
 # Variaveis globais ou importantes 
 
 nao_descoberto = None
+NAO_VISITADO = 0
+VISITADO = 1
+ENCERRADO = 2
 
 # Dijkstra
 
@@ -43,3 +46,42 @@ def dijkstra(grafo, s):
                     p[v] = u
 
     return d, p
+
+
+# BFS
+
+def bfs(grafo, v0):
+    estado = {}
+    p = {}
+    d = {}
+
+    for v in grafo:
+        estado[v] = NAO_VISITADO
+        p[v] = None
+        d[v] = nao_descoberto 
+
+    d[v0] = 0
+    estado[v0] = VISITADO
+    F = []
+    F.append(v0)
+
+    while len(F) != 0:
+        vi = F.pop(0)
+
+        for vj, peso in grafo[vi]:  
+            if estado[vj] == NAO_VISITADO:
+                F.append(vj)
+                estado[vj] = VISITADO
+                p[vj] = vi
+                d[vj] = d[vi] + 1
+
+        estado[vi] = ENCERRADO
+
+    return d, p
+
+
+
+
+
+
+
