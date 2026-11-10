@@ -135,7 +135,7 @@ def bfs(grafo, v0):
     for v in grafo:
         estado[v] = NAO_VISITADO
         p[v] = None
-        d[v] = nao_descoberto 
+        d[v] = NAO_DESCOBERTO 
 
     d[v0] = 0
     estado[v0] = VISITADO
