@@ -3,205 +3,104 @@
   width: min(100%, var(--content-width));
   margin: 0 auto;
   padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 56px) var(--space-8);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-9);
 }
 
-.home-hero {
+/* Two panes instead of a stacked hero-then-cards: a real catalogued maze as
+   the exhibit on one side, the brief + destination index on the other —
+   whichever reads first depends on viewport width, not a fixed story order. */
+.home-cover {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-7);
+}
+
+@media (max-width: 860px) {
+  .home-cover {
+    flex-direction: column;
+  }
+}
+
+/* A real width (not shrink-to-fit) so MazeGrid's ResizeObserver has
+   something definite to measure — the same class of bug fixed elsewhere in
+   this codebase when an auto-sizing grid sits in a flex row. */
+.home-exhibit {
+  flex: 1 1 460px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius);
+}
+
+.home-exhibit-tag {
+  font-size: 0.85rem;
+  color: var(--gold-bright);
+}
+
+.home-exhibit-caption {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  text-align: right;
+}
+
+.home-brief {
+  flex: 1 1 420px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
-  max-width: 72ch;
+  padding-top: var(--space-2);
 }
 
-.home-hero h1 {
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  line-height: 1.12;
+.home-brief h1 {
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  line-height: 1.15;
 }
 
 .home-hero-lede {
   color: var(--ink-muted);
   line-height: 1.75;
   font-size: 1rem;
-  max-width: 62ch;
 }
 
-.home-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-6);
-  margin: var(--space-1) 0 0;
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--surface-border);
-  width: 100%;
-}
-
-.home-stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.home-stat dt {
-  /* was 0.68rem (10.88px) — under the 11px floor for functional text */
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-
-.home-stat dd {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  color: var(--gold-bright);
-}
-
-/* --- Operations: one featured panel (lead) + a lighter stack (support).
-   These three destinations aren't equivalent — viewing the catalog is the
-   primary path, creating and importing/exporting are secondary — so they
-   get different visual weight instead of three identical cards. --- */
-
-.home-operations {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: var(--space-6);
-  /* The feature panel and the secondary stack have different natural
-     heights on purpose (different weight) — centering the shorter column
-     keeps the leftover space balanced instead of trailing off at the
-     bottom. */
-  align-items: center;
-}
-
-@media (max-width: 760px) {
-  .home-operations {
-    grid-template-columns: 1fr;
-  }
-}
-
-.home-feature {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-5);
-  padding: var(--space-7) var(--space-6);
-  background: linear-gradient(165deg, var(--surface), var(--bg-raised));
-  border: 1px solid var(--surface-border-strong);
-  border-radius: var(--radius);
-  color: var(--ink);
-  transition:
-    transform 220ms var(--ease-out),
-    border-color 220ms var(--ease-out),
-    box-shadow 220ms var(--ease-out);
-}
-
-.home-feature::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 100% 0%, rgba(201, 164, 74, 0.16), transparent 55%);
-  pointer-events: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .home-feature:hover {
-    transform: translateY(-4px);
-    border-color: var(--gold);
-    box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.65);
-  }
-
-  .home-feature:hover .home-feature-arrow {
-    transform: translateX(4px);
-  }
-}
-
-.home-feature-icon {
-  width: 44px;
-  height: 44px;
-  color: var(--gold);
-}
-
-.home-feature-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-}
-
-.home-feature-body h2 {
-  font-size: 1.5rem;
-}
-
-.home-feature-body p {
-  color: var(--ink-muted);
-  line-height: 1.65;
-  max-width: 42ch;
-}
-
-.home-feature-body code {
+.home-hero-lede code {
   font-family: var(--font-body);
   color: var(--ink);
 }
 
-.home-feature-cta {
-  margin-top: var(--space-2);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #1a1510;
-  background: var(--gold);
-  border-radius: var(--radius);
+/* The three destinations as one numbered index, not three identical
+   icon+heading+text cards — each a full-width row divided by hairlines. */
+.home-index {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  width: 100%;
+  border-top: 1px solid var(--surface-border);
 }
 
-.home-feature-arrow {
-  width: 14px;
-  height: 14px;
-  transition: transform 220ms var(--ease-out);
-}
-
-.home-secondary {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.home-secondary-heading {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--ink-muted);
-  padding-bottom: var(--space-2);
-}
-
-.home-row {
+.home-index-row {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-2);
-  border-top: 1px solid var(--surface-border);
+  padding: var(--space-4) var(--space-1);
+  border-bottom: 1px solid var(--surface-border);
   color: var(--ink);
   transition: color 160ms var(--ease-out);
 }
 
-.home-secondary .home-row:last-child {
-  border-bottom: 1px solid var(--surface-border);
-}
-
-.home-row-icon {
-  width: 26px;
-  height: 26px;
-  color: var(--gold);
+.home-index-num {
   flex-shrink: 0;
+  width: 28px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--gold);
 }
 
-.home-row-text {
+.home-index-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -209,32 +108,30 @@
   min-width: 0;
 }
 
-.home-row-text strong {
-  font-size: 0.95rem;
+.home-index-text strong {
+  font-size: 1rem;
 }
 
-.home-row-text span {
+.home-index-text span {
   color: var(--ink-muted);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   line-height: 1.5;
 }
 
-.home-row-arrow {
+.home-index-arrow {
   width: 14px;
   height: 14px;
   color: var(--ink-faint);
   flex-shrink: 0;
-  transition:
-    transform 220ms var(--ease-out),
-    color 160ms var(--ease-out);
+  transition: transform 220ms var(--ease-out), color 160ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .home-row:hover {
+  .home-index-row:hover {
     color: var(--gold-bright);
   }
 
-  .home-row:hover .home-row-arrow {
+  .home-index-row:hover .home-index-arrow {
     transform: translateX(3px);
     color: var(--gold);
   }

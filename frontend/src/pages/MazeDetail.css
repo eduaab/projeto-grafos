@@ -17,8 +17,8 @@
 
 .maze-detail-back {
   align-self: flex-start;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
   color: var(--olive);
 }
 
@@ -38,8 +38,8 @@
   gap: 6px;
   color: var(--ink-faint);
   font-family: var(--font-body);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
   transition: color 160ms var(--ease-out);
 }
 

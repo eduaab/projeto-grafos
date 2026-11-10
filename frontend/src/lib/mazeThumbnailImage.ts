@@ -33,13 +33,7 @@ export function drawMazeToCanvas(canvas: HTMLCanvasElement, maze: ParsedMaze, wi
   }
 }
 
-/**
- * Renders a maze to a static PNG data URL once — CircularCarousel (ported
- * from reactbits.dev) takes plain <img src> items, not live canvases. Live
- * canvases rotated in 3D is what caused the blur the user flagged: GPU
- * texture-sampling a canvas layer under a CSS 3D transform resamples it on
- * every frame, where a plain decoded <img> rasterizes once and stays crisp.
- */
+/** Renders a maze to a static PNG data URL once, for use as a plain <img src>. */
 export function mazeThumbnailDataUrl(maze: ParsedMaze, width = 480, height = 480): string {
   const canvas = document.createElement('canvas')
   drawMazeToCanvas(canvas, maze, width, height)

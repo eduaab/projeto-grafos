@@ -41,9 +41,8 @@
   cursor: pointer;
   color: var(--ink-muted);
   font-family: var(--font-body);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
   transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
 }
 
@@ -63,68 +62,6 @@
   font-size: 0.9rem;
   text-align: center;
   padding: var(--space-7) 0;
-}
-
-/* Carousel + its info block grouped tight, with their own small gap — kept
-   out of .maze-gallery's 40px section gap, which is what used to leave a
-   big empty stretch between the two. */
-.maze-gallery-stage-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-/* The rotating stage itself — generous height so the ring has real room to
-   turn in (CircularCarousel auto-fits its cards to whatever space this
-   gives it; making this box bigger is what makes the carousel bigger). */
-.maze-gallery-carousel {
-  height: clamp(380px, 48vw, 600px);
-  width: 100%;
-  /* CircularCarousel centers its (smaller) ring inside this box with some
-     margin built in (it never fills it edge to edge) — pull the info block
-     up into that margin instead of stacking more space on top of it. */
-  margin-bottom: -32px;
-}
-
-.maze-gallery-active {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-align: center;
-  color: var(--ink-muted);
-  font-size: 0.85rem;
-}
-
-.maze-gallery-active h2 {
-  font-size: 1.2rem;
-  color: var(--ink);
-}
-
-.maze-gallery-active-desc {
-  max-width: 48ch;
-}
-
-.maze-gallery-active-count {
-  font-size: 0.75rem;
-  color: var(--ink-faint);
-}
-
-.maze-gallery-open {
-  margin-top: var(--space-5);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--gold-bright);
-}
-
-.maze-gallery-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-4);
 }
 
 .maze-search {
@@ -153,96 +90,94 @@
   outline: none;
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  width: 160px;
+  font-size: 0.95rem;
+  width: 200px;
 }
 
 .maze-search input::placeholder {
   color: var(--ink-faint);
 }
 
-.maze-view-toggle {
-  /* reset native <button> chrome (UA default gray background/border) */
-  background: none;
-  border: none;
+/* --- The catalog itself: a dense, flat ledger of rows instead of a grid of
+   cards — each row a thumbnail, title + one line of real content, and its
+   metadata, divided by hairlines only. No card shadows/elevation, no
+   same-size icon+heading+text repetition: this is meant to read as a filed
+   index, not a product gallery. --- */
+
+.maze-gallery-list {
+  list-style: none;
+  margin: 0;
   padding: 0;
-  cursor: pointer;
-  display: inline-flex;
+  border-top: 1px solid var(--surface-border);
+}
+
+.maze-gallery-row {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  color: var(--ink-muted);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition: color 160ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-view-toggle:hover {
-    color: var(--gold-bright);
-  }
-}
-
-.maze-view-toggle-icon {
-  width: 14px;
-  height: 14px;
-}
-
-/* --- Grid view: the layout the carousel replaced, kept as a toggle.
-   Named maze-gallery-* (not maze-grid/maze-cell) — those are already
-   MazeGrid.css's classes for the single-maze detail view; reusing them here
-   collided and silently broke this grid's width (it inherited
-   `width: max-content` from that other component's rule). --- */
-
-.maze-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.maze-gallery-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius);
-  overflow: hidden;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-2);
+  border-bottom: 1px solid var(--surface-border);
   color: var(--ink);
-  transition: transform 220ms var(--ease-out), border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+  transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .maze-gallery-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--gold);
-    box-shadow: 0 16px 32px -20px rgba(0, 0, 0, 0.6);
+  .maze-gallery-row:hover {
+    background: var(--surface);
+    border-bottom-color: var(--surface-border-strong);
   }
 }
 
-.maze-gallery-card.is-matched {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 1px var(--gold);
+.maze-gallery-row.is-matched {
+  background: var(--surface);
+  border-bottom-color: var(--gold);
 }
 
-.maze-gallery-card-thumb {
+.maze-gallery-row-thumb {
+  flex-shrink: 0;
   display: block;
-  width: 100%;
-  aspect-ratio: 1.5;
+  width: 108px;
+  aspect-ratio: 1.4;
   object-fit: cover;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius);
 }
 
-.maze-gallery-card-body {
+.maze-gallery-row-main {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+}
+
+.maze-gallery-row-main h2 {
+  font-size: 1.1rem;
+}
+
+.maze-gallery-row-main p {
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.maze-gallery-row-meta {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
-  padding: 14px 16px;
+  text-align: right;
 }
 
-.maze-gallery-card-body h2 {
-  font-size: 1rem;
+.maze-gallery-row-group {
+  font-size: 0.85rem;
+  color: var(--ink-faint);
 }
 
-.maze-gallery-card-body p {
-  font-size: 0.78rem;
+.maze-gallery-row-dims {
+  font-size: 0.9rem;
   color: var(--ink-muted);
 }

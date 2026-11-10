@@ -23,8 +23,8 @@
 /* A status chip beside the heading, not a kicker stacked above it. */
 .coming-soon-tag {
   font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--crimson);
   border: 1px solid var(--crimson);
