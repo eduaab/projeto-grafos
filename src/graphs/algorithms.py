@@ -1,7 +1,7 @@
 
 # Variaveis globais ou importantes 
 
-nao_descoberto = None
+NAO_DESCOBERTO = None
 NAO_VISITADO = 0
 VISITADO = 1
 ENCERRADO = 2
@@ -12,7 +12,7 @@ def dijkstra(grafo, s):
     d = {}
     p = {}
     for v in grafo:
-        d[v] = nao_descoberto
+        d[v] = NAO_DESCOBERTO
         p[v] = -1
     d[s] = 0
 
@@ -30,7 +30,7 @@ def dijkstra(grafo, s):
             if aberto[v]:
                 if u is None:
                     u = v
-                elif d[v] != nao_descoberto and (d[u] == nao_descoberto or d[v] < d[u]):
+                elif d[v] != NAO_DESCOBERTO and (d[u] == NAO_DESCOBERTO or d[v] < d[u]):
                     u = v
 
         # Feche u
@@ -41,7 +41,7 @@ def dijkstra(grafo, s):
             if aberto[v]:
                 # Relaxe a aresta (u, v)
                 soma = d[u] + peso
-                if d[v] == nao_descoberto or soma < d[v]:
+                if d[v] == NAO_DESCOBERTO or soma < d[v]:
                     d[v] = soma
                     p[v] = u
 
