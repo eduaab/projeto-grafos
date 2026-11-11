@@ -9,6 +9,18 @@ ENCERRADO = 2
 # Dijkstra
 
 def dijkstra(grafo, s):
+
+    # Verificação de arestas negativas 
+    if s not in grafo:
+        raise ValueError("A origem não pertence ao grafo.")
+
+    for origem in grafo:
+        for destino, peso in grafo[origem]:
+            if peso < 0:
+                raise ValueError(
+                    "Dijkstra não aceita grafos com pesos negativos."
+                )
+
     d = {}
     p = {}
     for v in grafo:
@@ -32,6 +44,10 @@ def dijkstra(grafo, s):
                     u = v
                 elif d[v] != NAO_DESCOBERTO and (d[u] == NAO_DESCOBERTO or d[v] < d[u]):
                     u = v
+
+        # Se não tiver mais vertices alcançaveis acaba a busca 
+        if d[u] == NAO_DESCOBERTO:
+            break
 
         # Feche u
         aberto[u] = False

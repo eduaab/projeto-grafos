@@ -8,7 +8,7 @@ Projeto final de Teoria dos Grafos + AVD (2026.2): Labirinto com Chaves (Grafo d
 - Caio Mathews Farias Ferreira
 - Eduardo Albuquerque Alves Barbosa
 - Gabriel Miranda Mucarbel de Lima
-- Rodrigo José de Oliveira
+- Rodrigo José Dantas de Oliveira
 
 ## Declaração de Uso de IA
 
