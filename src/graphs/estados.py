@@ -2,6 +2,7 @@
 
 from .graph import encontrar_vizinhos
 
+ALVO = 'ALVO'
 
 def criar_estado_inicial(mapa):
     # Retorna a posição inicial sem chaves e sem bônus coletados
@@ -37,8 +38,15 @@ def custo_entrada(mapa, destino, bonus_coletados):
 def gerar_movimentos(mapa, estado):
     # Retorna os próximos estados e seus custos, respeitando esteiras, portas e coletas
 
+    if estado == ALVO:
+        return []
+
     linha, coluna, chaves, bonus_coletados = estado
     simbolo_atual = mapa[linha][coluna]
+    
+    if simbolo_atual == 'G': 
+        return [(ALVO,0)]
+    
     movimentos = []
 
     direcoes = {
@@ -104,4 +112,5 @@ def criar_grafo_estados(mapa):
 
         indice += 1
 
+    grafo.setdefault(ALVO,[])
     return grafo

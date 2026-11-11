@@ -2,7 +2,7 @@ import os
 import csv
 
 from src.graphs.io import mapa_input
-from src.graphs.estados import criar_grafo_estados, criar_estado_inicial
+from src.graphs.estados import ALVO, criar_grafo_estados, criar_estado_inicial
 from src.graphs.algorithms import bfs, dfs, dijkstra, bellman_ford
 
 ALGORITMOS = {
@@ -26,6 +26,10 @@ def encontrar_saidas(mapa, grafo):
     saidas = []
 
     for estado in grafo:
+        
+        if estado == ALVO:
+            continue
+
         linha, coluna = estado[0], estado[1]
 
         if mapa[linha][coluna] == 'G':
@@ -128,10 +132,7 @@ def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
             "caminho": extra["ciclo"],
         }
 
-    saidas = encontrar_saidas(mapa, grafo)
-    melhor = escolher_melhor_saida(d, saidas)
-
-    if melhor is None:
+    if nao_alcancado(d[ALVO]):
         return {
             "mapa": nome_mapa,
             "algoritmo": nome_algoritmo,
@@ -141,13 +142,14 @@ def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
             "caminho": None,
         }
 
-    caminho = reconstruir_caminho(p, melhor)
+    caminho = reconstruir_caminho(p, ALVO)
     custo = custo_do_caminho(grafo, caminho)
+    passos = len(caminho) - 2
 
     return {
         "mapa": nome_mapa,
         "algoritmo": nome_algoritmo,
-        "passos": len(caminho) - 1,
+        "passos": passos,
         "custo": custo,
         "status": "OK",
         "caminho": caminho,
