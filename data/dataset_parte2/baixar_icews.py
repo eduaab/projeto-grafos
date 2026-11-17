@@ -85,8 +85,16 @@ def salvar_manifesto(destino, manifesto):
     (destino / MANIFESTO).write_text(json.dumps(sorted(manifesto), indent=1), encoding="utf-8")
 
 
+def nome_local(nome):
+    """Simplifica o nome dos eventos, preservando a extensão original."""
+    ano = PADRAO_EVENTOS.match(nome)
+    if ano:
+        return f"eventos_{ano.group(1)}{Path(nome).suffix}"
+    return nome
+
+
 def baixar(arq, destino):
-    alvo = destino / arq["nome"]
+    alvo = destino / nome_local(arq["nome"])
     tmp = alvo.with_name(alvo.name + ".part")
     url = f"{SERVIDOR}/api/access/datafile/{arq['id']}"
     total = 0
@@ -106,6 +114,13 @@ def baixar(arq, destino):
 def extrair(caminho_zip, destino, manter_zip):
     with zipfile.ZipFile(caminho_zip) as z:
         z.extractall(destino)
+        for membro in z.infolist():
+            if membro.is_dir():
+                continue
+            arquivo = destino / membro.filename
+            novo_nome = nome_local(arquivo.name)
+            if novo_nome != arquivo.name:
+                arquivo.rename(arquivo.with_name(novo_nome))
     if not manter_zip:
         caminho_zip.unlink()
 
@@ -180,7 +195,7 @@ def main():
     falhas = []
     for a in escolhidos:
         nome = a["nome"]
-        alvo = args.destino / nome
+        alvo = args.destino / nome_local(nome)
         e_zip = nome.lower().endswith(".zip")
         if nome in manifesto:
             print(f"  [pulado] {nome} (já baixado e extraído)")
