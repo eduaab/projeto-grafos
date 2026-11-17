@@ -1,3 +1,9 @@
+"""Métricas da Parte 1 para grafos de posições e de estados.
+
+# [IA] ChatGPT – apoio à implementação e testes de métricas de grafos.
+O nó virtual ALVO e seus arcos são excluídos das métricas da Seção 3.
+"""
+
 from collections import Counter, defaultdict
 from pathlib import Path
 import csv
@@ -11,6 +17,7 @@ DIRECOES_ESTEIRAS = {'^': (-1, 0), '>': (0, 1), 'v': (1, 0), '<': (0, -1)}
 
 
 def grafo_posicoes(mapa):
+    """G_pos: casas livres e movimentos geométricos dirigidos (portas = chão)."""
     grafo = {}
     for linha, row in enumerate(mapa):
         for coluna, simbolo in enumerate(row):
@@ -29,7 +36,7 @@ def grafo_posicoes(mapa):
 
 
 def resumo_grafo(grafo):
-    # Aceita dicionário origem-destinos ou arestas destino,peso
+    """Aceita dicionário origem -> destinos (ou arestas [destino,peso])."""
     ordem = len(grafo)
     tamanho = sum(len(adjs) for adjs in grafo.values())
     densidade = tamanho / (ordem * (ordem - 1)) if ordem > 1 else 0.0
