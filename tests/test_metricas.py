@@ -1,5 +1,3 @@
-"""# [IA] ChatGPT – testes das métricas; conferir e compreender antes da entrega."""
-
 import pytest
 
 from src.graphs.metricas import calcular_metricas, grafo_posicoes, resumo_grafo, rotulo_estado
