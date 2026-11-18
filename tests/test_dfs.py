@@ -1,3 +1,4 @@
+"""Testes de DFS: tempos, classificação dos arcos e ciclos."""
 from pathlib import Path
 import pytest
 import networkx as nx

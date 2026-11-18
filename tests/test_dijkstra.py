@@ -1,3 +1,6 @@
+"""Validação de Dijkstra sem modificar a implementação do grupo.
+NetworkX é utilizado apenas como oráculo nos testes, conforme o enunciado.
+"""
 from pathlib import Path
 import pytest
 import networkx as nx

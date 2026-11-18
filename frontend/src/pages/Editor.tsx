@@ -139,6 +139,7 @@ export function Editor() {
         </p>
       </div>
 
+      <p><a href="/labirinto_interativo.html" target="_blank" rel="noopener noreferrer">Abrir o simulador de algoritmos e camadas</a></p>
       <div className="editor-toolbar">
         <div className="editor-size">
           <label>

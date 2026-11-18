@@ -1,0 +1,10 @@
+mapa,abordagem,passos,caminho_valido,observacao
+m02_uma_chave,portas_como_chao,10,False,Caminho invalido pelas regras de chaves/esteiras
+m02_uma_chave,portas_como_parede,,False,Sem caminho
+m02_uma_chave,grafo_de_estados,34,True,Modelagem com chaves e bonus
+m03_tres_chaves,portas_como_chao,21,False,Caminho invalido pelas regras de chaves/esteiras
+m03_tres_chaves,portas_como_parede,,False,Sem caminho
+m03_tres_chaves,grafo_de_estados,87,True,Modelagem com chaves e bonus
+m04_esteiras,portas_como_chao,14,False,Caminho invalido pelas regras de chaves/esteiras
+m04_esteiras,portas_como_parede,,False,Sem caminho
+m04_esteiras,grafo_de_estados,20,True,Modelagem com chaves e bonus

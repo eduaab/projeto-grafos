@@ -1,3 +1,4 @@
+"""Testes de BFS — implementação do grupo, com oráculo externo só em tests/."""
 from pathlib import Path
 import pytest
 import networkx as nx

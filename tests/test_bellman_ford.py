@@ -1,3 +1,4 @@
+"""Validação de Bellman-Ford; oráculo externo só nos testes."""
 import math
 import pytest
 import networkx as nx

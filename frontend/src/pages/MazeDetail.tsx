@@ -96,6 +96,7 @@ export function MazeDetail() {
         </p>
       </div>
 
+      <p><a href="/labirinto_interativo.html" target="_blank" rel="noopener noreferrer">▶ Executar os algoritmos e animar o labirinto</a></p>
       {error && <p className="maze-detail-error">{error}</p>}
       {deleteError && <p className="maze-detail-error">{deleteError}</p>}
 
