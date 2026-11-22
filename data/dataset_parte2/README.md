@@ -150,8 +150,13 @@ Gera `arestas_paises.csv`, com todos os anos juntos. Cada linha é um par dirigi
 A Macedônia passou a se chamar Macedônia do Norte em 2019. Nos dados, ela aparece como
 "the former Yugoslav Republic of Macedonia" e, de 2020 a 2022, como país de origem, com o
 nome cortado ("the former Yugoslav Republic of"). Isso criava dois nós para o mesmo país.
-Os dois nomes são unificados como **North Macedonia** antes de montar as arestas, e
-`paises_padronizados.csv` registra cada nome original, o motivo e quantos eventos foram afetados.
+Os dois nomes são unificados como **North Macedonia** antes de montar as arestas.
+
+Em 2017, Curaçao também aparece com o "ç" corrompido ("CuraÃ§ao"), por erro de codificação
+nos dados, e é unificado com "Curaçao".
+
+`paises_padronizados.csv` registra cada nome original, o nome usado, o motivo e quantos
+eventos foram afetados.
 
 ## Não suba os brutos para o GitHub
 

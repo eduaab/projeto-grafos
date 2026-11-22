@@ -1,3 +1,4 @@
 nome_original,nome_padronizado,motivo,eventos_como_origem,eventos_como_destino,primeiro_ano,ultimo_ano
 the former Yugoslav Republic of,North Macedonia,nome cortado nos dados como país de origem em 2020-2022,797,0,2020,2022
 the former Yugoslav Republic of Macedonia,North Macedonia,nome antigo; o país passou a se chamar Macedônia do Norte em 2019,16171,20137,1995,2022
+CuraÃ§ao,Curaçao,caractere corrompido (erro de codificação) nos dados de 2017,1,1,2017,2017

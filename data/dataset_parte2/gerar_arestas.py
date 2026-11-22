@@ -19,9 +19,10 @@ import pandas as pd
 PASTA_SCRIPT = Path(__file__).resolve().parent
 LIMITE_PAR_FRACO = 1
 
-# A Macedônia passou a se chamar Macedônia do Norte em 2019. Nos dados, de 2020
-# em diante, o nome como país de origem vem cortado ("the former Yugoslav Republic of"),
-# o que criava um segundo nó para o mesmo país.
+# Nomes que criavam mais de um nó para o mesmo país:
+# - Macedônia: virou Macedônia do Norte em 2019, e de 2020 em diante o nome como
+#   país de origem vem cortado ("the former Yugoslav Republic of").
+# - Curaçao: em 2017 o "ç" vem corrompido ("CuraÃ§ao").
 PADRONIZACAO_PAISES = {
     "the former Yugoslav Republic of": (
         "North Macedonia",
@@ -30,6 +31,10 @@ PADRONIZACAO_PAISES = {
     "the former Yugoslav Republic of Macedonia": (
         "North Macedonia",
         "nome antigo; o país passou a se chamar Macedônia do Norte em 2019",
+    ),
+    "CuraÃ§ao": (
+        "Curaçao",
+        "caractere corrompido (erro de codificação) nos dados de 2017",
     ),
 }
 

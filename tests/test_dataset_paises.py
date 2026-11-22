@@ -123,7 +123,7 @@ def test_integracao_dataset_paises():
     arestas = carregar_arestas(pasta)
     grafo, _ = montar_grafo_paises(arestas)
 
-    assert len(grafo) == 251
+    assert len(grafo) == 250
 
     total_arestas = 0
     for pais, vizinhos in grafo.items():
@@ -131,5 +131,5 @@ def test_integracao_dataset_paises():
         for destino, _ in vizinhos:
             assert destino != pais
 
-    assert total_arestas == 29383
+    assert total_arestas == 29381
     assert ("Iraq", -2.840676) in grafo["United States"]
