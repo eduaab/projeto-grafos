@@ -97,6 +97,62 @@ data/dataset_parte2/
 
 Se a execução for interrompida, rode o mesmo comando de novo: o que já foi baixado e extraído é pulado.
 
+## Resumo de todos os anos (`resumir_anos.py`)
+
+Depois de baixar os eventos, rode (dentro desta pasta):
+
+```bash
+python resumir_anos.py                    # todos os anos encontrados em raw/
+python resumir_anos.py --anos 1995 1996   # só alguns anos
+```
+
+O script continua o piloto de 1995 do `EDA.ipynb` para todos os anos. Como os
+brutos somam mais de 1,7 GB, cada ano é lido em partes e só o resumo dele fica
+na memória. Nenhuma linha é apagada: ausências, duplicatas e eventos sem país
+são contados e relatados.
+
+Antes de qualquer análise, ele confere se todos os arquivos têm as mesmas
+colunas do primeiro ano. Se algum ano for diferente, ele para e mostra a
+diferença (use `--ignorar-diferencas` para continuar mesmo assim).
+
+Saídas em `processado/`:
+
+| Arquivo | Conteúdo |
+|---|---|
+| `verificacao_colunas.csv` | Colunas de cada arquivo comparadas com as do primeiro ano |
+| `resumo_anos.csv` | Uma linha por ano: eventos, duplicatas, datas inválidas, intensidade, eventos sem país, países, pares dirigidos |
+| `nulos_por_ano.csv` | Valores ausentes por coluna e por ano |
+| `correlacao_nulos_por_ano.csv` | Correlação entre as ausências de cada par de colunas, por ano (base do mapa de calor de ausências) |
+| `presenca_paises.csv` | País × ano (True/False) e em quantos anos cada país aparece |
+| `eventos_por_pais_ano.csv` | Eventos de cada país como origem e como destino, por ano |
+| `pares_paises_por_ano.csv.gz` | Pares dirigidos entre países diferentes, por ano, com nº de eventos e soma/média da intensidade |
+
+## Arestas do grafo de países (`gerar_arestas.py`)
+
+Depois de rodar `resumir_anos.py`, rode (dentro desta pasta):
+
+```bash
+python gerar_arestas.py
+```
+
+Gera `arestas_paises.csv`, com todos os anos juntos. Cada linha é um par dirigido entre países diferentes:
+
+| Coluna | Conteúdo |
+|---|---|
+| `origem`, `destino` | Países de origem e de destino |
+| `peso` | Média da intensidade de todos os eventos do par (de −10 a +10) |
+| `n_eventos` | Quantidade de eventos do par |
+| `anos_com_eventos` | Em quantos anos o par teve pelo menos um evento |
+| `par_fraco` | `True` quando o par tem um único evento |
+
+### Tratamento de nomes de países
+
+A Macedônia passou a se chamar Macedônia do Norte em 2019. Nos dados, ela aparece como
+"the former Yugoslav Republic of Macedonia" e, de 2020 a 2022, como país de origem, com o
+nome cortado ("the former Yugoslav Republic of"). Isso criava dois nós para o mesmo país.
+Os dois nomes são unificados como **North Macedonia** antes de montar as arestas, e
+`paises_padronizados.csv` registra cada nome original, o motivo e quantos eventos foram afetados.
+
 ## Não suba os brutos para o GitHub
 
 Adicione ao `.gitignore` na raiz do repositório:
