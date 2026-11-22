@@ -80,3 +80,31 @@ def montar_grafo_paises(arestas):
         }
 
     return grafo, info_arestas
+
+
+def criar_recorte_aciclico(grafo, info_arestas):
+    atividade = {}
+    for pais in grafo:
+        atividade[pais] = 0
+
+    for (origem, destino), dados in info_arestas.items():
+        n_eventos = dados["n_eventos"]
+        atividade[origem] += n_eventos
+        atividade[destino] += n_eventos
+
+    ordem = sorted(grafo.keys(), key=lambda pais: (-atividade[pais], pais))
+
+    posicao = {}
+    for indice, pais in enumerate(ordem):
+        posicao[pais] = indice
+
+    recorte = {}
+    for pais in grafo:
+        recorte[pais] = []
+
+    for origem, vizinhos in grafo.items():
+        for destino, peso in vizinhos:
+            if posicao[origem] < posicao[destino]:
+                recorte[origem].append((destino, peso))
+
+    return recorte, ordem
