@@ -56,3 +56,27 @@ def criar_matriz_adjacencia(grafo):
             matriz[indice_origem][indice_destino] = peso
 
     return matriz, estados
+
+
+def montar_grafo_paises(arestas):
+    grafo = {}
+    info_arestas = {}
+
+    for aresta in arestas:
+        origem = aresta["origem"]
+        destino = aresta["destino"]
+        peso = aresta["peso"]
+
+        if origem not in grafo:
+            grafo[origem] = []
+        if destino not in grafo:
+            grafo[destino] = []
+
+        grafo[origem].append((destino, peso))
+
+        info_arestas[(origem, destino)] = {
+            "n_eventos": aresta["n_eventos"],
+            "par_fraco": aresta["par_fraco"],
+        }
+
+    return grafo, info_arestas
