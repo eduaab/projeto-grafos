@@ -1,0 +1,583 @@
+{
+  "metadata": {
+    "seed": 42,
+    "repeticoes": 5,
+    "transformacao_dijkstra": "10 - peso",
+    "n_nos_completo": 250,
+    "n_arestas_completo": 29381,
+    "n_negativas_completo": 2940,
+    "n_pares_fracos": 4284,
+    "fontes_bfs_dfs": [
+      "United States",
+      "Brazil",
+      "Israel"
+    ],
+    "pares_bfs_dijkstra": [
+      [
+        "Israel",
+        "Lebanon"
+      ],
+      [
+        "Saudi Arabia",
+        "Yemen"
+      ],
+      [
+        "Russian Federation",
+        "Ukraine"
+      ],
+      [
+        "Brazil",
+        "Bhutan"
+      ],
+      [
+        "United States",
+        "China"
+      ]
+    ]
+  },
+  "tempo_medio": [
+    {
+      "algoritmo": "BFS",
+      "tarefa": "3_fontes",
+      "tempos_ms": [
+        16.182499995920807,
+        15.296800003852695,
+        16.507099964655936,
+        14.766899985261261,
+        13.940799981355667
+      ],
+      "media_ms": 15.338819986209273,
+      "desvio_ms": 1.0440297130827607
+    },
+    {
+      "algoritmo": "DFS",
+      "tarefa": "3_fontes",
+      "tempos_ms": [
+        30.66650003893301,
+        29.200099990703166,
+        32.603400002699345,
+        36.309099989011884,
+        33.5462000221014
+      ],
+      "media_ms": 32.46506000868976,
+      "desvio_ms": 2.732189000449989
+    },
+    {
+      "algoritmo": "DIJKSTRA",
+      "tarefa": "5_pares",
+      "tempos_ms": [
+        70.95620001200587,
+        64.91439999081194,
+        62.52560002030805,
+        63.020700006745756,
+        58.84840001817793
+      ],
+      "media_ms": 64.05306000960991,
+      "desvio_ms": 4.440794840924901
+    },
+    {
+      "algoritmo": "BELLMAN_FORD",
+      "tarefa": "completo_com_ciclo",
+      "tempos_ms": [
+        1548.2413999852724,
+        1508.9648999855854,
+        1311.5123999887146,
+        1317.8358000004664,
+        1506.4363999990746
+      ],
+      "media_ms": 1438.5981799918227,
+      "desvio_ms": 114.3563323204492
+    },
+    {
+      "algoritmo": "BELLMAN_FORD",
+      "tarefa": "recorte_sem_ciclo",
+      "tempos_ms": [
+        462.78100000927225,
+        516.6190000018105,
+        492.5346000236459,
+        557.9164999653585,
+        601.1206000111997
+      ],
+      "media_ms": 526.1943400022574,
+      "desvio_ms": 54.46594530592036
+    }
+  ],
+  "escalabilidade": [
+    {
+      "fracao": 0.1,
+      "n_nos": 25,
+      "n_arestas": 289,
+      "origem": "Angola",
+      "algoritmo": "BFS",
+      "media_ms": 0.025240005925297737,
+      "desvio_ms": 0.0049847760725978945
+    },
+    {
+      "fracao": 0.1,
+      "n_nos": 25,
+      "n_arestas": 289,
+      "origem": "Angola",
+      "algoritmo": "DFS",
+      "media_ms": 0.06902001332491636,
+      "desvio_ms": 0.014035908222622944
+    },
+    {
+      "fracao": 0.1,
+      "n_nos": 25,
+      "n_arestas": 289,
+      "origem": "Angola",
+      "algoritmo": "DIJKSTRA",
+      "media_ms": 0.10021999478340149,
+      "desvio_ms": 0.008037228281880292
+    },
+    {
+      "fracao": 0.1,
+      "n_nos": 25,
+      "n_arestas": 289,
+      "origem": "Angola",
+      "algoritmo": "BELLMAN_FORD",
+      "media_ms": 0.7626599981449544,
+      "desvio_ms": 0.044648145909926815
+    },
+    {
+      "fracao": 0.5,
+      "n_nos": 125,
+      "n_arestas": 6389,
+      "origem": "France",
+      "algoritmo": "BFS",
+      "media_ms": 0.4611200070939958,
+      "desvio_ms": 0.1458074567543633
+    },
+    {
+      "fracao": 0.5,
+      "n_nos": 125,
+      "n_arestas": 6389,
+      "origem": "France",
+      "algoritmo": "DFS",
+      "media_ms": 1.6361800022423267,
+      "desvio_ms": 0.4197884642064352
+    },
+    {
+      "fracao": 0.5,
+      "n_nos": 125,
+      "n_arestas": 6389,
+      "origem": "France",
+      "algoritmo": "DIJKSTRA",
+      "media_ms": 2.6823199936188757,
+      "desvio_ms": 0.7505450749071533
+    },
+    {
+      "fracao": 0.5,
+      "n_nos": 125,
+      "n_arestas": 6389,
+      "origem": "France",
+      "algoritmo": "BELLMAN_FORD",
+      "media_ms": 109.74732000613585,
+      "desvio_ms": 3.120083132902382
+    },
+    {
+      "fracao": 1.0,
+      "n_nos": 250,
+      "n_arestas": 29381,
+      "origem": "United States",
+      "algoritmo": "BFS",
+      "media_ms": 5.011140007991344,
+      "desvio_ms": 1.0283191039916748
+    },
+    {
+      "fracao": 1.0,
+      "n_nos": 250,
+      "n_arestas": 29381,
+      "origem": "United States",
+      "algoritmo": "DFS",
+      "media_ms": 9.898399992380291,
+      "desvio_ms": 0.8151603154062852
+    },
+    {
+      "fracao": 1.0,
+      "n_nos": 250,
+      "n_arestas": 29381,
+      "origem": "United States",
+      "algoritmo": "DIJKSTRA",
+      "media_ms": 12.48601998668164,
+      "desvio_ms": 0.8546807365194208
+    },
+    {
+      "fracao": 1.0,
+      "n_nos": 250,
+      "n_arestas": 29381,
+      "origem": "United States",
+      "algoritmo": "BELLMAN_FORD",
+      "media_ms": 1529.7110800049268,
+      "desvio_ms": 87.80809414707082
+    }
+  ],
+  "bfs_vs_dijkstra_5_pares": [
+    {
+      "origem": "Israel",
+      "destino": "Lebanon",
+      "bfs": {
+        "saltos": 1,
+        "custo_transformado": 16.172125,
+        "caminho": [
+          "Israel",
+          "Lebanon"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      },
+      "dijkstra": {
+        "saltos": 4,
+        "custo_transformado": 9.578571,
+        "caminho": [
+          "Israel",
+          "Macao",
+          "Armenia",
+          "Cambodia",
+          "Lebanon"
+        ],
+        "usa_par_fraco": true,
+        "qtd_pares_fracos": 3
+      }
+    },
+    {
+      "origem": "Saudi Arabia",
+      "destino": "Yemen",
+      "bfs": {
+        "saltos": 1,
+        "custo_transformado": 14.213392,
+        "caminho": [
+          "Saudi Arabia",
+          "Yemen"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      },
+      "dijkstra": {
+        "saltos": 2,
+        "custo_transformado": 6.0,
+        "caminho": [
+          "Saudi Arabia",
+          "Fiji",
+          "Yemen"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      }
+    },
+    {
+      "origem": "Russian Federation",
+      "destino": "Ukraine",
+      "bfs": {
+        "saltos": 1,
+        "custo_transformado": 12.492126,
+        "caminho": [
+          "Russian Federation",
+          "Ukraine"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      },
+      "dijkstra": {
+        "saltos": 3,
+        "custo_transformado": 7.166667,
+        "caminho": [
+          "Russian Federation",
+          "Antigua and Barbuda",
+          "Saint Vincent and the Grenadines",
+          "Ukraine"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      }
+    },
+    {
+      "origem": "Brazil",
+      "destino": "Bhutan",
+      "bfs": {
+        "saltos": 1,
+        "custo_transformado": 9.8,
+        "caminho": [
+          "Brazil",
+          "Bhutan"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      },
+      "dijkstra": {
+        "saltos": 3,
+        "custo_transformado": 8.0,
+        "caminho": [
+          "Brazil",
+          "Dominica",
+          "Croatia",
+          "Bhutan"
+        ],
+        "usa_par_fraco": true,
+        "qtd_pares_fracos": 3
+      }
+    },
+    {
+      "origem": "United States",
+      "destino": "China",
+      "bfs": {
+        "saltos": 1,
+        "custo_transformado": 8.432081,
+        "caminho": [
+          "United States",
+          "China"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      },
+      "dijkstra": {
+        "saltos": 1,
+        "custo_transformado": 8.432081,
+        "caminho": [
+          "United States",
+          "China"
+        ],
+        "usa_par_fraco": false,
+        "qtd_pares_fracos": 0
+      }
+    }
+  ],
+  "casos_obrigatorios": {
+    "bfs_dfs_3_fontes": {
+      "United States": {
+        "bfs_alcancados": 250,
+        "bfs_max_camada": 2,
+        "bfs_primeiros_5": [
+          "United States",
+          "Afghanistan",
+          "Albania",
+          "Algeria",
+          "Andorra"
+        ],
+        "dfs_alcancados": 250,
+        "dfs_tem_ciclo": true,
+        "dfs_contagem_arestas": {
+          "arvore": 249,
+          "retorno": 14664,
+          "avanco": 14467,
+          "cruzamento": 1
+        }
+      },
+      "Brazil": {
+        "bfs_alcancados": 250,
+        "bfs_max_camada": 2,
+        "bfs_primeiros_5": [
+          "Brazil",
+          "Afghanistan",
+          "Albania",
+          "Algeria",
+          "Andorra"
+        ],
+        "dfs_alcancados": 250,
+        "dfs_tem_ciclo": true,
+        "dfs_contagem_arestas": {
+          "arvore": 249,
+          "retorno": 14666,
+          "avanco": 14463,
+          "cruzamento": 3
+        }
+      },
+      "Israel": {
+        "bfs_alcancados": 250,
+        "bfs_max_camada": 3,
+        "bfs_primeiros_5": [
+          "Israel",
+          "Afghanistan",
+          "Albania",
+          "Algeria",
+          "Andorra"
+        ],
+        "dfs_alcancados": 250,
+        "dfs_tem_ciclo": true,
+        "dfs_contagem_arestas": {
+          "arvore": 249,
+          "retorno": 14668,
+          "avanco": 14461,
+          "cruzamento": 3
+        }
+      }
+    },
+    "bellman_ford_com_ciclo": {
+      "Brazil": {
+        "ciclo": [
+          "Curaçao",
+          "Guyana",
+          "Curaçao"
+        ],
+        "custo_ciclo": -17.5,
+        "arestas_ciclo": [
+          {
+            "origem": "Curaçao",
+            "destino": "Guyana",
+            "peso": -7.5,
+            "n_eventos": 2,
+            "par_fraco": false
+          },
+          {
+            "origem": "Guyana",
+            "destino": "Curaçao",
+            "peso": -10.0,
+            "n_eventos": 1,
+            "par_fraco": true
+          }
+        ],
+        "usa_par_fraco": true
+      },
+      "United States": {
+        "ciclo": [
+          "Curaçao",
+          "Guyana",
+          "Curaçao"
+        ],
+        "custo_ciclo": -17.5,
+        "arestas_ciclo": [
+          {
+            "origem": "Curaçao",
+            "destino": "Guyana",
+            "peso": -7.5,
+            "n_eventos": 2,
+            "par_fraco": false
+          },
+          {
+            "origem": "Guyana",
+            "destino": "Curaçao",
+            "peso": -10.0,
+            "n_eventos": 1,
+            "par_fraco": true
+          }
+        ],
+        "usa_par_fraco": true
+      }
+    },
+    "bellman_ford_sem_ciclo": {
+      "n_nos": 250,
+      "n_arestas": 14692,
+      "n_negativas": 1406,
+      "nos_sem_saida": 29,
+      "top_5_ordem": [
+        "United States",
+        "Russian Federation",
+        "China",
+        "Israel",
+        "Japan"
+      ],
+      "execucoes": {
+        "United States": {
+          "alcancados": 250,
+          "ciclo": null,
+          "dfs_arestas_retorno": 0
+        },
+        "Brazil": {
+          "alcancados": 214,
+          "ciclo": null,
+          "dfs_arestas_retorno": 0
+        }
+      }
+    }
+  },
+  "robustez_sem_pares_fracos": {
+    "n_nos": 250,
+    "n_arestas": 25097,
+    "n_negativas": 2415,
+    "dijkstra_5_pares": [
+      {
+        "origem": "Israel",
+        "destino": "Lebanon",
+        "caminho": [
+          "Israel",
+          "Trinidad and Tobago",
+          "Lebanon"
+        ],
+        "saltos": 2,
+        "custo_transformado": 9.9,
+        "mudou_em_relacao_ao_completo": true
+      },
+      {
+        "origem": "Saudi Arabia",
+        "destino": "Yemen",
+        "caminho": [
+          "Saudi Arabia",
+          "Fiji",
+          "Yemen"
+        ],
+        "saltos": 2,
+        "custo_transformado": 6.0,
+        "mudou_em_relacao_ao_completo": false
+      },
+      {
+        "origem": "Russian Federation",
+        "destino": "Ukraine",
+        "caminho": [
+          "Russian Federation",
+          "Antigua and Barbuda",
+          "Saint Vincent and the Grenadines",
+          "Ukraine"
+        ],
+        "saltos": 3,
+        "custo_transformado": 7.166667,
+        "mudou_em_relacao_ao_completo": false
+      },
+      {
+        "origem": "Brazil",
+        "destino": "Bhutan",
+        "caminho": [
+          "Brazil",
+          "Bhutan"
+        ],
+        "saltos": 1,
+        "custo_transformado": 9.8,
+        "mudou_em_relacao_ao_completo": true
+      },
+      {
+        "origem": "United States",
+        "destino": "China",
+        "caminho": [
+          "United States",
+          "China"
+        ],
+        "saltos": 1,
+        "custo_transformado": 8.432081,
+        "mudou_em_relacao_ao_completo": false
+      }
+    ],
+    "bellman_ford_com_ciclo": {
+      "Brazil": {
+        "ciclo": [
+          "Saint Helena",
+          "Ecuador",
+          "Saint Helena"
+        ],
+        "custo_ciclo": -1.0,
+        "arestas_ciclo": [
+          {
+            "origem": "Saint Helena",
+            "destino": "Ecuador",
+            "peso": 1.0,
+            "n_eventos": 3,
+            "par_fraco": false
+          },
+          {
+            "origem": "Ecuador",
+            "destino": "Saint Helena",
+            "peso": -2.0,
+            "n_eventos": 3,
+            "par_fraco": false
+          }
+        ],
+        "usa_par_fraco": false
+      }
+    },
+    "bellman_ford_sem_ciclo": {
+      "United States": {
+        "alcancados": 248,
+        "ciclo": null,
+        "dfs_arestas_retorno": 0
+      }
+    }
+  }
+}
