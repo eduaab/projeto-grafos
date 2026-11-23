@@ -18,7 +18,7 @@ Abra `out/parte1/labirinto_interativo.html` no navegador. O HTML é autônomo, c
 - `solucoes.csv`: resultados de BFS, DFS, Dijkstra e Bellman-Ford por mapa.
 - `dfs_classificacao.csv`: classificação das arestas da DFS.
 - `comparacao_modelagem.csv`: BFS sobre G_pos com portas liberadas/bloqueadas e G_est, nos mapas m02, m03 e m04.
-- `armadilhas_m04_esteiras.csv`, `armadilhas_m07_impossivel.csv`: estados que não alcançam `ALVO` em busca reversa.
+- `armadilhas_m04.csv`, `armadilhas_m07.csv`: estados que não alcançam `ALVO` em busca reversa.
 - `percurso_m03.json`, `ciclo_negativo_m06.json`: trajetórias/ciclo nos cenários exigidos.
 - `metricas_global.json`, `camadas.json`, `graus_<mapa>.csv`: saídas preexistentes, regeneradas.
 - `dados_interativos.json`: dados da animação gerados pelos algoritmos em Python.

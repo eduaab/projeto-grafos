@@ -31,6 +31,18 @@ def test_armadilhas_m07_sem_alvo():
     assert ALVO not in traps
     assert len(traps)==len(graph)-1
 
+def test_generate_usa_nome_curto_para_armadilhas_m04_e_m07(tmp_path):
+    mapdir=tmp_path/'maps';mapdir.mkdir()
+    for nome in ('m04_esteiras.txt','m07_impossivel.txt'):
+        src=ROOT/'data'/'mapas'/nome
+        (mapdir/nome).write_text(src.read_text(encoding='utf-8'),encoding='utf-8')
+    out=tmp_path/'output'
+    generate([mapdir],out)
+    assert (out/'armadilhas_m04.csv').is_file()
+    assert (out/'armadilhas_m07.csv').is_file()
+    assert not (out/'armadilhas_m04_esteiras.csv').exists()
+    assert not (out/'armadilhas_m07_impossivel.csv').exists()
+
 def test_dfs_sem_solucao_no_m07_nao_inventa_passos_negativos(tmp_path):
     src = ROOT/'data'/'mapas'/'m07_impossivel.txt'
     mapdir=tmp_path/'maps';mapdir.mkdir()

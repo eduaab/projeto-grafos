@@ -113,7 +113,7 @@ def generate(map_dirs, output):
         save_csv(output/f'arestas_{name}.csv',['origem','destino','movimento','casa_destino','peso'],rows)
         traps=armadilhas(graph)
         if name in ('m04_esteiras','m07_impossivel'):
-            save_csv(output/f'armadilhas_{name}.csv',['estado'],[{'estado':encode(s,ids)} for s in traps])
+            save_csv(output/f'armadilhas_{codigo_mapa(name)}.csv',['estado'],[{'estado':encode(s,ids)} for s in traps])
         animations[name]={'mapa':[''.join(r) for r in maze], 'armadilhas':[[s[0],s[1],s[2] or '-'] for s in traps], 'algoritmos':{}}
         has_negative=any(w<0 for es in graph.values() for _,w in es)
         for algo,fn in [('BFS',bfs),('DFS',dfs),('DIJKSTRA',dijkstra),('BELLMAN_FORD',bellman_ford)]:
