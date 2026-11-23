@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom'
 import manifest from '../data/mapas.manifest.json'
 import { parseMaze, type ParsedMaze } from '../lib/parseMaze'
 import { mazeThumbnailDataUrl } from '../lib/mazeThumbnailImage'
-import { SearchIcon } from '../components/icons'
-import { describeMaze, groupLabel } from '../lib/mazeDescriptions'
+import { describeMaze, displayMazeTitle, groupLabel } from '../lib/mazeDescriptions'
 import './MazeGallery.css'
 
 type ManifestEntry = (typeof manifest)[number]
@@ -14,9 +13,9 @@ type GroupFilter = 'all' | ManifestEntry['group']
 
 const GROUP_FILTERS: { value: GroupFilter; label: string }[] = [
   { value: 'all', label: 'Todos' },
-  { value: 'oficial', label: 'Mapas Oficiais' },
-  { value: 'grupo', label: 'Mapas do Grupo' },
-  { value: 'criado', label: 'Mapas Criados' },
+  { value: 'oficial', label: 'Mapas oficiais' },
+  { value: 'grupo', label: 'Mapas do grupo' },
+  { value: 'criado', label: 'Mapas criados' },
 ]
 
 // Thumbnail aspect of each row's small preview image.
@@ -58,7 +57,7 @@ export function MazeGallery() {
   const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [groupFilter, setGroupFilter] = useState<GroupFilter>('all')
-  const rowRefs = useRef<(HTMLAnchorElement | null)[]>([])
+  const rowRefs = useRef(new Map<string, HTMLAnchorElement>())
   const reducedMotion = useReducedMotion()
 
   useEffect(() => {
@@ -85,68 +84,73 @@ export function MazeGallery() {
     }
   }, [])
 
-  // The group filter narrows what actually renders — search's matchIndex
-  // below operates on this subset, not the full `items`.
   const visibleItems = useMemo(
     () => (items ? (groupFilter === 'all' ? items : items.filter((item) => item.group === groupFilter)) : null),
     [items, groupFilter],
   )
 
-  // Live search: the first map whose name/id contains the typed text.
-  const matchIndex = useMemo(() => {
+  const matchId = useMemo(() => {
     if (!visibleItems || !query.trim()) return null
     const needle = normalize(query)
-    const found = visibleItems.findIndex((item) => normalize(`${item.id} ${item.title}`).includes(needle))
-    return found === -1 ? null : found
+    const found = visibleItems.find((item) => normalize(`${item.id} ${displayMazeTitle(item)}`).includes(needle))
+    return found?.id ?? null
   }, [visibleItems, query])
 
   useEffect(() => {
-    if (matchIndex === null) return
-    rowRefs.current[matchIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }, [matchIndex])
+    if (matchId) rowRefs.current.get(matchId)?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'nearest' })
+  }, [matchId, reducedMotion])
+
+  const search = (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!matchId) return
+    const match = rowRefs.current.get(matchId)
+    match?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'nearest' })
+    match?.focus({ preventScroll: true })
+  }
 
   return (
     <section className="maze-gallery">
-      <div className="maze-gallery-header">
-        <span className="context-label">Sala de Mapas</span>
-        <h1>Labirintos Catalogados</h1>
-        <p className="maze-gallery-lede">
-          {items ? `${items.length} labirinto(s) lido(s) direto de data/mapas.` : 'Carregando labirintos…'}
-        </p>
+      <h1 className="visually-hidden">Mapas</h1>
+
+      <form className="maze-search" onSubmit={search} role="search">
+        <input
+          className="field"
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Buscar por nome ou código"
+          aria-label="Buscar por nome ou código"
+        />
+        <button className="btn" type="submit">Buscar</button>
+      </form>
+
+      <div className="maze-gallery-filters" role="group" aria-label="Filtrar por catálogo">
+        {GROUP_FILTERS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            aria-pressed={groupFilter === option.value}
+            className="btn"
+            onClick={() => setGroupFilter(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
 
-      {error && <p className="maze-gallery-error">{error}</p>}
+      {error && <p className="notice notice-error" role="alert">{error}</p>}
+      {!items && !error && <p className="notice" role="status">Carregando mapas…</p>}
+      {query.trim() && visibleItems?.length && matchId === null ? (
+        <p className="notice" role="status">Nenhum mapa corresponde à busca neste catálogo.</p>
+      ) : null}
 
-      {items && visibleItems && (
+      {visibleItems && (
         <>
-          <div className="maze-gallery-filters" role="tablist" aria-label="Filtrar por catálogo">
-            {GROUP_FILTERS.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                role="tab"
-                aria-selected={groupFilter === option.value}
-                className={'maze-filter' + (groupFilter === option.value ? ' is-active' : '')}
-                onClick={() => setGroupFilter(option.value)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-
-          <label className="maze-search">
-            <SearchIcon className="maze-search-icon" />
-            <input
-              type="text"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Buscar mapa…"
-              aria-label="Buscar labirinto pelo nome"
-            />
-          </label>
-
           {visibleItems.length === 0 ? (
-            <p className="maze-gallery-empty">Nenhum labirinto neste filtro ainda.</p>
+            <div className="maze-gallery-empty">
+              <p>{groupFilter === 'criado' ? 'Nenhum mapa criado ainda.' : 'Nenhum labirinto neste filtro.'}</p>
+              {groupFilter === 'criado' && <Link to="/editor" className="btn btn-primary">Abrir editor</Link>}
+            </div>
           ) : (
             <ul className="maze-gallery-list">
               <AnimatePresence mode="popLayout">
@@ -163,20 +167,21 @@ export function MazeGallery() {
                   >
                     <Link
                       ref={(element) => {
-                        rowRefs.current[index] = element
+                        if (element) rowRefs.current.set(item.id, element)
+                        else rowRefs.current.delete(item.id)
                       }}
                       to={`/labirintos/${item.id}`}
-                      className={'maze-gallery-row' + (index === matchIndex ? ' is-matched' : '')}
+                      className={'maze-gallery-row' + (item.id === matchId ? ' is-matched' : '')}
                     >
                       <img className="maze-gallery-row-thumb" src={item.thumb} alt="" />
                       <div className="maze-gallery-row-main">
-                        <h2>{item.title}</h2>
+                        <h2>{displayMazeTitle(item)}</h2>
                         <p>{describeMaze(item)}</p>
                       </div>
                       <div className="maze-gallery-row-meta">
                         <span className="maze-gallery-row-group">{groupLabel(item.group)}</span>
                         <span className="maze-gallery-row-dims">
-                          {item.cols}×{item.rows}
+                          {item.cols} × {item.rows}
                         </span>
                       </div>
                     </Link>

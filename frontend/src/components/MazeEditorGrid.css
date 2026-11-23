@@ -1,17 +1,45 @@
-.maze-editor-grid {
-  touch-action: none; /* dragging paints — don't let the page scroll under the finger */
+.maze-editor-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: max(445px, calc(100dvh - var(--site-header-height) - 2 * var(--editor-gutter)));
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
 }
-
-.maze-editor-cell {
-  cursor: pointer;
-  user-select: none;
+.maze-editor-zoom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  padding: 8px;
+  border-bottom: 1px solid var(--surface-border);
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-editor-cell:hover {
-    outline: 2px solid var(--gold);
-    outline-offset: -2px;
-    z-index: 1;
-    position: relative;
-  }
+.maze-editor-zoom .btn { min-height: 32px; padding: 5px 10px; font-size: .875rem; }
+.maze-editor-zoom .btn[aria-label] { min-width: 34px; font-size: 1rem; }
+.maze-editor-hand { margin-right: auto; }
+.maze-editor-hand svg { width: 18px; height: 18px; }
+.maze-editor-zoom output { min-width: 4ch; color: var(--ink-muted); font-size: .875rem; text-align: center; font-variant-numeric: tabular-nums; }
+.maze-editor-viewport {
+  --editor-map-padding: 8px;
+  flex: 1;
+  min-height: 0;
+  contain: size;
+  overflow: auto;
+  scrollbar-width: none;
 }
+.maze-editor-viewport::-webkit-scrollbar { display: none; }
+.maze-editor-viewport[data-hand] { cursor: grab; user-select: none; touch-action: none; }
+.maze-editor-viewport[data-hand] .maze-editor-cell { cursor: inherit; box-shadow: none; }
+.maze-editor-viewport[data-dragging] { cursor: grabbing; }
+.maze-editor-canvas {
+  display: grid;
+  place-items: center;
+  width: max-content;
+  min-width: 100%;
+  min-height: 100%;
+  padding: var(--editor-map-padding);
+}
+.maze-editor-grid { margin-inline: 0; user-select: none; }
+.maze-editor-cell { cursor: crosshair; }
+.maze-editor-cell { font-size: min(calc(var(--maze-cell-size) * .55), 28px); }
+.maze-editor-cell:hover { box-shadow: inset 0 0 0 2px var(--accent); }

@@ -1,116 +1,14 @@
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(10, 8, 5, 0.72);
-  animation: modal-overlay-in 180ms var(--ease-out) both;
-}
-
-/* No dialog shell/background of its own — just a layout column. The close
-   button and footer sit in this flow, outside .modal-card, so they float
-   directly on the dark overlay instead of inside a second static panel. */
-.modal-stage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: var(--space-3);
-  width: min(94vw, 760px);
-  max-height: 90vh;
-}
-
-.modal-close {
-  align-self: flex-end;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--ink-muted);
-  padding: 4px;
-  transition: color 160ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .modal-close:hover {
-    color: var(--ink);
-  }
-}
-
-.modal-close-icon {
-  width: 18px;
-  height: 18px;
-}
-
 .modal-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  /* A vh value, not a percentage: .modal-stage's height is auto (bounded
-     only by max-height), so a percentage here wouldn't resolve against
-     anything definite and this card would never actually clip/scroll. */
-  max-height: 75vh;
-  overflow-y: auto;
-  padding: var(--space-5);
-  background: var(--bg-raised);
-  border: 1px solid var(--surface-border-strong);
-  border-radius: var(--radius);
-  box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.6);
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+  width: min(620px, 85vw);
+  max-height: 88vh;
+  padding: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
 }
-
-@starting-style {
-  .modal-card {
-    opacity: 0;
-    transform: scale(0.96) translateY(6px);
-  }
-}
-
-.modal-card-title {
-  font-size: 1.3rem;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-3);
-}
-
-@keyframes modal-overlay-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .modal-overlay {
-    animation: modal-fade-only 150ms ease both;
-  }
-
-  .modal-card {
-    transition: opacity 150ms ease;
-  }
-
-  @starting-style {
-    .modal-card {
-      opacity: 0;
-      transform: none;
-    }
-  }
-}
-
-@keyframes modal-fade-only {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+.modal-card::backdrop { background: rgb(52 33 19 / 45%); }
+.modal-content { padding: 24px; }
+.modal-content h2 { font-size: 1.5rem; }
+.modal-body { margin: 18px 0; color: var(--ink-muted); }
+.modal-footer { display: flex; gap: 10px; }

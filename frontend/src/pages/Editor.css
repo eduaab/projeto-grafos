@@ -1,176 +1,37 @@
-.editor {
-  flex: 1;
-  width: min(100%, var(--content-width));
-  margin: 0 auto;
-  padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 56px) 64px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
+.site-main:has(> .editor) {
+  --editor-gutter: clamp(20px, 2vw, 36px);
+  padding: var(--editor-gutter);
 }
-
-.editor-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  max-width: 68ch;
+.editor-toolbar { margin-top: auto; padding-top: clamp(10px, calc(4dvh - 21px), 16px); }
+.editor-toolbar h2 { margin-bottom: 10px; }
+.editor-size-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; align-items: end; gap: 10px; }
+.editor-toolbar label, .editor-download-name { display: grid; gap: 6px; color: var(--ink-muted); font-size: var(--editor-label-size, .875rem); }
+.editor-toolbar input { width: 100%; min-width: 0; font-weight: 650; }
+.editor-size-fields .field, .editor-size-fields .btn, .editor-file-actions .btn {
+  min-height: clamp(46px, calc(8.6dvh - 21px), 60px);
+  font-size: clamp(.9375rem, 1.8dvh, 1.0625rem);
 }
-
-.editor-header h1 {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-}
-
-.editor-lede {
-  color: var(--ink-muted);
-}
-
-.editor-lede code {
-  font-family: var(--font-body);
-  color: var(--ink);
-}
-
-.editor-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-5);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--surface-border);
-}
-
-.editor-size,
-.editor-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-3);
-}
-
-.editor-size label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  color: var(--ink-muted);
-}
-
-/* Same minimalist treatment as the Sala de Mapas search bar (.maze-search
-   input) — underline only, no boxed background. The native number-input
-   spinner is also gone (type="text" + inputMode="numeric" now), which was
-   showing a stray browser autofill-blue box here before. */
-.editor-size input {
-  width: 48px;
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--surface-border);
-  padding: 6px 2px;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  transition: border-color 160ms var(--ease-out);
-}
-
-.editor-size input:focus {
-  outline: none;
-  border-color: var(--gold);
-}
-
-.editor-filename {
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--surface-border);
-  padding: 6px 2px;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  width: 150px;
-}
-
-.editor-filename:focus {
-  outline: none;
-  border-color: var(--gold);
-}
-
-.editor-file-input {
-  /* visually hidden, triggered by the "Importar .txt" button */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-}
-
-.editor-error {
-  color: var(--crimson);
-  font-size: 0.85rem;
-}
-
+.editor-toolbar input[aria-invalid="true"] { border-color: var(--crimson); }
+.editor-size-error { margin-top: 6px; color: var(--crimson); font-size: .875rem; }
+.editor-restore { margin-top: 10px; }
 .editor-body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: var(--space-6);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(350px, 29vw, 540px);
+  gap: clamp(24px, 2.5vw, 48px);
 }
-
-.editor-grid-wrap {
-  flex: 1 1 420px;
+.editor-grid-wrap { display: grid; min-width: 0; }
+.editor-sidebar {
+  --editor-label-size: clamp(.875rem, 1.75dvh, 1rem);
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  padding-top: 4px;
 }
-
-.editor-status {
-  flex: 0 0 240px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.editor-stats {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.editor-stats > div {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--surface-border);
-}
-
-.editor-stats dt {
-  font-size: 0.85rem;
-  color: var(--ink-faint);
-}
-
-.editor-stats dd {
-  margin: 0;
-  font-family: var(--font-display);
-  color: var(--gold-bright);
-  text-align: right;
-}
-
-.editor-status-ok {
-  color: var(--olive);
-  font-size: 0.85rem;
-}
-
-.editor-status-issues,
-.editor-status-warnings {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.85rem;
-}
-
-.editor-status-issues li {
-  color: var(--crimson);
-}
-
-.editor-status-warnings li {
-  color: var(--ink-muted);
-}
+.editor-sidebar h2 { font-size: clamp(1.2rem, 2.4dvh, 1.45rem); }
+.editor-sidebar .notice { margin-top: 12px; padding: clamp(10px, calc(3.4dvh - 16px), 16px) 14px; font-size: max(.9rem, var(--editor-label-size)); }
+.editor-sidebar ul { padding-left: 17px; margin: 4px 0 0; }
+.editor-file { margin-top: auto; padding-top: clamp(12px, calc(4dvh - 20px), 18px); scroll-margin-top: 16px; }
+.editor-file h2 { margin-bottom: 12px; }
+.editor-file-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.editor-file .notice { margin: 0 0 10px; }
+.editor-preview-name, .editor-download-name { margin-bottom: 12px; }

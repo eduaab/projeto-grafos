@@ -1,90 +1,68 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import manifest from '../data/mapas.manifest.json'
-import { parseMaze, type ParsedMaze } from '../lib/parseMaze'
 import { MazeGrid } from '../components/MazeGrid'
-import { ArrowIcon } from '../components/icons'
+import { parseMaze, type ParsedMaze } from '../lib/parseMaze'
 import './Home.css'
 
-// The actual cover exhibit: a real catalogued maze, not an illustration —
-// M03 for its mix of water/mud/keys/doors without being too large to read
-// at hero scale (unlike m08's 71 columns).
-const COVER_MAZE_ID = 'm03_tres_chaves'
-
-const DESTINATIONS = [
-  {
-    to: '/labirintos',
-    title: 'Sala de Mapas',
-    description: 'Veja os labirintos catalogados, renderizados a partir dos próprios arquivos .txt.',
-  },
-  {
-    to: '/editor',
-    title: 'Oficina de Campo',
-    description: 'Desenhe o seu próprio labirinto numa grade interativa, peça por peça.',
-  },
-  {
-    to: '/importar-exportar',
-    title: 'Arquivo & Transmissão',
-    description: 'Importe um .txt existente ou exporte o labirinto que você desenhou.',
-  },
+const COVER_ID = 'm03_tres_chaves'
+const COVER_LEGEND = [
+  ['S', 'Início'], ['G', 'Saída'], ['a–c', 'Chaves'], ['A–C', 'Portas'],
+  ['~', 'Água'], [',', 'Lama'],
 ]
 
 export function Home() {
-  const [cover, setCover] = useState<ParsedMaze | null>(null)
+  const [cover, setCover] = useState<ParsedMaze | 'error' | null>(null)
 
   useEffect(() => {
-    const entry = manifest.find((item) => item.id === COVER_MAZE_ID)
-    if (!entry) return
-    let cancelled = false
-    fetch(`/mapas/${entry.filename}`)
-      .then((response) => response.text())
+    const controller = new AbortController()
+    fetch(`/mapas/${COVER_ID}.txt`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('Falha ao carregar o mapa da home.')
+        return response.text()
+      })
       .then((text) => {
-        if (!cancelled) setCover(parseMaze(text))
+        if (!controller.signal.aborted) setCover(parseMaze(text))
       })
       .catch(() => {
-        /* the index list below still works without the cover render */
+        if (!controller.signal.aborted) setCover('error')
       })
-    return () => {
-      cancelled = true
-    }
+
+    return () => controller.abort()
   }, [])
 
   return (
     <section className="home">
       <div className="home-cover">
-        <div className="home-exhibit">
-          <span className="home-exhibit-tag">Registro Nº 01 · M03 catalogado</span>
-          {cover && (
-            <div className="home-exhibit-grid">
-              <MazeGrid maze={cover} />
-            </div>
-          )}
-          <p className="home-exhibit-caption">17×10 células · 3 chaves, 3 portas, água e lama.</p>
-        </div>
-
-        <div className="home-brief">
-          <span className="context-label">Dossiê de Operações</span>
-          <h1>Dossiê de Operações do Labirinto</h1>
-          <p className="home-hero-lede">
-            Painel visual do projeto de Teoria dos Grafos: cada labirinto é um mapa de texto (<code>.txt</code>) que
-            esconde chaves, portas e armadilhas, pensado para virar um grafo de estados.
+        <div className="home-intro">
+          <h1>Labirintos na prática</h1>
+          <p>
+            Explore mapas com chaves, portas e terrenos de custos diferentes. Desenhe seu próprio labirinto no editor
+            ou compare, passo a passo, os caminhos encontrados por BFS, DFS, Dijkstra e Bellman-Ford.
           </p>
-
-          <ol className="home-index">
-            {DESTINATIONS.map((item, index) => (
-              <li key={item.to}>
-                <Link to={item.to} className="home-index-row">
-                  <span className="home-index-num">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="home-index-text">
-                    <strong>{item.title}</strong>
-                    <span>{item.description}</span>
-                  </span>
-                  <ArrowIcon className="home-index-arrow" />
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <div className="home-actions">
+            <Link to="/labirintos" className="btn btn-primary">Explorar mapas</Link>
+            <Link to="/editor" className="btn">Criar labirinto</Link>
+          </div>
         </div>
+        <figure className="home-exhibit">
+          {cover === 'error' ? (
+            <p className="notice notice-error" role="status">Não foi possível carregar a prévia do mapa.</p>
+          ) : cover ? (
+            <MazeGrid maze={cover} />
+          ) : (
+            <p className="notice" role="status">Carregando mapa…</p>
+          )}
+          <figcaption>
+            <Link className="home-map-title" to={`/labirintos/${COVER_ID}`}>M03 — Três chaves</Link>
+            {cover && cover !== 'error' && (
+              <ul className="home-key">
+                {COVER_LEGEND.map(([symbol, label]) => (
+                  <li key={symbol}><b>{symbol}</b> {label}</li>
+                ))}
+              </ul>
+            )}
+          </figcaption>
+        </figure>
       </div>
     </section>
   )

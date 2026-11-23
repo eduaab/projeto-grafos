@@ -1,54 +1,47 @@
-import type { CellType, Direction } from '../lib/parseMaze'
-import { MazeCellContent } from './MazeCellContent'
+import { PALETTE } from '../lib/tileStyle'
 import './MazeGrid.css' // shares .maze-cell / .maze-cell--<type> tile styling
 import './MazePalette.css'
-
-export type PaletteTool = { char: string; type: CellType; label: string; direction?: Direction }
-
-export const PALETTE: PaletteTool[] = [
-  { char: '#', type: 'wall', label: 'Parede' },
-  { char: '.', type: 'floor', label: 'Chão' },
-  { char: ',', type: 'mud', label: 'Lama' },
-  { char: '~', type: 'water', label: 'Água' },
-  { char: 'S', type: 'start', label: 'Início' },
-  { char: 'G', type: 'goal', label: 'Saída' },
-  { char: 'a', type: 'key', label: 'Chave a' },
-  { char: 'b', type: 'key', label: 'Chave b' },
-  { char: 'c', type: 'key', label: 'Chave c' },
-  { char: 'd', type: 'key', label: 'Chave d' },
-  { char: 'A', type: 'door', label: 'Porta A' },
-  { char: 'B', type: 'door', label: 'Porta B' },
-  { char: 'C', type: 'door', label: 'Porta C' },
-  { char: 'D', type: 'door', label: 'Porta D' },
-  { char: '>', type: 'conveyor', label: 'Esteira →', direction: 'E' },
-  { char: '<', type: 'conveyor', label: 'Esteira ←', direction: 'W' },
-  { char: '^', type: 'conveyor', label: 'Esteira ↑', direction: 'N' },
-  { char: 'v', type: 'conveyor', label: 'Esteira ↓', direction: 'S' },
-  { char: '+', type: 'bonus', label: 'Bônus' },
-  { char: '*', type: 'source', label: 'Fonte' },
-]
 
 type MazePaletteProps = {
   selected: string
   onSelect: (char: string) => void
 }
 
+const GROUPS = [
+  { label: 'Terrenos', tools: PALETTE.slice(0, 4) },
+  { label: 'Início e saída', tools: PALETTE.slice(4, 6) },
+  { label: 'Chaves', tools: PALETTE.slice(6, 10) },
+  { label: 'Portas', tools: PALETTE.slice(10, 14) },
+  { label: 'Esteiras', tools: PALETTE.slice(14, 18) },
+  { label: 'Peças especiais', tools: PALETTE.slice(18) },
+]
+
 export function MazePalette({ selected, onSelect }: MazePaletteProps) {
   return (
-    <div className="maze-palette" role="radiogroup" aria-label="Ferramenta de pintura">
-      {PALETTE.map((tool) => (
-        <button
-          key={tool.char}
-          type="button"
-          role="radio"
-          aria-checked={tool.char === selected}
-          title={tool.label}
-          className={'maze-palette-tool maze-cell' + ` maze-cell--${tool.type}` + (tool.char === selected ? ' is-selected' : '')}
-          onClick={() => onSelect(tool.char)}
-        >
-          <MazeCellContent cell={{ type: tool.type, char: tool.char, direction: tool.direction }} />
-        </button>
-      ))}
-    </div>
+    <section className="maze-palette" aria-label="Ferramenta de pintura">
+      <h2>Pincel</h2>
+      <div className="maze-palette-groups">
+        {GROUPS.map((group) => (
+          <div key={group.label} className="maze-palette-group" role="group" aria-label={group.label}>
+            <p>{group.label}</p>
+            <div className="maze-palette-tools">
+              {group.tools.map((tool) => (
+                <button
+                  key={tool.char}
+                  type="button"
+                  aria-pressed={tool.char === selected}
+                  title={tool.label}
+                  aria-label={tool.label}
+                  className={'maze-palette-tool maze-cell maze-cell--' + tool.type}
+                  onClick={() => onSelect(tool.char)}
+                >
+                  {tool.char}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }

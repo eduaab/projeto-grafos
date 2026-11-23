@@ -1,187 +1,123 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
-
 :root {
-  color-scheme: dark;
-
-  /* surfaces */
-  --bg: #130f0a;
-  --bg-raised: #1c1611;
-  --surface: #241b13;
-  --surface-border: #4a3c26;
-  --surface-border-strong: #6b5832;
-
-  /* ink */
-  --ink: #e9dcc3;
-  --ink-muted: #a5917a;
-  /* Brightened from the original #6e5f4d: that tone read as 2.7-3.1:1 against
-     every surface in this theme, below the 4.5:1 floor for body/label text.
-     Same hue family, just lifted until it clears the floor on --surface. */
-  --ink-faint: #97826a;
-
-  /* accents */
-  --gold: #c9a44a;
-  --gold-bright: #e6c46a;
-  /* Also brightened for the same reason — #74824f sat at 4.07:1 on --surface,
-     just under the floor. */
-  --olive: #7c8c55;
-  --crimson: #d66251;
-
-  /* type */
-  --font-display: 'Cinzel', 'Georgia', serif;
-  --font-body: 'Courier Prime', ui-monospace, 'Courier New', monospace;
-
-  /* motion */
+  color-scheme: light;
+  --bg: #efe6d7;
+  --bg-raised: #f4e8da;
+  --surface: #fbf6ee;
+  --surface-border: #d1c0aa;
+  --surface-border-strong: #a89178;
+  --ink: #342113;
+  --ink-muted: #685546;
+  --accent: #355c7a;
+  --accent-hover: #274960;
+  --accent-soft: #dde7ed;
+  --success: #31556e;
+  --warning: #70511f;
+  --crimson: #8a3e2c;
+  --warning-bg: #efe0c6;
+  --error-bg: #f1ded4;
+  --surface-hover: #fffcf7;
+  --on-accent: #fffaf3;
+  --danger-hover: #703021;
+  --surface-disabled: #e7ddcf;
+  --font-body: system-ui, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-
-  /* spacing — 4px base, use these instead of one-off values */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
-  --space-9: 96px;
-
-  /* layout */
-  --radius: 3px;
-  --content-width: 1180px;
-
-  /* maze tiles — contrast-checked (text on tile >=4.5:1) */
-  --tile-wall: #130f0a;
-  --tile-floor: #e9dcc3;
-  --tile-mud: #82633b;
-  --tile-water: #3f6b73;
-  --tile-key: #c9a44a;
-  --tile-door: #7a3b2e;
-  --tile-conveyor: #5c6b3f;
-  --tile-bonus: #3c744e;
-  --tile-source: #b96e30;
-  --tile-start: #4b733c;
-  --tile-goal: #c77a2e;
-  --ink-on-dark-tile: #f3ead8;
-  --ink-on-light-tile: #1a1510;
+  --radius: 7px;
+  --page-gutter: max(5vw, calc((100% - 1600px) / 2));
+  --page-top: clamp(42px, 4.1vw, 64px);
+  --site-header-height: 70px;
+  --tile-gap: 2px;
+  --tile-wall: #342113;
+  --tile-floor: #f9f5ef;
+  --tile-mud: #c0a78b;
+  --tile-water: #9cbaca;
+  --tile-key: #e6d3ad;
+  --tile-door: #c2b1a1;
+  --tile-conveyor: #e9dfd1;
+  --tile-bonus: #ecddc4;
+  --tile-source: #d9c4b7;
+  --tile-start: #d2dce4;
+  --tile-goal: #8fb7dc;
+  --tile-ink: #36271c;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html,
+* { box-sizing: border-box; }
+html, body { margin: 0; }
 body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100svh;
+  min-height: 100vh;
+  color: var(--ink);
   background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  position: relative;
+  font: 16px/1.5 var(--font-body);
 }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(2.45rem, 3.45vw, 3.4rem); line-height: 1.12; letter-spacing: -0.035em; }
+h2 { font-size: 1.2rem; line-height: 1.3; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+button, select, input[type="checkbox"] { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+::selection { background: var(--accent-soft); color: var(--ink); }
 
-#root {
-  position: relative;
-  z-index: 1;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-}
-
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0;
-  letter-spacing: 0.02em;
-}
-
-/* A page-context label (breadcrumb-like: "Sala de Mapas", "Mapa oficial")
-   placed above a heading. Deliberately NOT the tiny tracked-uppercase
-   eyebrow/kicker shape that craft-floor bans — normal case, no letter
-   tracking, reads as a label, not a hero chip. */
-.context-label {
-  font-size: 0.85rem;
-  color: var(--ink-muted);
-}
-
-p {
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  font-family: inherit;
-}
-
-/* Generic bordered action button — used wherever a page needs one (Editor
-   toolbar, Modal footer, …) instead of each owning its own copy. */
 .btn {
-  background: none;
-  cursor: pointer;
-  border: 1px solid var(--surface-border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 9px 18px;
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius);
-  padding: 8px 14px;
-  color: var(--ink-muted);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
-  transition: border-color 160ms var(--ease-out), color 160ms var(--ease-out);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: 650;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
 }
+.btn:hover { border-color: var(--accent); background: var(--surface-hover); }
+.btn-primary, .btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover, .btn[aria-pressed="true"]:hover { background: var(--accent-hover); }
+.btn-danger { border-color: var(--crimson); background: var(--crimson); color: var(--on-accent); }
+.btn-danger:hover { border-color: var(--danger-hover); background: var(--danger-hover); }
+.btn:disabled { background: var(--surface-disabled); border-color: var(--surface-border); color: var(--ink-muted); opacity: .65; cursor: not-allowed; }
 
-@media (hover: hover) and (pointer: fine) {
-  .btn:hover {
-    border-color: var(--gold);
-    color: var(--ink);
-  }
+.field {
+  min-height: 46px;
+  padding: 9px 13px;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: var(--surface);
 }
+.field::placeholder { color: var(--ink-muted); opacity: 1; }
+.page-header { margin-bottom: 28px; }
+.page-header p { margin-top: 15px; color: var(--ink-muted); font-size: 1.065rem; }
+.notice { padding: 14px 16px; border-radius: var(--radius); background: var(--accent-soft); color: var(--success); }
+.notice-warning { background: var(--warning-bg); color: var(--warning); }
+.notice-error { background: var(--error-bg); color: var(--crimson); }
 
-.btn-primary {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #1a1510;
-  font-weight: 700;
+.site-header {
+  min-height: var(--site-header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+  padding: 8px clamp(22px, 2.15vw, 44px);
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--bg-raised);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .btn-primary:hover {
-    border-color: var(--gold-bright);
-    color: #1a1510;
-  }
+.brand { font-size: clamp(1.2rem, 1.25vw, 1.45rem); font-weight: 700; letter-spacing: -.01em; }
+.site-nav { display: flex; gap: clamp(24px, 2.15vw, 40px); font-size: clamp(1rem, 1vw, 1.125rem); }
+.site-nav-link { padding-block: 6px; border-bottom: 2px solid transparent; color: var(--ink-muted); }
+.site-nav-link:hover, .site-nav-link[aria-current="page"] { color: var(--accent); }
+.site-nav-link[aria-current="page"] { border-color: var(--accent); font-weight: 700; }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .btn:disabled:hover {
-    border-color: var(--surface-border-strong);
-    color: var(--ink-muted);
-  }
-}
-
-::selection {
-  background: var(--gold);
-  color: #1a1510;
-}
-
-/*
- * No blanket reduced-motion override here on purpose: each animated piece
- * (see Home.css, IntroOverlay) ships its own reduced-motion variant that
- * collapses its specific choreography instead of just speeding it up.
- */

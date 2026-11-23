@@ -1,183 +1,21 @@
-.maze-gallery {
-  flex: 1;
-  width: min(100%, var(--content-width));
-  margin: 0 auto;
-  padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 56px) 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.maze-gallery-header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 640px;
-}
-
-.maze-gallery-header h1 {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-}
-
-.maze-gallery-lede {
-  color: var(--ink-muted);
-}
-
-.maze-gallery-error {
-  color: var(--crimson);
-}
-
-.maze-gallery-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-}
-
-.maze-filter {
-  background: none;
-  border: none;
-  border-bottom: 1px solid transparent;
-  padding: 0 0 6px;
-  cursor: pointer;
-  color: var(--ink-muted);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
-  transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-filter:hover {
-    color: var(--ink);
-  }
-}
-
-.maze-filter.is-active {
-  color: var(--gold-bright);
-  border-bottom-color: var(--gold);
-}
-
-.maze-gallery-empty {
-  color: var(--ink-muted);
-  font-size: 0.9rem;
-  text-align: center;
-  padding: var(--space-7) 0;
-}
-
-.maze-search {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--surface-border);
-  transition: border-color 160ms var(--ease-out);
-}
-
-.maze-search:focus-within {
-  border-color: var(--gold);
-}
-
-.maze-search-icon {
-  width: 15px;
-  height: 15px;
-  color: var(--ink-faint);
-  flex-shrink: 0;
-}
-
-.maze-search input {
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  width: 200px;
-}
-
-.maze-search input::placeholder {
-  color: var(--ink-faint);
-}
-
-/* --- The catalog itself: a dense, flat ledger of rows instead of a grid of
-   cards — each row a thumbnail, title + one line of real content, and its
-   metadata, divided by hairlines only. No card shadows/elevation, no
-   same-size icon+heading+text repetition: this is meant to read as a filed
-   index, not a product gallery. --- */
-
-.maze-gallery-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--surface-border);
-}
-
+.maze-search { position: relative; display: flex; border-radius: var(--radius); background: var(--surface); }
+.maze-search input { width: 100%; min-width: 0; padding-right: 105px; }
+.maze-search .btn { position: absolute; right: 0; top: 0; bottom: 0; }
+.maze-gallery-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 26px; }
+.maze-gallery-list { list-style: none; margin: 0; padding: 0; position: relative; }
+.maze-gallery-list > li { border-bottom: 1px solid var(--surface-border); }
 .maze-gallery-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) minmax(180px, 28%);
   align-items: center;
-  gap: var(--space-5);
-  padding: var(--space-4) var(--space-2);
-  border-bottom: 1px solid var(--surface-border);
-  color: var(--ink);
-  transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  gap: 22px;
+  padding: 18px;
+  outline-offset: -2px;
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-gallery-row:hover {
-    background: var(--surface);
-    border-bottom-color: var(--surface-border-strong);
-  }
-}
-
-.maze-gallery-row.is-matched {
-  background: var(--surface);
-  border-bottom-color: var(--gold);
-}
-
-.maze-gallery-row-thumb {
-  flex-shrink: 0;
-  display: block;
-  width: 108px;
-  aspect-ratio: 1.4;
-  object-fit: cover;
-  border: 1px solid var(--surface-border-strong);
-  border-radius: var(--radius);
-}
-
-.maze-gallery-row-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.maze-gallery-row-main h2 {
-  font-size: 1.1rem;
-}
-
-.maze-gallery-row-main p {
-  color: var(--ink-muted);
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.maze-gallery-row-meta {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  text-align: right;
-}
-
-.maze-gallery-row-group {
-  font-size: 0.85rem;
-  color: var(--ink-faint);
-}
-
-.maze-gallery-row-dims {
-  font-size: 0.9rem;
-  color: var(--ink-muted);
-}
+.maze-gallery-row:hover, .maze-gallery-row.is-matched { background: var(--accent-soft); }
+.maze-gallery-row-thumb { width: 82px; height: 64px; object-fit: contain; display: block; }
+.maze-gallery-row-main p { color: var(--ink-muted); margin-top: 5px; }
+.maze-gallery-row-meta { display: grid; grid-template-columns: 112px 1fr; gap: 10px; font-size: .875rem; }
+.maze-gallery-row-group, .maze-gallery-empty { color: var(--ink-muted); }
+.maze-gallery-empty .btn { margin-top: 12px; }
+.site-main:has(> .maze-gallery) { padding-top: clamp(20px, 2vw, 36px); }

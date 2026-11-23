@@ -1,4 +1,4 @@
-# Frontend — Dossiê de Operações do Labirinto
+# Frontend do Projeto Grafos
 
 Site visual do projeto de Teoria dos Grafos: visualizar os labirintos catalogados, importar/exportar mapas em `.txt` e criar os seus próprios labirintos numa interface gamificada.
 
@@ -48,7 +48,7 @@ Roda o linter (Oxlint).
 ```
 frontend/
 ├─ src/
-│  ├─ components/   # Layout (header/nav/footer), transição de rota (cortina), ícones
+│  ├─ components/   # Navegação, grades, legendas e diálogos
 │  ├─ pages/        # Home e as páginas de cada seção
 │  └─ styles/        # tema visual (cores, tipografia)
 └─ public/
@@ -56,11 +56,12 @@ frontend/
 
 ### Páginas
 
-- **Base** (`/`) — página inicial, com a apresentação do projeto e navegação para as demais seções.
-- **Sala de Mapas** (`/labirintos`, detalhe em `/labirintos/:id`) — galeria dos labirintos catalogados (lidos de verdade a partir dos `.txt`) com miniatura de cada um; ao abrir um, mostra a grade completa com legenda dos símbolos.
-- **Oficina de Campo** (`/editor`) — desenhe o seu próprio labirinto numa grade interativa (clique/arraste para pintar com os mesmos símbolos dos mapas oficiais). Baixar, salvar e importar sempre abrem antes um modal de prévia (a grade como vai ficar + validação) com um botão de confirmar. "Salvar" grava o `.txt` direto em `data/mapas_criados/`, sem passar pela pasta de downloads:
+- **Início** (`/`) — página inicial, com a apresentação do projeto e navegação para as demais seções.
+- **Mapas** (`/labirintos`, detalhe em `/labirintos/:id`) — galeria dos labirintos catalogados (lidos de verdade a partir dos `.txt`) com miniatura de cada um; ao abrir um, mostra a grade completa com legenda dos símbolos.
+- **Editor** (`/editor`) — desenhe o seu próprio labirinto numa grade interativa (clique/arraste para pintar com os mesmos símbolos dos mapas oficiais). Baixar, salvar e importar sempre abrem antes um modal de prévia (a grade como vai ficar + validação) com um botão de confirmar. "Salvar" grava o `.txt` direto em `data/mapas_criados/`, sem passar pela pasta de downloads:
   - Rodando com `npm run dev`, é direto — o próprio servidor de desenvolvimento escreve o arquivo (sem nenhum seletor de pasta). Esse endpoint (`vite.config.ts`) só existe em modo dev; some sozinho do build de produção.
   - Sem o servidor de dev (`vite preview`, build publicado), cai para a File System Access API do navegador: você escolhe a pasta uma vez (só em Chrome/Edge — não existe forma de um site escrever num caminho fixo do disco sem essa permissão explícita). Em navegadores sem nenhum dos dois, o botão mostra um aviso pra usar "Baixar .txt".
 
   Valida ao vivo as mesmas regras do `sync-mapas.mjs` (um único `S`, pelo menos um `G`).
-- **Arquivo & Transmissão** (`/importar-exportar`) — importar/exportar labirintos em `.txt`. *Em breve.*
+
+- **Simulador** (`/labirinto_interativo.html`) — reproduz os resultados por passo e por camada de chaves. O script `scripts/sync-mapas.mjs` do frontend atualiza a página a partir do tema e dos resultados já calculados pelo Python. Rode `npm run dev` ou `npm run build` para sincronizá-la.

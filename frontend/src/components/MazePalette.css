@@ -1,33 +1,13 @@
-.maze-palette {
-  /* explicit width — an auto-fill grid with no size of its own, sitting in
-     a flex row, otherwise can't tell how many columns fit and collapses to
-     one (same class of bug as the gallery grid earlier). */
-  flex: 0 0 200px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 44px);
-  gap: 6px;
-  align-content: flex-start;
-}
-
+.maze-palette { container-type: inline-size; }
+.maze-palette-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(10px, calc(3.4dvh - 16px), 16px) 14px; margin-top: 12px; }
+.maze-palette-group p { color: var(--ink-muted); font-size: var(--editor-label-size, .875rem); margin-bottom: 6px; }
+.maze-palette-tools { display: flex; flex-wrap: wrap; gap: 5px; }
 .maze-palette-tool {
-  --maze-cell-size: 44px;
-  width: 44px;
-  height: 44px;
+  --maze-cell-size: min(clamp(37px, calc(10.5dvh - 44px), 56px), calc((100cqi - 44px) / 8));
+  border: 0;
   padding: 0;
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  outline-offset: 2px;
-  transition: transform 140ms var(--ease-out), border-color 140ms var(--ease-out);
+  font-size: clamp(17px, calc(var(--maze-cell-size) * .48), 25px);
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-palette-tool:hover {
-    transform: translateY(-2px);
-  }
-}
-
-.maze-palette-tool.is-selected {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px var(--gold);
-}
+.maze-palette-tool.maze-cell--wall { color: var(--tile-floor); }
+.maze-palette-tool:hover, .maze-palette-tool[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--accent); }
+.maze-palette-tool.maze-cell--wall[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--tile-goal); }

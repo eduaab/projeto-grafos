@@ -23,7 +23,12 @@ export function MazePreviewPane({ grid }: MazePreviewPaneProps) {
       </div>
 
       {validation.valid ? (
-        <p className="maze-preview-ok">Pronto — tem início e saída.</p>
+        <p className="maze-preview-ok">
+          Mapa válido · {validation.counts.starts} início(s) · {validation.counts.goals} saída(s)<br />
+          {maze.cols} colunas × {maze.rows} linhas
+          {validation.counts.keys.length > 0 && ' · Chaves ' + validation.counts.keys.join(', ')}
+          {validation.counts.doors.length > 0 && ' · Portas ' + validation.counts.doors.join(', ')}
+        </p>
       ) : (
         <ul className="maze-preview-issues">
           {validation.issues.map((issue) => (

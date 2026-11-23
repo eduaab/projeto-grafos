@@ -30,7 +30,17 @@ export function describeMaze(entry: ManifestEntry): string {
 }
 
 export function groupLabel(group: ManifestEntry['group']): string {
-  if (group === 'oficial') return 'Mapa oficial'
-  if (group === 'grupo') return 'Mapa do grupo'
-  return 'Mapa criado'
+  if (group === 'oficial') return 'Mapas oficiais'
+  if (group === 'grupo') return 'Mapas do grupo'
+  return 'Mapas criados'
+}
+
+const ACCENTED_TITLES: Record<string, string> = {
+  m03_tres_chaves: 'M03 — Três chaves',
+  m05_bonus: 'M05 — Bônus',
+  m07_impossivel: 'M07 — Impossível',
+}
+
+export function displayMazeTitle(entry: ManifestEntry): string {
+  return ACCENTED_TITLES[entry.id] ?? entry.title.replace(' · ', ' — ')
 }

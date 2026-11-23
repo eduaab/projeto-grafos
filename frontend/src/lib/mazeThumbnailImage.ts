@@ -1,7 +1,4 @@
 import type { ParsedMaze } from './parseMaze'
-import { TILE_HEX } from './tileStyle'
-
-const LETTERBOX_BG = '#1c1611' // --bg-raised — canvas can't read CSS vars
 
 /** Draws a letterboxed, centered mosaic of the maze into any canvas at any size. */
 export function drawMazeToCanvas(canvas: HTMLCanvasElement, maze: ParsedMaze, width: number, height: number) {
@@ -22,13 +19,13 @@ export function drawMazeToCanvas(canvas: HTMLCanvasElement, maze: ParsedMaze, wi
   const offsetX = (width - drawWidth) / 2
   const offsetY = (height - drawHeight) / 2
 
-  ctx.fillStyle = LETTERBOX_BG
-  ctx.fillRect(0, 0, width, height)
+  const theme = getComputedStyle(document.documentElement)
+  const gap = Math.min(2, scale * .1)
 
   for (let r = 0; r < maze.rows; r++) {
     for (let c = 0; c < maze.cols; c++) {
-      ctx.fillStyle = TILE_HEX[maze.grid[r][c].type]
-      ctx.fillRect(offsetX + c * scale, offsetY + r * scale, Math.ceil(scale), Math.ceil(scale))
+      ctx.fillStyle = theme.getPropertyValue('--tile-' + maze.grid[r][c].type).trim()
+      ctx.fillRect(offsetX + c * scale, offsetY + r * scale, scale - gap, scale - gap)
     }
   }
 }

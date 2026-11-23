@@ -1,138 +1,45 @@
-.home {
-  flex: 1;
-  width: min(100%, var(--content-width));
-  margin: 0 auto;
-  padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 56px) var(--space-8);
-}
-
-/* Two panes instead of a stacked hero-then-cards: a real catalogued maze as
-   the exhibit on one side, the brief + destination index on the other —
-   whichever reads first depends on viewport width, not a fixed story order. */
-.home-cover {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-7);
-}
-
-@media (max-width: 860px) {
-  .home-cover {
-    flex-direction: column;
-  }
-}
-
-/* A real width (not shrink-to-fit) so MazeGrid's ResizeObserver has
-   something definite to measure — the same class of bug fixed elsewhere in
-   this codebase when an auto-sizing grid sits in a flex row. */
-.home-exhibit {
-  flex: 1 1 460px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  background: var(--bg-raised);
-  border: 1px solid var(--surface-border-strong);
-  border-radius: var(--radius);
-}
-
-.home-exhibit-tag {
-  font-size: 0.85rem;
-  color: var(--gold-bright);
-}
-
-.home-exhibit-caption {
-  font-size: 0.85rem;
-  color: var(--ink-muted);
-  text-align: right;
-}
-
-.home-brief {
-  flex: 1 1 420px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
-  padding-top: var(--space-2);
-}
-
-.home-brief h1 {
-  font-size: clamp(1.9rem, 4vw, 2.7rem);
-  line-height: 1.15;
-}
-
-.home-hero-lede {
-  color: var(--ink-muted);
-  line-height: 1.75;
-  font-size: 1rem;
-}
-
-.home-hero-lede code {
-  font-family: var(--font-body);
-  color: var(--ink);
-}
-
-/* The three destinations as one numbered index, not three identical
-   icon+heading+text cards — each a full-width row divided by hairlines. */
-.home-index {
-  list-style: none;
-  margin: var(--space-2) 0 0;
-  padding: 0;
-  width: 100%;
-  border-top: 1px solid var(--surface-border);
-}
-
-.home-index-row {
-  display: flex;
+.site-main:has(> .home) {
+  display: grid;
   align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4) var(--space-1);
-  border-bottom: 1px solid var(--surface-border);
-  color: var(--ink);
-  transition: color 160ms var(--ease-out);
+  min-height: calc(100svh - var(--site-header-height));
+  padding: clamp(36px, 7vh, 72px) max(5vw, calc((100% - 1800px) / 2));
 }
-
-.home-index-num {
-  flex-shrink: 0;
-  width: 28px;
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  color: var(--gold);
+.home-cover {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(32px, 4vw, 76px);
 }
-
-.home-index-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.home-index-text strong {
-  font-size: 1rem;
-}
-
-.home-index-text span {
+.home-intro h1 { font-size: clamp(3rem, 5.4vw, 5.75rem); text-wrap: balance; }
+.home-intro p {
+  max-width: 40ch;
   color: var(--ink-muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: clamp(1.35rem, 1.95vw, 1.875rem);
+  margin: clamp(20px, 2vw, 34px) 0 clamp(22px, 2vw, 32px);
 }
-
-.home-index-arrow {
-  width: 14px;
-  height: 14px;
-  color: var(--ink-faint);
-  flex-shrink: 0;
-  transition: transform 220ms var(--ease-out), color 160ms var(--ease-out);
+.home-actions { display: flex; gap: 12px; }
+.home-actions .btn {
+  min-height: clamp(46px, 3.3vw, 56px);
+  padding-inline: clamp(18px, 1.5vw, 26px);
+  font-size: clamp(.9375rem, 1vw, 1.1rem);
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .home-index-row:hover {
-    color: var(--gold-bright);
-  }
-
-  .home-index-row:hover .home-index-arrow {
-    transform: translateX(3px);
-    color: var(--gold);
-  }
+.home-exhibit {
+  width: min(100%, 850px);
+  min-width: 0;
+  margin: 0;
+  justify-self: center;
 }
+.home-exhibit .maze-cell { font-size: clamp(13px, calc(var(--maze-cell-size) * .5), 24px); }
+.home-exhibit figcaption { margin-top: clamp(14px, 1.2vw, 22px); color: var(--ink-muted); }
+.home-map-title { color: var(--accent); font-size: clamp(1rem, 1.2vw, 1.3rem); font-weight: 650; }
+.home-map-title:hover { text-decoration: underline; }
+.home-key {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  gap: 4px clamp(14px, 1.4vw, 24px);
+  font-size: clamp(.875rem, 1vw, 1rem);
+}
+.home-key b { color: var(--accent); margin-right: 3px; }

@@ -1,46 +1,58 @@
-import { useEffect, type ReactNode } from 'react'
-import { CloseIcon } from './icons'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import './Modal.css'
 
 type ModalProps = {
   title: string
   onClose: () => void
-  onConfirm: () => void
+  onConfirm: () => void | Promise<void>
   confirmLabel: string
   confirmDisabled?: boolean
+  danger?: boolean
   children: ReactNode
 }
 
-export function Modal({ title, onClose, onConfirm, confirmLabel, confirmDisabled, children }: ModalProps) {
+export function Modal({ title, onClose, onConfirm, confirmLabel, confirmDisabled, danger, children }: ModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const [pending, setPending] = useState(false)
+
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
+    const dialog = dialogRef.current
+    dialog?.showModal()
+    return () => dialog?.close()
+  }, [])
+
+  const confirm = async () => {
+    setPending(true)
+    try {
+      await onConfirm()
+    } finally {
+      setPending(false)
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-stage" onClick={(event) => event.stopPropagation()}>
-        <button type="button" className="modal-close" onClick={onClose} aria-label="Fechar">
-          <CloseIcon className="modal-close-icon" />
-        </button>
-
-        <div className="modal-card" role="dialog" aria-modal="true" aria-label={title}>
-          <h2 className="modal-card-title">{title}</h2>
-          <div className="modal-body">{children}</div>
-        </div>
-
+    <dialog
+      ref={dialogRef}
+      className="modal-card"
+      aria-label={title}
+      onCancel={(event) => {
+        event.preventDefault()
+        if (!pending) onClose()
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget && !pending) onClose()
+      }}
+    >
+      <div className="modal-content">
+        <h2>{title}</h2>
+        <div className="modal-body">{children}</div>
         <div className="modal-footer">
-          <button type="button" className="btn" onClick={onClose}>
-            Cancelar
-          </button>
-          <button type="button" className="btn btn-primary" onClick={onConfirm} disabled={confirmDisabled}>
+          <button type="button" className="btn" onClick={onClose} disabled={pending}>Cancelar</button>
+          <button type="button" className={'btn ' + (danger ? 'btn-danger' : 'btn-primary')} onClick={confirm} disabled={pending || confirmDisabled}>
             {confirmLabel}
           </button>
         </div>
       </div>
-    </div>
+    </dialog>
   )
 }

@@ -1,89 +1,38 @@
-.maze-detail {
-  flex: 1;
-  width: min(100%, var(--content-width));
-  margin: 0 auto;
-  padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 56px) 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.site-main:has(> .maze-detail) {
+  display: grid;
+  min-height: calc(100dvh - var(--site-header-height));
+  padding: clamp(20px, 2vw, 36px);
 }
-
-.maze-detail-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-.maze-detail-back {
-  align-self: flex-start;
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
-  color: var(--olive);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-detail-back:hover {
-    color: var(--gold-bright);
-  }
-}
-
-.maze-detail-delete {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--ink-faint);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
-  transition: color 160ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .maze-detail-delete:hover {
-    color: var(--crimson);
-  }
-}
-
-.maze-detail-delete-icon {
-  width: 14px;
-  height: 14px;
-}
-
-.maze-detail-header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.maze-detail-header h1 {
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-}
-
-.maze-detail-dims {
-  color: var(--ink-muted);
-  font-size: 0.85rem;
-}
-
-.maze-detail-error {
-  color: var(--crimson);
-}
-
+.maze-detail { display: flex; flex-direction: column; min-width: 0; }
+.maze-detail-header { margin-bottom: 20px; }
+.maze-detail-header p { font-size: .9375rem; }
 .maze-detail-body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 32px;
+  display: grid;
+  flex: 1;
+  min-height: 340px;
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 25vw, 440px);
+  gap: clamp(20px, 2.5vw, 44px);
 }
-
-.maze-detail-grid-wrap {
-  /* a real flex basis (not shrink-to-fit around the grid) so MazeGrid can
-     measure actual available width and size its cells up when there's room */
-  flex: 1 1 420px;
+.maze-detail-preview, .maze-detail-panel {
   min-width: 0;
-  max-width: 100%;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
 }
+.maze-detail-preview {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
+  padding: clamp(12px, 2vw, 28px);
+}
+.maze-detail-preview > .notice { align-self: center; }
+.maze-detail-preview .maze-grid-viewport { display: flex; contain: size; overflow: auto; }
+.maze-detail-preview .maze-grid { flex: none; margin: auto; }
+.maze-detail-sidebar { display: flex; flex-direction: column; min-height: 0; contain: size; }
+.maze-detail-panel { display: flex; flex: 1; flex-direction: column; gap: 14px; min-height: 0; padding: 16px; }
+.maze-detail-panel h2 { font-size: 1.3rem; }
+.maze-detail-panel > .maze-legend { min-height: 0; overflow: auto; }
+.maze-detail-actions { display: grid; flex-shrink: 0; gap: 8px; margin-top: auto; }
+.maze-legend + .maze-detail-actions { padding-top: 14px; border-top: 1px solid var(--surface-border); }
+.maze-detail-actions h2 { margin-bottom: 2px; }
+.maze-detail-actions .btn { font-size: 1rem; }

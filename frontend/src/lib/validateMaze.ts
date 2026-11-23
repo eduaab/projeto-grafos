@@ -9,6 +9,8 @@ export type MazeValidation = {
   issues: string[]
   warnings: string[]
   counts: {
+    starts: number
+    goals: number
     keys: string[]
     doors: string[]
     hasConveyors: boolean
@@ -64,6 +66,8 @@ export function validateGrid(grid: string[][]): MazeValidation {
     issues,
     warnings,
     counts: {
+      starts: startCount,
+      goals: goalCount,
       keys: Array.from(keysFound).sort(),
       doors: Array.from(doorsFound).sort(),
       hasConveyors,
