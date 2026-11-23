@@ -4774,9 +4774,9 @@
         "ciclo": []
       },
       "DFS": {
-        "status": "OK",
-        "passos": -1,
-        "custo": 0,
+        "status": "SEM_SOLUCAO",
+        "passos": null,
+        "custo": null,
         "caminho": [],
         "ciclo": []
       },

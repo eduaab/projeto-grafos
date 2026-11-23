@@ -124,13 +124,16 @@ def generate(map_dirs, output):
                 if algo=='DFS':
                     disc,finished,pred,arcs,has_cycle=r
                     dfs_rows.append({'mapa':name, **{category: json.dumps([[encode(u,ids),encode(v,ids)] for u,v in values],ensure_ascii=False) for category,values in arcs.items()}})
-                    # DFS is traversal, not a shortest-path guarantee
+                    alcancado=disc.get(ALVO) is not None
                 elif algo=='BELLMAN_FORD':
                     dist,pred,cycle,cycle_cost=r
                     if cycle: status='CICLO_NEGATIVO';cost=cycle_cost
-                else:dist,pred=r
+                    alcancado=dist.get(ALVO) is not None and dist.get(ALVO)!=float('inf')
+                else:
+                    dist,pred=r
+                    alcancado=dist.get(ALVO) is not None and dist.get(ALVO)!=float('inf')
                 if status=='OK':
-                    if algo!='DFS' and (dist.get(ALVO) is None or dist.get(ALVO)==float('inf')):status='SEM_SOLUCAO'
+                    if not alcancado:status='SEM_SOLUCAO'
                     else:
                         path=reconstruir(pred,ALVO)
                         if not path:status='SEM_SOLUCAO'

@@ -31,6 +31,22 @@ def test_armadilhas_m07_sem_alvo():
     assert ALVO not in traps
     assert len(traps)==len(graph)-1
 
+def test_dfs_sem_solucao_no_m07_nao_inventa_passos_negativos(tmp_path):
+    src = ROOT/'data'/'mapas'/'m07_impossivel.txt'
+    mapdir=tmp_path/'maps';mapdir.mkdir()
+    (mapdir/src.name).write_text(src.read_text(encoding='utf-8'),encoding='utf-8')
+    out=tmp_path/'output'
+    generate([mapdir],out)
+    data=json.loads((out/'dados_interativos.json').read_text(encoding='utf-8'))
+    dfs=data['m07_impossivel']['algoritmos']['DFS']
+    assert dfs['status']=='SEM_SOLUCAO'
+    assert dfs['passos'] is None
+    assert dfs['custo'] is None
+    with (out/'solucoes.csv').open(encoding='utf-8') as f:
+        linha=next(r for r in csv.DictReader(f) if r['mapa']=='m07_impossivel' and r['algoritmo']=='DFS')
+    assert linha['status']=='SEM_SOLUCAO'
+    assert linha['passos']==''
+
 def test_codigo_mapa_extrai_o_prefixo_m_numero():
     assert codigo_mapa('m04_esteiras') == 'm04'
     assert codigo_mapa('m07_impossivel') == 'm07'
