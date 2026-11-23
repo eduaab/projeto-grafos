@@ -1,9 +1,11 @@
 import os
 import csv
+from pathlib import Path
 
 from src.graphs.io import mapa_input
 from src.graphs.estados import ALVO, criar_grafo_estados, criar_estado_inicial
 from src.graphs.algorithms import bfs, dfs, dijkstra, bellman_ford
+from src.graphs.resultados import armadilhas, bonus_index, codigo_mapa, encode, save_csv
 
 ALGORITMOS = {
     "BFS": bfs,
@@ -153,6 +155,28 @@ def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
         "custo": custo,
         "status": "OK",
         "caminho": caminho,
+    }
+
+
+def calcular_e_salvar_armadilhas(caminho_mapa, pasta_saida):
+    mapa = mapa_input(caminho_mapa)
+    grafo = criar_grafo_estados(mapa)
+    ids = bonus_index(mapa)
+    traps = armadilhas(grafo)
+    total = len(grafo) - 1  # exclui o no virtual ALVO
+
+    nome = codigo_mapa(os.path.splitext(os.path.basename(caminho_mapa))[0])
+    pasta_saida = Path(pasta_saida)
+    pasta_saida.mkdir(parents=True, exist_ok=True)
+    arquivo = pasta_saida / f"armadilhas_{nome}.csv"
+    save_csv(arquivo, ["estado"], [{"estado": encode(s, ids)} for s in traps])
+
+    return {
+        "mapa": nome,
+        "quantidade": len(traps),
+        "total_estados": total,
+        "percentual": (100 * len(traps) / total) if total else 0.0,
+        "arquivo": str(arquivo),
     }
 
 

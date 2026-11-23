@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from src.graphs.io import mapa_input
 from src.graphs.estados import ALVO, criar_grafo_estados
-from src.graphs.resultados import generate, armadilhas
+from src.graphs.resultados import generate, armadilhas, codigo_mapa, gerar_html_interativo
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -30,3 +30,33 @@ def test_armadilhas_m07_sem_alvo():
     traps=armadilhas(graph)
     assert ALVO not in traps
     assert len(traps)==len(graph)-1
+
+def test_codigo_mapa_extrai_o_prefixo_m_numero():
+    assert codigo_mapa('m04_esteiras') == 'm04'
+    assert codigo_mapa('m07_impossivel') == 'm07'
+    assert codigo_mapa('mapa_grupo_cofre') == 'mapa_grupo_cofre'
+
+def test_gerar_html_interativo_usa_dados_e_marca_o_mapa_padrao(tmp_path):
+    dados = {'m01_terreno': {'mapa': ['#####'], 'armadilhas': [], 'algoritmos': {}}}
+    (tmp_path/'dados_interativos.json').write_text(json.dumps(dados), encoding='utf-8')
+    destino = gerar_html_interativo(tmp_path, mapa_padrao='m01_terreno')
+    conteudo = destino.read_text(encoding='utf-8')
+    assert destino == tmp_path/'labirinto_interativo.html'
+    assert 'const DEFAULT_MAP="m01_terreno"' in conteudo
+    assert '"m01_terreno"' in conteudo
+
+def test_gerar_html_interativo_ignora_mapa_padrao_inexistente(tmp_path):
+    dados = {'m01_terreno': {'mapa': ['#####'], 'armadilhas': [], 'algoritmos': {}}}
+    (tmp_path/'dados_interativos.json').write_text(json.dumps(dados), encoding='utf-8')
+    destino = gerar_html_interativo(tmp_path, mapa_padrao='nao_existe')
+    assert 'const DEFAULT_MAP=null' in destino.read_text(encoding='utf-8')
+
+def test_calcular_e_salvar_armadilhas_usa_nome_curto_do_mapa(tmp_path):
+    from src.solve import calcular_e_salvar_armadilhas
+    resultado = calcular_e_salvar_armadilhas(ROOT/'data'/'mapas'/'m04_esteiras.txt', tmp_path)
+    assert resultado['mapa'] == 'm04'
+    assert resultado['quantidade'] == 4
+    assert (tmp_path/'armadilhas_m04.csv').is_file()
+    with (tmp_path/'armadilhas_m04.csv').open(encoding='utf-8') as f:
+        linhas = list(csv.DictReader(f))
+    assert len(linhas) == 4

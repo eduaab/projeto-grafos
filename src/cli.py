@@ -1,8 +1,9 @@
 import argparse
 import os
 
-from src.solve import resolver, gravar_resultado_csv
+from src.solve import resolver, gravar_resultado_csv, calcular_e_salvar_armadilhas
 from src.graphs.metricas import exportar_metricas
+from src.graphs.resultados import gerar_html_interativo
 
 ALGORITMOS_VALIDOS = ["BFS", "DFS", "DIJKSTRA", "BELLMAN_FORD"]
 
@@ -16,9 +17,7 @@ def main():
     parser.add_argument("--armadilhas", action="store_true")
     parser.add_argument("--metricas", action="store_true", help="Exporta métricas globais, camadas e graus para todos os mapas")
     parser.add_argument("--pasta-mapas", action="append", help="Pasta para --metricas (pode repetir)")
-
-    # tamo vendo ainda como que faz se vai fazer no direto no front ou gerar um html so pra isso 
-    # parser.add_argument("--interactive", action="store_true")
+    parser.add_argument("--interactive", action="store_true", help="Gera out/parte1/labirinto_interativo.html a partir de dados_interativos.json")
 
     args = parser.parse_args()
 
@@ -27,12 +26,23 @@ def main():
         print(f"Métricas exportadas para {len(dados)} mapas em {args.out}")
         return
 
-    if not args.mapa or not args.alg:
-        print("Informe --mapa e --alg.")
+    if args.armadilhas:
+        if not args.mapa:
+            print("Informe --mapa para --armadilhas.")
+            return
+        resultado = calcular_e_salvar_armadilhas(args.mapa, args.out)
+        print(f"Armadilhas: {resultado['quantidade']} de {resultado['total_estados']} estados alcançáveis ({resultado['percentual']:.1f}%).")
+        print(f"Arquivo: {resultado['arquivo']}")
         return
 
-    if args.armadilhas:
-        print("Busca de armadilhas ainda não implementada.")
+    if args.interactive:
+        mapa_padrao = os.path.splitext(os.path.basename(args.mapa))[0] if args.mapa else None
+        destino = gerar_html_interativo(args.out, mapa_padrao=mapa_padrao)
+        print(f"HTML interativo gerado em {destino}")
+        return
+
+    if not args.mapa or not args.alg:
+        print("Informe --mapa e --alg.")
         return
 
     resultado = resolver(args.mapa, args.alg, fonte_consumivel=args.fonte_consumivel)
