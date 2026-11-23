@@ -225,5 +225,89 @@
         "quantidade": 1
       }
     ]
+  },
+  "mapa_grupo_armadilha": {
+    "camadas": {
+      "-": {
+        "ordem": 2,
+        "tamanho": 2,
+        "densidade": 1.0
+      },
+      "a": {
+        "ordem": 18,
+        "tamanho": 28,
+        "densidade": 0.0915032679738562
+      }
+    },
+    "total_arcos_entre_camadas": 1,
+    "arcos_entre_camadas": [
+      {
+        "origem_camada": "-",
+        "destino_camada": "a",
+        "casa": {
+          "linha": 1,
+          "coluna": 3,
+          "simbolo": "a"
+        },
+        "quantidade": 1
+      }
+    ]
+  },
+  "mapa_grupo_cofre": {
+    "camadas": {
+      "-": {
+        "ordem": 2,
+        "tamanho": 2,
+        "densidade": 1.0
+      },
+      "a": {
+        "ordem": 6,
+        "tamanho": 10,
+        "densidade": 0.3333333333333333
+      },
+      "ab": {
+        "ordem": 10,
+        "tamanho": 18,
+        "densidade": 0.2
+      },
+      "abc": {
+        "ordem": 73,
+        "tamanho": 140,
+        "densidade": 0.02663622526636225
+      }
+    },
+    "total_arcos_entre_camadas": 3,
+    "arcos_entre_camadas": [
+      {
+        "origem_camada": "-",
+        "destino_camada": "a",
+        "casa": {
+          "linha": 1,
+          "coluna": 3,
+          "simbolo": "a"
+        },
+        "quantidade": 1
+      },
+      {
+        "origem_camada": "a",
+        "destino_camada": "ab",
+        "casa": {
+          "linha": 1,
+          "coluna": 7,
+          "simbolo": "b"
+        },
+        "quantidade": 1
+      },
+      {
+        "origem_camada": "ab",
+        "destino_camada": "abc",
+        "casa": {
+          "linha": 1,
+          "coluna": 11,
+          "simbolo": "c"
+        },
+        "quantidade": 1
+      }
+    ]
   }
 }

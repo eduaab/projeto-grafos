@@ -43,12 +43,6 @@ CUSTOS_POSICAO = {',': 3, '~': 5, '*': -2, '+': -4}
 
 
 def grafo_posicoes_ponderado(mapa):
-    """G_pos com o peso fixo da tabela de símbolos (portas = chão).
-
-    Modelo "ingênuo" da Seção 6: + e * valem sempre o mesmo peso, porque G_pos
-    não guarda estado (não sabe se um bônus já foi "consumido"). Usado para
-    mostrar, no m05, o ciclo negativo que some no grafo de estados (G_est).
-    """
     grafo = {}
     for linha, row in enumerate(mapa):
         for coluna, simbolo in enumerate(row):

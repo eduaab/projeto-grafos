@@ -61,8 +61,6 @@ def test_bellman_ford_m05_peso_negativo_sem_ciclo():
 
 
 def test_bellman_ford_m05_g_pos_ingenuo_tem_ciclo_negativo():
-    """G_pos trata '+' como -4 fixo (sem estado de consumo): entrar e sair do
-    bônus repetidamente forma um ciclo negativo que não existe em G_est."""
     mapa = mapa_input(MAPAS / 'm05_bonus.txt')
     grafo_pos = grafo_posicoes_ponderado(mapa)
     inicio = next((i, j) for i, row in enumerate(mapa) for j, c in enumerate(row) if c == 'S')

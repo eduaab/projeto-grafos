@@ -15641,5 +15641,1587 @@
         "ciclo": []
       }
     }
+  },
+  "mapa_grupo_armadilha": {
+    "mapa": [
+      "###############",
+      "#S.a.A.......G#",
+      "########v######",
+      "########v######",
+      "########v######",
+      "########v######",
+      "########v######",
+      "###############"
+    ],
+    "armadilhas": [
+      [
+        2,
+        8,
+        "a"
+      ],
+      [
+        3,
+        8,
+        "a"
+      ],
+      [
+        4,
+        8,
+        "a"
+      ],
+      [
+        5,
+        8,
+        "a"
+      ],
+      [
+        6,
+        8,
+        "a"
+      ]
+    ],
+    "algoritmos": {
+      "BFS": {
+        "status": "OK",
+        "passos": 12,
+        "custo": 12,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "a",
+            "bonus": []
+          }
+        ],
+        "ciclo": []
+      },
+      "DFS": {
+        "status": "OK",
+        "passos": 12,
+        "custo": 12,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "a",
+            "bonus": []
+          }
+        ],
+        "ciclo": []
+      },
+      "DIJKSTRA": {
+        "status": "OK",
+        "passos": 12,
+        "custo": 12,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "a",
+            "bonus": []
+          }
+        ],
+        "ciclo": []
+      },
+      "BELLMAN_FORD": {
+        "status": "OK",
+        "passos": 12,
+        "custo": 12,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "a",
+            "bonus": []
+          }
+        ],
+        "ciclo": []
+      }
+    }
+  },
+  "mapa_grupo_cofre": {
+    "mapa": [
+      "###################",
+      "#S.a.A.b.B.c.C....#",
+      "#################.#",
+      "#...........<<.+..#",
+      "#.#################",
+      "#.......~........G#",
+      "###################"
+    ],
+    "armadilhas": [],
+    "algoritmos": {
+      "BFS": {
+        "status": "OK",
+        "passos": 52,
+        "custo": 51,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 2,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 10,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 9,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 8,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 7,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 6,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 5,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 4,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 3,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 2,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 4,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 2,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 3,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 4,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 5,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 6,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 7,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 8,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 9,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 10,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          }
+        ],
+        "ciclo": []
+      },
+      "DFS": {
+        "status": "OK",
+        "passos": 52,
+        "custo": 51,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 2,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 10,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 9,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 8,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 7,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 6,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 5,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 4,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 3,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 2,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 4,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 2,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 3,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 4,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 5,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 6,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 7,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 8,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 9,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 10,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          }
+        ],
+        "ciclo": []
+      },
+      "DIJKSTRA": {
+        "status": "RECUSA",
+        "passos": null,
+        "custo": null,
+        "caminho": [],
+        "ciclo": []
+      },
+      "BELLMAN_FORD": {
+        "status": "OK",
+        "passos": 52,
+        "custo": 51,
+        "caminho": [
+          {
+            "linha": 1,
+            "coluna": 1,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 2,
+            "chaves": "-",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 3,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 4,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 5,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 6,
+            "chaves": "a",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 7,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 8,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 9,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 10,
+            "chaves": "ab",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 1,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 2,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": []
+          },
+          {
+            "linha": 3,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 10,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 9,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 8,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 7,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 6,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 5,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 4,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 3,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 2,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 3,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 4,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 1,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 2,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 3,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 4,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 5,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 6,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 7,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 8,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 9,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 10,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 11,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 12,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 13,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 14,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 15,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 16,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          },
+          {
+            "linha": 5,
+            "coluna": 17,
+            "chaves": "abc",
+            "bonus": [
+              0
+            ]
+          }
+        ],
+        "ciclo": []
+      }
+    }
   }
 }
