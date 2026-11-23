@@ -6,6 +6,7 @@ import networkx as nx
 from src.graphs.algorithms import bellman_ford
 from src.graphs.io import mapa_input
 from src.graphs.estados import ALVO, criar_grafo_estados, criar_estado_inicial
+from src.graphs.metricas import grafo_posicoes_ponderado
 from tests.test_dijkstra import MAPAS, MAPAS_SEM_NEGATIVOS, oraculo
 
 
@@ -57,6 +58,17 @@ def test_bellman_ford_m05_peso_negativo_sem_ciclo():
     assert ciclo is None and custo is None
     referencia = nx.single_source_bellman_ford_path_length(oraculo(grafo), inicial)
     assert all(d[v] == referencia.get(v, float('inf')) for v in grafo)
+
+
+def test_bellman_ford_m05_g_pos_ingenuo_tem_ciclo_negativo():
+    """G_pos trata '+' como -4 fixo (sem estado de consumo): entrar e sair do
+    bônus repetidamente forma um ciclo negativo que não existe em G_est."""
+    mapa = mapa_input(MAPAS / 'm05_bonus.txt')
+    grafo_pos = grafo_posicoes_ponderado(mapa)
+    inicio = next((i, j) for i, row in enumerate(mapa) for j, c in enumerate(row) if c == 'S')
+    d, p, ciclo, custo = bellman_ford(grafo_pos, inicio)
+    conferir_ciclo(grafo_pos, ciclo, custo)
+    assert nx.negative_edge_cycle(oraculo(grafo_pos), weight='weight')
 
 
 def test_bellman_ford_m06_detecta_ciclo_negativo_real():

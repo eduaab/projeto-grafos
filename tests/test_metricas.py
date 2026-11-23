@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.graphs.metricas import calcular_metricas, grafo_posicoes, resumo_grafo, rotulo_estado
+from src.graphs.metricas import calcular_metricas, grafo_posicoes, grafo_posicoes_ponderado, resumo_grafo, rotulo_estado
 
 
 def test_resumo_vazio_e_simples():
@@ -44,3 +44,21 @@ def test_esteira_gera_beco_no_grafo_posicoes():
 
 def test_rotulo_bonus_numerado():
     assert rotulo_estado((2, 5, 'ab', ((1, 2), (2, 3))), {(1, 2): 0, (2, 3): 2}) == '(2,5)|ab|{0,2}'
+
+
+def test_grafo_posicoes_ponderado_usa_peso_fixo_por_simbolo():
+    mapa = [list('######'), list('#S+,~#'), list('######')]
+    pos = grafo_posicoes_ponderado(mapa)
+    pesos = dict(pos[(1, 1)])
+    assert pesos[(1, 2)] == -4  # entrar no '+'
+    pesos_depois = dict(pos[(1, 2)])
+    assert pesos_depois[(1, 3)] == 3  # entrar na lama ','
+    assert dict(pos[(1, 3)])[(1, 4)] == 5  # entrar na agua '~'
+    # mesmo arco de volta ao '+' (entrando de novo) continua -4: G_pos nao tem estado de consumo
+    assert dict(pos[(1, 3)])[(1, 2)] == -4
+
+
+def test_grafo_posicoes_ponderado_portas_como_chao():
+    mapa = [list('######'), list('#SaAG#'), list('######')]
+    pos = grafo_posicoes_ponderado(mapa)
+    assert dict(pos[(1, 2)])[(1, 3)] == 1

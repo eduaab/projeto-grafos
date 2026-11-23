@@ -16,6 +16,14 @@ from .io import mapa_input
 DIRECOES_ESTEIRAS = {'^': (-1, 0), '>': (0, 1), 'v': (1, 0), '<': (0, -1)}
 
 
+def _vizinhos_direcionados(mapa, linha, coluna, simbolo):
+    vizinhos = encontrar_vizinhos(mapa, (linha, coluna))
+    if simbolo in DIRECOES_ESTEIRAS:
+        dl, dc = DIRECOES_ESTEIRAS[simbolo]
+        vizinhos = [v for v in vizinhos if v == (linha + dl, coluna + dc)]
+    return vizinhos
+
+
 def grafo_posicoes(mapa):
     """G_pos: casas livres e movimentos geométricos dirigidos (portas = chão)."""
     grafo = {}
@@ -27,11 +35,31 @@ def grafo_posicoes(mapa):
             if simbolo == 'G':
                 grafo[origem] = []
                 continue
-            vizinhos = encontrar_vizinhos(mapa, origem)
-            if simbolo in DIRECOES_ESTEIRAS:
-                dl, dc = DIRECOES_ESTEIRAS[simbolo]
-                vizinhos = [v for v in vizinhos if v == (linha + dl, coluna + dc)]
-            grafo[origem] = vizinhos
+            grafo[origem] = _vizinhos_direcionados(mapa, linha, coluna, simbolo)
+    return grafo
+
+
+CUSTOS_POSICAO = {',': 3, '~': 5, '*': -2, '+': -4}
+
+
+def grafo_posicoes_ponderado(mapa):
+    """G_pos com o peso fixo da tabela de símbolos (portas = chão).
+
+    Modelo "ingênuo" da Seção 6: + e * valem sempre o mesmo peso, porque G_pos
+    não guarda estado (não sabe se um bônus já foi "consumido"). Usado para
+    mostrar, no m05, o ciclo negativo que some no grafo de estados (G_est).
+    """
+    grafo = {}
+    for linha, row in enumerate(mapa):
+        for coluna, simbolo in enumerate(row):
+            if simbolo == '#':
+                continue
+            origem = (linha, coluna)
+            if simbolo == 'G':
+                grafo[origem] = []
+                continue
+            vizinhos = _vizinhos_direcionados(mapa, linha, coluna, simbolo)
+            grafo[origem] = [(v, CUSTOS_POSICAO.get(mapa[v[0]][v[1]], 1)) for v in vizinhos]
     return grafo
 
 

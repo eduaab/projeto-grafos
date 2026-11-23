@@ -1,0 +1,15 @@
+{
+  "g_pos": {
+    "status": "CICLO_NEGATIVO",
+    "ciclo": [
+      "(5,5)",
+      "(5,4)",
+      "(5,5)"
+    ],
+    "custo": -3
+  },
+  "g_est": {
+    "status": "OK",
+    "custo": 5
+  }
+}

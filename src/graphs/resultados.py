@@ -10,7 +10,7 @@ from pathlib import Path
 from .io import mapa_input
 from .estados import ALVO, criar_grafo_estados, criar_estado_inicial, gerar_movimentos
 from .algorithms import bfs, dfs, dijkstra, bellman_ford
-from .metricas import grafo_posicoes, rotulo_estado, exportar_metricas
+from .metricas import grafo_posicoes, grafo_posicoes_ponderado, rotulo_estado, exportar_metricas
 
 FIELDS = ('mapa','algoritmo','passos','custo','status','caminho')
 
@@ -55,6 +55,9 @@ def armadilhas(grafo):
             if u not in can_reach:
                 can_reach.add(u); queue.append(u)
     return [s for s in grafo if s not in can_reach and s != ALVO]
+
+def posicao_inicial(mapa):
+    return next((i, j) for i, row in enumerate(mapa) for j, c in enumerate(row) if c == 'S')
 
 def shortest_position(mapa, doors):
     pos=grafo_posicoes(mapa)
@@ -133,6 +136,15 @@ def generate(map_dirs, output):
                 save_json(output/'percurso_m03.json', [{'estado':encode(s,ids),'custo_acumulado':custo(graph,path[:idx+1])} for idx,s in enumerate(path)])
             if name=='m06_fonte' and algo=='BELLMAN_FORD':
                 save_json(output/'ciclo_negativo_m06.json',{'ciclo':[encode(s,ids) for s in cycle] if cycle else [],'custo':cost,'status':status})
+            if name=='m05_bonus' and algo=='BELLMAN_FORD':
+                pos_graph=grafo_posicoes_ponderado(maze); pos_start=posicao_inicial(maze)
+                _,_,pos_cycle,pos_cycle_cost=bellman_ford(pos_graph,pos_start)
+                save_json(output/'bellman_ford_g_pos_m05.json',{
+                    'g_pos':{'status':'CICLO_NEGATIVO' if pos_cycle else 'OK',
+                             'ciclo':[f'({l},{c})' for l,c in pos_cycle] if pos_cycle else [],
+                             'custo':pos_cycle_cost},
+                    'g_est':{'status':status,'custo':cost},
+                })
         if name in ('m02_uma_chave','m03_tres_chaves','m04_esteiras'):
             for approach in ('portas_como_chao','portas_como_parede'):
                 n,path=shortest_position(maze,'wall' if approach=='portas_como_parede' else 'floor')
