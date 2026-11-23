@@ -102,7 +102,7 @@ def custo_do_caminho(grafo, caminho):
 def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
     mapa = mapa_input(caminho_mapa)
 
-    grafo = criar_grafo_estados(mapa)
+    grafo = criar_grafo_estados(mapa, fonte_consumivel=fonte_consumivel)
     inicial = criar_estado_inicial(mapa)
 
     nome_mapa = os.path.basename(caminho_mapa)

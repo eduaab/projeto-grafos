@@ -15,7 +15,7 @@ def criar_estado_inicial(mapa):
                 return (linha, coluna, '', ())
 
 
-def custo_entrada(mapa, destino, bonus_coletados):
+def custo_entrada(mapa, destino, bonus_coletados, fonte_consumivel=False):
     # Retorna o custo de entrar na célula, considerando os bônus já coletados
 
     linha, coluna = destino
@@ -28,14 +28,16 @@ def custo_entrada(mapa, destino, bonus_coletados):
         '+': -4
     }
 
-    if simbolo == '+' and destino in bonus_coletados:
+    consomivel = simbolo == '+' or (simbolo == '*' and fonte_consumivel)
+
+    if consomivel and destino in bonus_coletados:
         return 1
 
     custo = custos.get(simbolo, 1)
     return custo
 
 
-def gerar_movimentos(mapa, estado):
+def gerar_movimentos(mapa, estado, fonte_consumivel=False):
     # Retorna os próximos estados e seus custos, respeitando esteiras, portas e coletas
 
     if estado == ALVO:
@@ -70,14 +72,16 @@ def gerar_movimentos(mapa, estado):
         if simbolo in 'ABCD' and simbolo.lower() not in chaves:
             continue
 
-        peso = custo_entrada(mapa, destino, bonus_coletados)
+        peso = custo_entrada(mapa, destino, bonus_coletados, fonte_consumivel)
         novas_chaves = chaves
         novos_bonus = bonus_coletados
 
         if simbolo in 'abcd' and simbolo not in chaves:
             novas_chaves = ''.join(sorted(chaves + simbolo))
 
-        if simbolo == '+' and destino not in bonus_coletados:
+        consomivel = simbolo == '+' or (simbolo == '*' and fonte_consumivel)
+
+        if consomivel and destino not in bonus_coletados:
             novos_bonus = tuple(sorted(bonus_coletados + (destino,)))
 
         novo_estado = (nova_linha, nova_coluna, novas_chaves, novos_bonus)
@@ -86,7 +90,7 @@ def gerar_movimentos(mapa, estado):
     return movimentos
 
 
-def criar_grafo_estados(mapa):
+def criar_grafo_estados(mapa, fonte_consumivel=False):
     # Monta o grafo com os estados que podem ser alcançados a partir do início
 
     inicial = criar_estado_inicial(mapa)
@@ -100,7 +104,7 @@ def criar_grafo_estados(mapa):
 
         estado = estados[indice]
 
-        movimentos = gerar_movimentos(mapa, estado)
+        movimentos = gerar_movimentos(mapa, estado, fonte_consumivel)
         grafo[estado] = movimentos
 
         for novo_estado, peso in movimentos:

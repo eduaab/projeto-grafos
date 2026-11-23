@@ -93,3 +93,20 @@ def test_integracao_resolver_bellman_ford_sem_solucao_m07():
     from src.solve import resolver
     resultado = resolver(MAPAS / 'm07_impossivel.txt', 'BELLMAN_FORD')
     assert resultado['status'] == 'SEM_SOLUCAO'
+
+
+def test_bellman_ford_m06_fonte_consumivel_corrige_ciclo():
+    mapa = mapa_input(MAPAS / 'm06_fonte.txt')
+    grafo = criar_grafo_estados(mapa, fonte_consumivel=True)
+    inicial = criar_estado_inicial(mapa)
+    d, p, ciclo, custo = bellman_ford(grafo, inicial)
+    assert ciclo is None and custo is None
+    assert not nx.negative_edge_cycle(oraculo(grafo), weight='weight')
+    assert math.isfinite(d[ALVO])
+
+
+def test_integracao_resolver_bellman_ford_fonte_consumivel_m06():
+    from src.solve import resolver
+    resultado = resolver(MAPAS / 'm06_fonte.txt', 'BELLMAN_FORD', fonte_consumivel=True)
+    assert resultado['status'] == 'OK'
+    assert resultado['custo'] is not None
