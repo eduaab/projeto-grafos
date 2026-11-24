@@ -205,14 +205,14 @@ __SIMULATOR_THEME__
 .simulator { --sim-gutter: clamp(20px, 2vw, 36px); padding: var(--sim-gutter); }
 .sim-body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(350px, 29vw, 540px);
+  grid-template-columns: minmax(0, 1fr) clamp(420px, 34vw, 540px);
   gap: clamp(24px, 2.5vw, 48px);
 }
 .sim-visual {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   min-width: 0;
-  min-height: max(540px, calc(100dvh - var(--site-header-height) - 2 * var(--sim-gutter)));
+  min-height: max(520px, calc(100dvh - var(--site-header-height) - 2 * var(--sim-gutter)));
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   background: var(--bg-raised);
@@ -319,6 +319,7 @@ __SIMULATOR_THEME__
   gap: var(--sim-space-1);
   color: var(--ink-muted);
   font-size: .875rem;
+  font-weight: 600;
   line-height: 1.25;
 }
 .sim-selectors > label:not(.sim-check) { position: relative; }
@@ -326,7 +327,7 @@ __SIMULATOR_THEME__
   content: "";
   position: absolute;
   right: 12px;
-  bottom: 17px;
+  bottom: calc((var(--sim-control-size) - 6px) / 2);
   width: 7px;
   height: 7px;
   border-right: 2px solid var(--accent);
@@ -353,9 +354,9 @@ __SIMULATOR_THEME__
   grid-column: 1 / -1;
   align-items: flex-start;
   gap: var(--sim-space-2);
-  padding: var(--sim-space-1) var(--sim-space-2);
-  border-radius: var(--sim-radius);
-  background: var(--bg-raised);
+  margin-top: var(--sim-space-1);
+  padding-top: var(--sim-space-2);
+  border-top: 1px solid var(--surface-border);
   cursor: pointer;
 }
 .sim-check-label { display: block; color: var(--ink); font-weight: 600; }
@@ -384,8 +385,7 @@ __SIMULATOR_THEME__
 }
 .sim-sidebar .notice { padding: var(--sim-space-2); font-size: .875rem; }
 
-.sim-panel.sim-legend { display: flex; flex: 0 1 auto; flex-direction: column; min-height: 188px; }
-.sim-piece-list { min-height: 0; overflow: auto; list-style: none; margin: 0; padding: 0; }
+.sim-piece-list { list-style: none; margin: 0; padding: 0; }
 .sim-piece-row {
   display: grid;
   grid-template-columns: var(--sim-legend-tile-size) minmax(0, 1fr) auto;
@@ -400,6 +400,7 @@ __SIMULATOR_THEME__
 .sim-piece-list .tile { --size: var(--sim-legend-tile-size); border-radius: 4px; font-size: .8125rem; }
 .sim-piece-list .wall { color: var(--tile-floor); }
 .sim-piece-head { color: var(--ink-muted); font-weight: 650; font-size: .75rem; border-bottom: 1px solid var(--surface-border); border-radius: 0; }
+.sim-piece-head-secondary { display: none; }
 .sim-piece-values { display: grid; grid-template-columns: 28px 84px; gap: var(--sim-space-2); text-align: right; font-variant-numeric: tabular-nums; font-size: .8125rem; }
 .sim-piece-values > :first-child { font-weight: 650; color: var(--ink); }
 .sim-piece-head .sim-piece-values > :first-child, .sim-piece-cost.is-empty { color: var(--sim-muted); }
@@ -419,13 +420,13 @@ __SIMULATOR_THEME__
 .sim-status[data-tone="warning"] { background: var(--warning-bg); color: var(--warning); }
 .sim-status[data-tone="warning"]::before { background: var(--warning); }
 .sim-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sim-space-2); margin: var(--sim-space-2) 0; }
-.sim-metrics > div, .sim-state-values > div { padding: var(--sim-space-2) var(--sim-space-1); border-radius: var(--sim-radius); background: var(--bg-raised); }
-.sim-metrics dd { margin: var(--sim-space-1) 0 0; font-size: 1.5rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.sim-metrics dt, .sim-state dt { color: var(--ink-muted); font-size: .8125rem; line-height: 1.25; }
+:is(.sim-metrics, .sim-state-values) > div { display: grid; align-content: center; gap: var(--sim-space-1); padding: var(--sim-space-2); border-radius: var(--sim-radius); background: var(--bg-raised); }
+:is(.sim-metrics, .sim-state-values) dd { grid-row: 1; margin: 0; color: var(--accent); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sim-metrics dd { font-size: clamp(1.375rem, 2.1vw, 1.875rem); }
+.sim-metrics dt, .sim-state dt { color: var(--ink-muted); font-size: .8125rem; font-weight: 600; line-height: 1.25; }
 .sim-state h3 { font-size: .875rem; font-weight: 650; }
 .sim-state-values { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sim-space-2); margin: var(--sim-space-2) 0 0; }
-.sim-state-values > div { padding-inline: var(--sim-space-2); border: 1px solid var(--surface-border); }
-.sim-state-values dd { margin: var(--sim-space-1) 0 0; font-size: .875rem; line-height: 1.25; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sim-state-values dd { font-size: clamp(1rem, 1.25vw, 1.375rem); }
 
 @media (max-width: 900px) {
   .simulator { --sim-gutter: 12px; }
@@ -433,11 +434,33 @@ __SIMULATOR_THEME__
   .sim-visual { min-height: 0; grid-template-rows: auto clamp(240px, 50dvh, 420px) auto; }
 }
 @media (min-width: 901px) {
-  .sim-panel.sim-legend { flex-grow: 1; contain: size; }
+  .simulator {
+    --sim-gutter: 12px;
+    --sim-control-size: 32px;
+    --sim-legend-tile-size: 18px;
+  }
+  .sim-tools, .sim-playback { padding-block: var(--sim-space-1); }
+  .sim-sidebar { gap: 6px; }
+  .sim-sidebar > .sim-panel { display: flex; flex: 1 0 auto; flex-direction: column; padding: 6px var(--sim-space-2); }
+  .sim-sidebar > .sim-result { flex-grow: .65; }
+  .sim-panel > .sim-panel-title, .sim-result-header { margin-bottom: var(--sim-space-1); }
+  .sim-selectors { flex: 1; align-content: space-evenly; gap: var(--sim-space-2) var(--sim-space-3); }
+  .sim-selectors > label:not(.sim-check) { gap: 2px; }
+  .sim-piece-table { display: flex; flex: 1; flex-direction: column; position: relative; }
+  .sim-piece-table::after { content: ""; position: absolute; inset-block: 0; inset-inline-start: 50%; border-inline-start: 1px solid var(--surface-border); pointer-events: none; }
+  .sim-piece-headings, .sim-piece-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--sim-space-3); }
+  .sim-piece-list { flex: 1; }
+  .sim-piece-head-secondary { display: grid; }
+  .sim-piece-row { gap: var(--sim-space-1); padding-block: 1px; line-height: 1.25; }
+  .sim-piece-values { grid-template-columns: 24px 76px; gap: var(--sim-space-1); }
+  .sim-trace { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--sim-space-1); padding-top: var(--sim-space-1); }
+  .sim-trace-item { grid-column: 1; line-height: 1.25; }
+  #trapLegend { grid-column: 2; grid-row: 1; }
+  .sim-metrics { flex: 1; margin-block: var(--sim-space-1); }
+  :is(.sim-metrics, .sim-state-values) > div { padding-block: var(--sim-space-1); }
+  .sim-state-values { margin-top: var(--sim-space-1); }
 }
-@media (min-width: 901px) and (max-height: 820px) {
-  .sim-sidebar { gap: var(--sim-space-2); }
-  .sim-panel { padding: var(--sim-space-2); }
+@media (min-width: 901px) and (max-height: 900px) {
   .sim-check-help {
     position: absolute;
     width: 1px;
@@ -446,7 +469,6 @@ __SIMULATOR_THEME__
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  .sim-metrics > div, .sim-state-values > div { padding: var(--sim-space-1); }
 }
 @media (max-width: 600px) {
   .site-header { justify-content: center; flex-wrap: wrap; gap: var(--sim-space-1) var(--sim-space-2); padding-inline: var(--sim-space-3); }
@@ -541,10 +563,17 @@ __SIMULATOR_THEME__
 
         <section class="sim-panel sim-legend" aria-labelledby="legendTitle">
           <h2 class="sim-panel-title" id="legendTitle">Peças deste mapa</h2>
-          <div class="sim-piece-row sim-piece-head" aria-hidden="true">
-            <span></span><span>Peça</span><span class="sim-piece-values"><span>Qtd.</span><span>Custo</span></span>
+          <div class="sim-piece-table">
+            <div class="sim-piece-headings" aria-hidden="true">
+              <div class="sim-piece-row sim-piece-head">
+                <span></span><span>Peça</span><span class="sim-piece-values"><span>Qtd.</span><span>Custo</span></span>
+              </div>
+              <div class="sim-piece-row sim-piece-head sim-piece-head-secondary">
+                <span></span><span>Peça</span><span class="sim-piece-values"><span>Qtd.</span><span>Custo</span></span>
+              </div>
+            </div>
+            <ul class="sim-piece-list" id="pieceLegend" aria-label="Peças, quantidades e custos"></ul>
           </div>
-          <ul class="sim-piece-list" id="pieceLegend" tabindex="0" aria-label="Peças, quantidades e custos"></ul>
           <div class="sim-trace">
             <span class="sim-trace-item"><span class="sim-trace-swatch is-visited" aria-hidden="true"></span>Percorridas</span>
             <span class="sim-trace-item"><span class="sim-trace-swatch is-current" aria-hidden="true"></span>Atual</span>
