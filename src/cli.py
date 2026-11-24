@@ -12,7 +12,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mapa")
     parser.add_argument("--alg", choices=ALGORITMOS_VALIDOS)
-    parser.add_argument("--out", required=True)
+    parser.add_argument("--out", help="Pasta de saída (obrigatória na Parte 1; padrão out/parte2 no benchmark)")
+    parser.add_argument("--dataset", help="Pasta do dataset com arestas_paises.csv (ou icews para o dataset padrão)")
+    parser.add_argument("--benchmark", action="store_true", help="Executa o benchmark da Parte 2")
     parser.add_argument("--fonte-consumivel", action="store_true")
     parser.add_argument("--armadilhas", action="store_true")
     parser.add_argument("--metricas", action="store_true", help="Exporta métricas globais, camadas e graus para todos os mapas")
@@ -20,6 +22,26 @@ def main():
     parser.add_argument("--interactive", action="store_true", help="Gera out/parte1/labirinto_interativo.html a partir de dados_interativos.json")
 
     args = parser.parse_args()
+
+    if args.benchmark:
+        from pathlib import Path
+        from src.benchmark_parte2 import DATASET, SAIDA, executar_benchmark
+
+        if args.mapa or args.alg or args.metricas or args.armadilhas or args.interactive or args.fonte_consumivel or args.pasta_mapas:
+            parser.error("--benchmark não pode ser combinado com opções da Parte 1.")
+        pasta = DATASET if args.dataset is None or args.dataset.lower() == "icews" else Path(args.dataset)
+        destino = Path(args.out) / "parte2_report.json" if args.out else SAIDA
+        try:
+            executar_benchmark(pasta_dataset=pasta, saida=destino)
+        except (OSError, ValueError) as erro:
+            parser.exit(1, f"Erro no benchmark: {erro}\n")
+        print(f"Benchmark salvo em {destino}")
+        return
+
+    if args.dataset is not None:
+        parser.error("--dataset deve ser utilizado com --benchmark.")
+    if args.out is None:
+        parser.error("--out é obrigatório para as operações da Parte 1.")
 
     if args.metricas:
         dados, _ = exportar_metricas(args.pasta_mapas or ["./data/mapas", "./data/mapas_grupo"], args.out)
