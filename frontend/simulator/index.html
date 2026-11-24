@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador · Projeto Grafos</title>
+  <style>__STYLE__</style>
+</head>
+<body>
+  <header class="site-header"><a href="/">Projeto Grafos</a><nav aria-label="Navegação"><a href="/labirintos">Mapas</a><a href="/editor">Editor</a><a href="/graficos">Gráficos</a></nav></header>
+  <main>
+    <div class="heading"><div><span class="eyebrow">EXPLORAÇÃO DO GRAFO DE ESTADOS</span><h1>Simulador</h1><p>Acompanhe cada visita, inclusive fora do caminho final.</p></div><label class="import-button">Importar .txt<input id="importFile" type="file" accept=".txt" hidden></label></div>
+    <p id="message" role="status" hidden></p>
+    <section class="selection" aria-label="Configuração">
+      <label>Mapa<select id="mapSelect"></select></label>
+      <fieldset id="algorithms" class="algorithm-picker"><legend>Algoritmos para comparar</legend><label><input type="checkbox" value="BFS" checked> BFS</label><label><input type="checkbox" value="DFS"> DFS</label><label><input type="checkbox" value="DIJKSTRA"> Dijkstra</label><label><input type="checkbox" value="BELLMAN_FORD"> Bellman-Ford</label><button id="selectAll" type="button">Selecionar todos</button></fieldset>
+      <label class="check"><input id="source" type="checkbox"> Fonte consumível</label>
+      <button id="calculate" type="button" hidden>Calcular exploração</button>
+    </section>
+    <div class="view-controls"><label>Visualização<select id="view"><option value="exploration">Exploração completa</option><option value="path">Reproduzir caminho final</option></select></label><button id="focusMaps" type="button">Focar nos mapas</button><p id="viewHint" class="hint">Os números contam estados processados. A exploração pode trocar de ramo.</p></div>
+    <div class="workspace">
+      <section id="panels" class="panels" aria-label="Exploração por algoritmo"></section>
+      <aside class="legend"><h2>Legenda</h2><p class="sample"><span class="swatch visited">×2</span> Contador no canto</p><p class="sample"><span class="swatch active">●</span> Posição atual</p><p class="sample"><span class="direction-sample">→</span> Avanço no caminho final</p><p class="sample"><span class="direction-sample returning">←</span> Retorno por trecho já usado</p><p class="sample"><span class="swatch trap"></span> Armadilha na camada</p><hr><dl><div><dt>#</dt><dd>Parede</dd></div><div><dt>S / G</dt><dd>Início / saída</dd></div><div><dt>a–d</dt><dd>Chaves</dd></div><div><dt>A–D</dt><dd>Portas · destrancam com a chave</dd></div><div><dt>, / ~</dt><dd>Lama / água</dd></div><div><dt>↑ → ↓ ←</dt><dd>Esteiras</dd></div><div><dt>+</dt><dd>Bônus consumível</dd></div><div><dt>*</dt><dd>Fonte de energia</dd></div></dl><hr><label>Camada de chaves<select id="layer"><option value="all">Todas as camadas</option></select></label><label class="check"><input id="traps" type="checkbox"> Mostrar armadilhas</label><label>Zoom <span id="zoomValue">100% · legível</span><input id="zoom" type="range" min="5" max="300" value="100" step="5"></label><button id="fit" type="button">Ver mapa inteiro</button><p class="hint">Arraste o mapa ou use as setas do teclado para navegar. A visualização acompanha a posição atual.</p></aside>
+    </div>
+    <section class="playback" aria-label="Controles da animação">
+      <div class="buttons"><button id="restart" type="button">Reiniciar</button><button id="back" type="button">Anterior</button><button id="play" class="primary" type="button">Iniciar</button><button id="next" type="button">Próximo</button></div>
+      <label>Intervalo<select id="speed"><option value="150">150 ms</option><option value="400" selected>400 ms</option><option value="800">800 ms</option><option value="1400">1,4 s</option></select></label>
+      <label>Eventos por avanço<select id="batch"><option value="1">1 evento</option><option value="10">10 eventos</option><option value="100">100 eventos</option></select></label>
+      <label class="progress"><span id="progressLabel">Exploração</span><input id="progress" type="range" min="0" max="0" value="0"><span id="progressText">0 eventos</span></label>
+    </section>
+    <p class="hint">Os algoritmos selecionados avançam juntos. Em Caminho final, as setas mostram o sentido e o passo atual. Os contadores de cada visualização são independentes.</p>
+  </main>
+  <dialog id="details"><div class="dialog-heading"><h2 id="detailsTitle">Detalhes</h2><button id="closeDetails" aria-label="Fechar detalhes">×</button></div><div id="detailsBody"></div></dialog>
+  <script>const DATA = __DATA__; const DEFAULT_MAP=__DEFAULT__;</script>
+  <script>__SCRIPT__</script>
+</body>
+</html>

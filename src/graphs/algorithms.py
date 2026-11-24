@@ -1,5 +1,6 @@
 
 # Variaveis globais ou importantes 
+# [IA] ChatGPT – callbacks opcionais observar para a animação da exploração.
 
 NAO_DESCOBERTO = None
 NAO_VISITADO = 0
@@ -8,7 +9,7 @@ ENCERRADO = 2
 
 # Dijkstra
 
-def dijkstra(grafo, s):
+def dijkstra(grafo, s, observar=None):
 
     # Verificação de arestas negativas 
     if s not in grafo:
@@ -51,6 +52,8 @@ def dijkstra(grafo, s):
 
         # Feche u
         aberto[u] = False
+        if observar is not None:
+            observar(u, d[u], 0)
 
         # Para todo nó aberto v na adjacência de u:
         for v, peso in grafo[u]:
@@ -65,7 +68,7 @@ def dijkstra(grafo, s):
 
 # Bellman-Ford
 
-def bellman_ford(grafo, origem):
+def bellman_ford(grafo, origem, observar=None):
     if origem not in grafo:
         raise ValueError("A origem não pertence ao grafo.")
 
@@ -80,6 +83,8 @@ def bellman_ford(grafo, origem):
         predecessores[vertice] = None
 
     distancias[origem] = 0
+    if observar is not None:
+        observar(origem, 0, 0)
 
     # Verifica todas as arestas V - 1 vezes
     for passada in range(n - 1):
@@ -94,6 +99,8 @@ def bellman_ford(grafo, origem):
                     distancias[destino] = nova_distancia
                     predecessores[destino] = inicio
                     pesos_predecessores[destino] = peso
+                    if observar is not None:
+                        observar(destino, nova_distancia, passada + 1)
 
     # Faz uma passada adicional para detectar ciclo negativo
     afetado = None
@@ -110,6 +117,8 @@ def bellman_ford(grafo, origem):
                 predecessores[destino] = inicio
                 pesos_predecessores[destino] = peso
                 afetado = destino
+                if observar is not None:
+                    observar(destino, nova_distancia, n)
 
     if afetado is None:
         return distancias, predecessores, None, None
@@ -143,7 +152,7 @@ def bellman_ford(grafo, origem):
 
 # BFS
 
-def bfs(grafo, v0):
+def bfs(grafo, v0, observar=None):
     estado = {}
     p = {}
     d = {}
@@ -160,6 +169,8 @@ def bfs(grafo, v0):
 
     while len(F) != 0:
         vi = F.pop(0)
+        if observar is not None:
+            observar(vi, d[vi], 0)
 
         for vj, peso in grafo[vi]:  
             if estado[vj] == NAO_VISITADO:
@@ -173,7 +184,7 @@ def bfs(grafo, v0):
     return d, p
 
 #DFS
-def dfs(grafo, v0):
+def dfs(grafo, v0, observar=None):
     estado = {}
     p = {}
     d = {}
@@ -192,6 +203,8 @@ def dfs(grafo, v0):
         tempo += 1
         estado[vi] = VISITADO
         d[vi] = tempo
+        if observar is not None:
+            observar(vi, d[vi], 0)
 
         for vj, peso in grafo[vi]:
             if estado[vj] == NAO_VISITADO:

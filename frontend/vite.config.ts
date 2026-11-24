@@ -2,11 +2,90 @@ import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
+import { spawn } from 'node:child_process'
 import { defineConfig, type Plugin } from 'vite'
 import { syncMapas } from './scripts/sync-mapas.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const MAPAS_CRIADOS_DIR = join(__dirname, '..', 'data', 'mapas_criados')
+
+// [IA] ChatGPT – transporte dos eventos Python para a visualização local.
+function explorationPlugin(): Plugin {
+  return {
+    name: 'exploracao-python',
+    configureServer(server) {
+      server.middlewares.use('/__explorar', (req, res) => {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end(JSON.stringify({ error: 'Use POST para calcular a exploração.' }))
+          return
+        }
+        let body = ''
+        let tooLarge = false
+        req.on('data', (chunk) => {
+          if (tooLarge) return
+          body += chunk
+          if (Buffer.byteLength(body) > 256_000) {
+            tooLarge = true
+            res.statusCode = 413
+            res.end(JSON.stringify({ error: 'O arquivo de mapa é muito grande.' }))
+          }
+        })
+        req.on('end', () => {
+          if (tooLarge) return
+          try {
+            const data = JSON.parse(body)
+            if (!Array.isArray(data.mapa) || !data.mapa.every((row: unknown) => typeof row === 'string')) {
+              throw new Error('Envie o mapa como uma lista de linhas.')
+            }
+          } catch {
+            res.statusCode = 400
+            res.end(JSON.stringify({ error: 'Mapa ou JSON inválido.' }))
+            return
+          }
+          const child = spawn(process.env.GRAFOS_PYTHON || 'python', [
+            join(__dirname, '..', 'scripts', 'exportar_exploracao.py'), '--stdin',
+          ], { cwd: join(__dirname, '..'), windowsHide: true })
+          let output = ''
+          let errors = ''
+          let finished = false
+          const finish = (status: number, result: string) => {
+            if (finished) return
+            finished = true
+            clearTimeout(timeout)
+            if (!res.destroyed) {
+              res.statusCode = status
+              res.end(result)
+            }
+          }
+          const timeout = setTimeout(() => {
+            child.kill()
+            finish(408, JSON.stringify({ error: 'O cálculo excedeu 90 segundos. Tente um mapa menor.' }))
+          }, 90_000)
+          res.on('close', () => { if (!finished) child.kill() })
+          child.on('error', () => finish(503, JSON.stringify({
+            error: 'Python não encontrado. Instale o Python ou configure GRAFOS_PYTHON antes de npm run dev.',
+          })))
+          child.stdout.on('data', (chunk) => {
+            output += chunk
+            if (output.length > 32_000_000) {
+              child.kill()
+              finish(413, JSON.stringify({ error: 'A exploração gerou eventos demais. Tente um mapa menor.' }))
+            }
+          })
+          child.stderr.on('data', (chunk) => { errors = (errors + chunk).slice(-4000) })
+          child.stdin.on('error', () => { /* O processo pode encerrar antes de receber o mapa. */ })
+          child.on('close', (code) => {
+            if (code === 0) finish(200, output)
+            else finish(400, JSON.stringify({ error: errors.trim().split(/\r?\n/).at(-1) || 'Falha no cálculo do mapa.' }))
+          })
+          child.stdin.end(body)
+        })
+      })
+    },
+  }
+}
 
 /**
  * Dev-only middleware so the Oficina de Campo's "Salvar" button can write
@@ -124,5 +203,5 @@ function deleteMapaCriadoPlugin(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), saveMapaCriadoPlugin(), deleteMapaCriadoPlugin()],
+  plugins: [react(), saveMapaCriadoPlugin(), deleteMapaCriadoPlugin(), explorationPlugin()],
 })

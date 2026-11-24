@@ -99,9 +99,26 @@ python -m src.cli --interactive --out ./out/parte1/
 
 ### Labirinto interativo
 
-Abra `out/parte1/labirinto_interativo.html` direto no navegador (não precisa de servidor). A interface oferece seleção de mapa e de algoritmo, animação passo a passo com controle de velocidade, avanço manual, filtro de camadas, realce dos estados-armadilha e editor com importação e exportação de mapas `.txt`.
+Abra `out/parte1/labirinto_interativo.html` direto no navegador para reproduzir a exploração dos mapas exportados. O simulador mostra cores e contadores de visitas por casa, incluindo estados fora do caminho final. BFS e DFS contam estados processados, Dijkstra conta estados selecionados e Bellman-Ford conta a inicialização da origem e as melhorias efetivas de distância. O arco virtual até ALVO fica fora dos contadores.
 
-Os algoritmos rodam em Python, e o HTML só reproduz os resultados já calculados. Ao editar um mapa na interface, as soluções **não** são recalculadas: salve o `.txt` em `data/mapas_grupo/` e rode de novo os dois comandos acima.
+Marque qualquer combinação de BFS, DFS, Dijkstra e Bellman-Ford para acompanhar um, dois, três ou quatro painéis com controles conjuntos. O botão **Selecionar todos** marca os quatro. Clique no nome de um algoritmo ou em uma casa para abrir um card de detalhes. Voltar ou reiniciar restaura contadores, chaves, portas e consumíveis. O filtro de camada aplica-se às contagens e posições dos estados explorados.
+
+Em **Reproduzir caminho final**, os contadores passam a contar as passagens pelo percurso escolhido. As setas roxas mostram avanço e as laranja mostram um trecho usado no sentido contrário a uma passagem anterior. Avance passo a passo para acompanhar a ordem. O card de cada casa lista os passos em que ela aparece no caminho. Os símbolos originais ficam no centro e os números de visitas ficam no canto das casas.
+
+Os controles de reprodução ficam fixos na parte inferior da tela. O enquadramento se ajusta à janela e à quantidade de painéis, preservando casas legíveis. Mapas grandes usam rolagem interna, que acompanha a posição atual durante a animação. **Focar nos mapas** também é aplicado ao iniciar a animação. O zoom permite ampliar os detalhes; **Ver mapa inteiro** calcula a redução necessária para mostrar todo o mapa. O zoom manual varia de 5% a 300%, com 100% como tamanho legível inicial.
+
+As barras internas ficam ocultas. Arraste o mapa, use gestos de toque ou foque o painel e navegue com as setas do teclado. No card, custo, passos, tempo Python e contagem de eventos ficam destacados. O tempo corresponde a uma execução com registro de eventos e exclui a construção do grafo e a reprodução da animação.
+
+Com `npm run dev`, importar um `.txt`, abrir um mapa do editor ou alternar **Fonte consumível** calcula os eventos usando o Python instalado na máquina. Em hospedagem estática ou ao abrir o HTML como arquivo, os mapas já exportados continuam disponíveis, e novos cálculos exigem o servidor local. O editor continua acessível pelo site.
+
+`npm run dev` e `npm run build` geram os eventos automaticamente quando os mapas ou o código Python mudam. Para atualizar manualmente:
+
+```bash
+python scripts/exportar_exploracao.py
+python scripts/gerar_interface.py
+```
+
+Se `python` não estiver no PATH, configure `GRAFOS_PYTHON` com o caminho do executável antes de iniciar o frontend.
 
 ### Métricas
 
