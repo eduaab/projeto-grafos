@@ -1,0 +1,86 @@
+[
+  {
+    "arquivo": "alg_01_tempo_medio.png",
+    "grupo": "algoritmos",
+    "titulo": "Tempo médio por tarefa",
+    "legenda": "BFS, DFS e Dijkstra em ms e Bellman-Ford em s, média de 5 execuções."
+  },
+  {
+    "arquivo": "alg_02_escalabilidade.png",
+    "grupo": "algoritmos",
+    "titulo": "Escalabilidade",
+    "legenda": "Tempo médio dos algoritmos com 10%, 50% e 100% dos países."
+  },
+  {
+    "arquivo": "alg_03_bfs_vs_dijkstra.png",
+    "grupo": "algoritmos",
+    "titulo": "BFS × Dijkstra em cinco pares",
+    "legenda": "Número de saltos e custo (10 − peso) de cada par de países."
+  },
+  {
+    "arquivo": "avd_exp1_graus.png",
+    "grupo": "exploratorios",
+    "titulo": "Grau de entrada × grau de saída",
+    "legenda": "Um ponto por país, com a diagonal y = x."
+  },
+  {
+    "arquivo": "avd_exp2_histograma_peso.png",
+    "grupo": "exploratorios",
+    "titulo": "Distribuição do peso",
+    "legenda": "Histograma da média de intensidade de cada par de países."
+  },
+  {
+    "arquivo": "avd_exp3_eventos_vs_peso.png",
+    "grupo": "exploratorios",
+    "titulo": "Eventos × peso",
+    "legenda": "Número de eventos (escala log) e peso de cada aresta."
+  },
+  {
+    "arquivo": "avd_exp4_ano.png",
+    "grupo": "exploratorios",
+    "titulo": "Intensidade por ano",
+    "legenda": "Intensidade dos eventos de 1995 a 2022."
+  },
+  {
+    "arquivo": "avd_exp4_cameo.png",
+    "grupo": "exploratorios",
+    "titulo": "Intensidade por família CAMEO",
+    "legenda": "Intensidade por tipo de ação."
+  },
+  {
+    "arquivo": "avd_exp4_localizacao.png",
+    "grupo": "exploratorios",
+    "titulo": "Intensidade por localização",
+    "legenda": "Intensidade conforme o local do evento."
+  },
+  {
+    "arquivo": "avd_exp4_setores.png",
+    "grupo": "exploratorios",
+    "titulo": "Intensidade por setor",
+    "legenda": "Intensidade pelos setores dos atores."
+  },
+  {
+    "arquivo": "avd_exp4_veiculos.png",
+    "grupo": "exploratorios",
+    "titulo": "Intensidade por veículo",
+    "legenda": "Intensidade por veículo de imprensa."
+  },
+  {
+    "arquivo": "avd_explanatorio1_nucleos.png",
+    "grupo": "explanatorios",
+    "titulo": "Pares fracos × hostilidade estrutural",
+    "legenda": "Pares de 1 evento comparados aos conflitos de alto volume."
+  },
+  {
+    "arquivo": "avd_explanatorio2_domestico_setor.png",
+    "grupo": "explanatorios",
+    "titulo": "Contexto geográfico e setores extremos",
+    "legenda": "Doméstico × bilateral na mesma escala dos setores mais opostos."
+  },
+  {
+    "arquivo": "avd_apoio_heatmap_ausencias.png",
+    "grupo": "apoio",
+    "titulo": "Correlação entre ausências",
+    "legenda": "Quanto a falta de dado em uma coluna acompanha a falta em outra."
+  }
+]

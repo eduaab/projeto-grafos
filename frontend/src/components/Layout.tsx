@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Início', end: true },
   { to: '/labirintos', label: 'Mapas' },
   { to: '/editor', label: 'Editor' },
+  { to: '/graficos', label: 'Gráficos' },
 ]
 
 export function Layout() {
