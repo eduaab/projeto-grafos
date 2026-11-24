@@ -88,24 +88,28 @@ def predecessores_da_fonte(algoritmo, grafo, origem):
     return predecessores
 
 
-def resumir_caminho(caminho, grafo_atrito, info_arestas):
-    saltos = None
-    custo_transformado = None
+def _somar_caminho(caminho, grafo, info_arestas):
+    if not caminho:
+        return None, None, 0
+
+    custo = 0.0
     qtd_pares_fracos = 0
+    saltos = len(caminho) - 1
 
-    if caminho:
-        custo = 0.0
-        saltos = len(caminho) - 1
+    for origem, destino in zip(caminho, caminho[1:]):
+        custos_da_origem = dict(grafo[origem])
+        custo += custos_da_origem[destino]
 
-        for origem, destino in zip(caminho, caminho[1:]):
+        if info_arestas[origem, destino]["par_fraco"]:
+            qtd_pares_fracos += 1
 
-            custos_da_origem = dict(grafo_atrito[origem])
-            custo += custos_da_origem[destino]
+    return saltos, round(custo, 6), qtd_pares_fracos
 
-            if info_arestas[origem, destino]["par_fraco"]:
-                qtd_pares_fracos += 1
 
-        custo_transformado = round(custo, 6)
+def resumir_caminho(caminho, grafo_atrito, info_arestas):
+    saltos, custo_transformado, qtd_pares_fracos = _somar_caminho(
+        caminho, grafo_atrito, info_arestas
+    )
 
     return {
         "saltos": saltos,
@@ -329,17 +333,11 @@ def resumir_buscas(grafo, fonte, resultado_bfs):
     }
 
 
-def resumir_ciclo(grafo, info_arestas, origem):
-    ciclo = None
-    custo = None
+def montar_resumo_ciclo(grafo, info_arestas, ciclo, custo):
     arestas = []
     usa_par_fraco = False
 
-    if origem in grafo:
-        distancias, predecessores, ciclo, custo = bellman_ford(grafo, origem)
-
     if ciclo:
-
         for inicio, destino in zip(ciclo, ciclo[1:]):
             pesos = dict(grafo[inicio])
             dados = info_arestas[inicio, destino]
@@ -359,6 +357,16 @@ def resumir_ciclo(grafo, info_arestas, origem):
         "arestas_ciclo": arestas,
         "usa_par_fraco": usa_par_fraco,
     }
+
+
+def resumir_ciclo(grafo, info_arestas, origem):
+    ciclo = None
+    custo = None
+
+    if origem in grafo:
+        distancias, predecessores, ciclo, custo = bellman_ford(grafo, origem)
+
+    return montar_resumo_ciclo(grafo, info_arestas, ciclo, custo)
 
 
 def resumir_execucao_aciclica(grafo, origem):
@@ -527,6 +535,159 @@ def executar_pipeline_parte2(pasta_dataset, seed=42, repeticoes=5):
         },
         "robustez_sem_pares_fracos": robustez,
     }
+
+def executar_consulta_dataset(
+    pasta_dataset,
+    nome_algoritmo,
+    origem,
+    destino=None,
+    recorte_aciclico=False,
+):
+    algoritmo = nome_algoritmo.upper()
+
+    if algoritmo not in ("BFS", "DFS", "DIJKSTRA", "BELLMAN_FORD"):
+        raise ValueError(f"Algoritmo inválido: {nome_algoritmo}")
+
+    if recorte_aciclico and algoritmo != "BELLMAN_FORD":
+        raise ValueError("--recorte-aciclico só é usado com BELLMAN_FORD.")
+
+    arestas = carregar_arestas(Path(pasta_dataset))
+    grafo, info_arestas = montar_grafo_paises(arestas)
+
+    if origem not in grafo:
+        raise ValueError(f"País de origem não encontrado: {origem}")
+
+    if destino is not None and destino not in grafo:
+        raise ValueError(f"País de destino não encontrado: {destino}")
+
+    if algoritmo == "BFS":
+        distancias, predecessores = bfs(grafo, origem)
+        alcancados = 0
+        maior_camada = 0
+
+        for camada in distancias.values():
+            if camada is not None:
+                alcancados += 1
+                if camada > maior_camada:
+                    maior_camada = camada
+
+        resultado = {
+            "algoritmo": "BFS",
+            "origem": origem,
+            "destino": destino,
+            "status": "OK",
+            "alcancados": alcancados,
+            "max_camada": maior_camada,
+        }
+
+        if destino is not None:
+            atrito = transformar_grafo_atrito(grafo)
+            caminho = reconstruir_caminho(predecessores, origem, destino)
+            resumo = resumir_caminho(caminho, atrito, info_arestas)
+            resultado["status"] = "OK" if caminho else "SEM_CAMINHO"
+            resultado.update(resumo)
+
+        return resultado
+
+    if algoritmo == "DFS":
+        descoberta, encerramento, predecessores, arestas_dfs, tem_ciclo = dfs(grafo, origem)
+        alcancados = 0
+
+        for tempo in descoberta.values():
+            if tempo is not None:
+                alcancados += 1
+
+        contagem_arestas = {}
+        for tipo in ("arvore", "retorno", "avanco", "cruzamento"):
+            contagem_arestas[tipo] = len(arestas_dfs[tipo])
+
+        resultado = {
+            "algoritmo": "DFS",
+            "origem": origem,
+            "destino": destino,
+            "status": "OK",
+            "alcancados": alcancados,
+            "tem_ciclo": tem_ciclo,
+            "contagem_arestas": contagem_arestas,
+        }
+
+        if destino is not None:
+            caminho = reconstruir_caminho(predecessores, origem, destino)
+            resultado["status"] = "OK" if caminho else "SEM_CAMINHO"
+            resultado["caminho"] = caminho
+            resultado["saltos"] = len(caminho) - 1 if caminho else None
+
+        return resultado
+
+    if algoritmo == "DIJKSTRA":
+        atrito = transformar_grafo_atrito(grafo)
+        distancias, predecessores = dijkstra(atrito, origem)
+        alcancados = 0
+
+        for distancia in distancias.values():
+            if distancia is not None:
+                alcancados += 1
+
+        resultado = {
+            "algoritmo": "DIJKSTRA",
+            "origem": origem,
+            "destino": destino,
+            "transformacao": "10 - peso",
+            "status": "OK",
+            "alcancados": alcancados,
+        }
+
+        if destino is not None:
+            caminho = reconstruir_caminho(predecessores, origem, destino)
+            resumo = resumir_caminho(caminho, atrito, info_arestas)
+            resultado["status"] = "OK" if caminho else "SEM_CAMINHO"
+            resultado.update(resumo)
+
+        return resultado
+
+    rede = grafo
+    if recorte_aciclico:
+        rede, _ = criar_recorte_aciclico(grafo, info_arestas)
+
+    distancias, predecessores, ciclo, custo_ciclo = bellman_ford(rede, origem)
+
+    if ciclo is not None:
+        return {
+            "algoritmo": "BELLMAN_FORD",
+            "origem": origem,
+            "destino": destino,
+            "recorte_aciclico": recorte_aciclico,
+            "status": "CICLO_NEGATIVO",
+            **montar_resumo_ciclo(rede, info_arestas, ciclo, custo_ciclo),
+        }
+
+    alcancados = 0
+    for distancia in distancias.values():
+        if math.isfinite(distancia):
+            alcancados += 1
+
+    resultado = {
+        "algoritmo": "BELLMAN_FORD",
+        "origem": origem,
+        "destino": destino,
+        "recorte_aciclico": recorte_aciclico,
+        "status": "OK",
+        "alcancados": alcancados,
+        "ciclo": None,
+    }
+
+    if destino is not None:
+        caminho = reconstruir_caminho(predecessores, origem, destino)
+        saltos, custo, qtd_pares_fracos = _somar_caminho(caminho, rede, info_arestas)
+        resultado["status"] = "OK" if caminho else "SEM_CAMINHO"
+        resultado["saltos"] = saltos
+        resultado["custo"] = custo
+        resultado["caminho"] = caminho
+        resultado["usa_par_fraco"] = qtd_pares_fracos > 0
+        resultado["qtd_pares_fracos"] = qtd_pares_fracos
+
+    return resultado
+
 
 def executar_benchmark(pasta_dataset=DATASET, saida=SAIDA, seed=SEED, repeticoes=REPETICOES):
     relatorio = executar_pipeline_parte2(Path(pasta_dataset), seed, repeticoes)

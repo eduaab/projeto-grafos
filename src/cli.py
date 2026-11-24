@@ -15,6 +15,9 @@ def main():
     parser.add_argument("--out", help="Pasta de saída (obrigatória na Parte 1; padrão out/parte2 no benchmark)")
     parser.add_argument("--dataset", help="Pasta do dataset com arestas_paises.csv (ou icews para o dataset padrão)")
     parser.add_argument("--benchmark", action="store_true", help="Executa o benchmark da Parte 2")
+    parser.add_argument("--source", help="País de origem para consulta em --dataset")
+    parser.add_argument("--target", help="País de destino para consulta em --dataset")
+    parser.add_argument("--recorte-aciclico", action="store_true", help="Usa o recorte sem ciclos no Bellman-Ford em --dataset")
     parser.add_argument("--fonte-consumivel", action="store_true")
     parser.add_argument("--armadilhas", action="store_true")
     parser.add_argument("--metricas", action="store_true", help="Exporta métricas globais, camadas e graus para todos os mapas")
@@ -27,8 +30,11 @@ def main():
         from pathlib import Path
         from src.benchmark_parte2 import DATASET, SAIDA, executar_benchmark
 
-        if args.mapa or args.alg or args.metricas or args.armadilhas or args.interactive or args.fonte_consumivel or args.pasta_mapas:
-            parser.error("--benchmark não pode ser combinado com opções da Parte 1.")
+        if (
+            args.mapa or args.alg or args.source or args.target or args.recorte_aciclico
+            or args.metricas or args.armadilhas or args.interactive or args.fonte_consumivel or args.pasta_mapas
+        ):
+            parser.error("--benchmark não pode ser combinado com opções da Parte 1 nem com consulta individual.")
         pasta = DATASET if args.dataset is None or args.dataset.lower() == "icews" else Path(args.dataset)
         destino = Path(args.out) / "parte2_report.json" if args.out else SAIDA
         try:
@@ -39,7 +45,59 @@ def main():
         return
 
     if args.dataset is not None:
-        parser.error("--dataset deve ser utilizado com --benchmark.")
+        import json
+        from pathlib import Path
+        from src.benchmark_parte2 import DATASET, executar_consulta_dataset
+
+        if args.mapa or args.metricas or args.armadilhas or args.interactive or args.fonte_consumivel or args.pasta_mapas:
+            parser.error("--dataset não pode ser combinado com opções da Parte 1.")
+        if not args.alg or not args.source:
+            parser.error("Com --dataset sem --benchmark, informe --alg e --source.")
+
+        pasta = DATASET if args.dataset.lower() == "icews" else Path(args.dataset)
+        try:
+            resultado = executar_consulta_dataset(
+                pasta_dataset=pasta,
+                nome_algoritmo=args.alg,
+                origem=args.source,
+                destino=args.target,
+                recorte_aciclico=args.recorte_aciclico,
+            )
+        except (OSError, ValueError) as erro:
+            parser.exit(1, f"Erro na consulta ao dataset: {erro}\n")
+
+        if args.out:
+            caminho_saida = Path(args.out)
+            if caminho_saida.suffix.lower() != ".json":
+                caminho_saida = caminho_saida / f"consulta_{args.alg.lower()}.json"
+            caminho_saida.parent.mkdir(parents=True, exist_ok=True)
+            with caminho_saida.open("w", encoding="utf-8") as arquivo:
+                json.dump(resultado, arquivo, ensure_ascii=False, indent=2)
+                arquivo.write("\n")
+
+        print("Algoritmo:", resultado["algoritmo"])
+        print("Status:", resultado["status"])
+        if resultado["status"] == "CICLO_NEGATIVO":
+            print("Ciclo negativo encontrado:", resultado["ciclo"])
+            print("Custo do ciclo:", resultado["custo_ciclo"])
+            print("Usa par fraco:", resultado["usa_par_fraco"])
+        else:
+            print("Alcançados:", resultado["alcancados"])
+            if args.target:
+                print("Saltos:", resultado.get("saltos"))
+                if "custo_transformado" in resultado:
+                    print("Custo (10 - peso):", resultado["custo_transformado"])
+                elif "custo" in resultado:
+                    print("Custo:", resultado["custo"])
+                print("Caminho:", resultado.get("caminho"))
+                if "usa_par_fraco" in resultado:
+                    print("Usa par fraco:", resultado["usa_par_fraco"])
+        if args.out:
+            print("Resultado salvo em:", caminho_saida)
+        return
+
+    if args.source or args.target or args.recorte_aciclico:
+        parser.error("--source, --target e --recorte-aciclico exigem --dataset.")
     if args.out is None:
         parser.error("--out é obrigatório para as operações da Parte 1.")
 
