@@ -124,7 +124,16 @@ def generate(map_dirs, output):
                 r=fn(graph,start)
                 if algo=='DFS':
                     disc,finished,pred,arcs,has_cycle=r
-                    dfs_rows.append({'mapa':name, **{category: json.dumps([[encode(u,ids),encode(v,ids)] for u,v in values],ensure_ascii=False) for category,values in arcs.items()}})
+                    linha_dfs = {'mapa': name}
+
+                    for categoria, arcos in arcs.items():
+                        linha_dfs[categoria] = json.dumps(
+                            [[encode(u, ids), encode(v, ids)] for u, v in arcos],
+                            ensure_ascii=False,
+                        )
+                        linha_dfs[f'quantidade_{categoria}'] = len(arcos)
+
+                    dfs_rows.append(linha_dfs)
                     alcancado=disc.get(ALVO) is not None
                 elif algo=='BELLMAN_FORD':
                     dist,pred,cycle,cycle_cost=r
@@ -184,9 +193,22 @@ def generate(map_dirs, output):
                 comparisons.append(dict(mapa=name,abordagem=approach,passos=n,caminho_valido=valid,observacao='Sem caminho' if n is None else ('Caminho respeita regras' if valid else 'Caminho invalido pelas regras de chaves/esteiras')))
             bst=animations[name]['algoritmos']['BFS']
             comparisons.append(dict(mapa=name,abordagem='grafo_de_estados',passos=bst['passos'],caminho_valido=bst['status']=='OK',observacao='Modelagem com chaves e bonus'))
-        print(f'{name}: {len(graph)-1} estados, {len(rows)} arcos; armadilhas={len(traps)}',flush=True)
+        print(
+            f'{name}: {len(graph)-1} estados sem ALVO, '
+            f'{len(rows)} arcos incluindo ligações a ALVO; '
+            f'armadilhas={len(traps)}',
+            flush=True,
+        )
     save_csv(output/'solucoes.csv',FIELDS,results)
-    save_csv(output/'dfs_classificacao.csv',['mapa','arvore','retorno','avanco','cruzamento'],dfs_rows)
+    save_csv(
+        output / 'dfs_classificacao.csv',
+        [
+            'mapa', 'arvore', 'retorno', 'avanco', 'cruzamento',
+            'quantidade_arvore', 'quantidade_retorno',
+            'quantidade_avanco', 'quantidade_cruzamento',
+        ],
+        dfs_rows,
+    )
     save_csv(output/'comparacao_modelagem.csv',['mapa','abordagem','passos','caminho_valido','observacao'],comparisons)
     save_json(output/'dados_interativos.json',animations)
     return animations

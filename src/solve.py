@@ -1,11 +1,18 @@
 import os
 import csv
+import json
 from pathlib import Path
 
 from src.graphs.io import mapa_input
 from src.graphs.estados import ALVO, criar_grafo_estados, criar_estado_inicial
 from src.graphs.algorithms import bfs, dfs, dijkstra, bellman_ford
-from src.graphs.resultados import armadilhas, bonus_index, codigo_mapa, encode, save_csv
+from src.graphs.resultados import (
+    armadilhas,
+    bonus_index,
+    codigo_mapa,
+    encode,
+    save_csv,
+)
 
 ALGORITMOS = {
     "BFS": bfs,
@@ -28,13 +35,12 @@ def encontrar_saidas(mapa, grafo):
     saidas = []
 
     for estado in grafo:
-        
         if estado == ALVO:
             continue
 
         linha, coluna = estado[0], estado[1]
 
-        if mapa[linha][coluna] == 'G':
+        if mapa[linha][coluna] == "G":
             saidas.append(estado)
 
     return saidas
@@ -107,6 +113,8 @@ def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
     grafo = criar_grafo_estados(mapa, fonte_consumivel=fonte_consumivel)
     inicial = criar_estado_inicial(mapa)
 
+    ids = bonus_index(mapa, incluir_fonte=fonte_consumivel)
+
     nome_mapa = os.path.basename(caminho_mapa)
 
     if nome_algoritmo == "DIJKSTRA" and tem_peso_negativo(grafo):
@@ -132,6 +140,9 @@ def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
             "custo": extra["custo_ciclo"],
             "status": "CICLO_NEGATIVO",
             "caminho": extra["ciclo"],
+            "caminho_rotulado": [
+                encode(estado, ids) for estado in extra["ciclo"]
+            ],
         }
 
     if nao_alcancado(d[ALVO]):
@@ -155,6 +166,9 @@ def resolver(caminho_mapa, nome_algoritmo, fonte_consumivel=False):
         "custo": custo,
         "status": "OK",
         "caminho": caminho,
+        "caminho_rotulado": [
+            encode(estado, ids) for estado in caminho
+        ],
     }
 
 
@@ -163,13 +177,18 @@ def calcular_e_salvar_armadilhas(caminho_mapa, pasta_saida):
     grafo = criar_grafo_estados(mapa)
     ids = bonus_index(mapa)
     traps = armadilhas(grafo)
-    total = len(grafo) - 1  # exclui o no virtual ALVO
+    total = len(grafo) - 1  # Exclui o nó virtual ALVO.
 
     nome = codigo_mapa(os.path.splitext(os.path.basename(caminho_mapa))[0])
     pasta_saida = Path(pasta_saida)
     pasta_saida.mkdir(parents=True, exist_ok=True)
+
     arquivo = pasta_saida / f"armadilhas_{nome}.csv"
-    save_csv(arquivo, ["estado"], [{"estado": encode(s, ids)} for s in traps])
+    save_csv(
+        arquivo,
+        ["estado"],
+        [{"estado": encode(s, ids)} for s in traps],
+    )
 
     return {
         "mapa": nome,
@@ -185,11 +204,21 @@ def gravar_resultado_csv(resultado, pasta_saida):
     arquivo_csv = os.path.join(pasta_saida, "solucoes.csv")
     existe = os.path.exists(arquivo_csv)
 
+    caminho = resultado.get("caminho_rotulado", resultado["caminho"])
+    caminho_csv = json.dumps(caminho, ensure_ascii=False) if caminho else ""
+
     with open(arquivo_csv, "a", newline="", encoding="utf-8") as arquivo:
         escritor = csv.writer(arquivo)
 
         if not existe:
-            escritor.writerow(["mapa", "algoritmo", "passos", "custo", "status", "caminho"])
+            escritor.writerow([
+                "mapa",
+                "algoritmo",
+                "passos",
+                "custo",
+                "status",
+                "caminho",
+            ])
 
         escritor.writerow([
             resultado["mapa"],
@@ -197,5 +226,5 @@ def gravar_resultado_csv(resultado, pasta_saida):
             resultado["passos"],
             resultado["custo"],
             resultado["status"],
-            resultado["caminho"],
+            caminho_csv,
         ])
