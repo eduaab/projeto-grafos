@@ -29,8 +29,9 @@ def codigo_mapa(nome):
     casado = re.match(r'^(m\d+)(?:_|$)', nome)
     return casado.group(1) if casado else nome
 
-def bonus_index(mapa):
-    return {(i,j): k for k,(i,j) in enumerate((i,j) for i,r in enumerate(mapa) for j,x in enumerate(r) if x == '+')}
+def bonus_index(mapa, incluir_fonte=False):
+    simbolos = ('+', '*') if incluir_fonte else ('+',)
+    return {(i,j): k for k,(i,j) in enumerate((i,j) for i,r in enumerate(mapa) for j,x in enumerate(r) if x in simbolos)}
 
 def encode(st, ids):
     return 'ALVO' if st == ALVO else rotulo_estado(st, ids)
@@ -144,7 +145,29 @@ def generate(map_dirs, output):
             if name=='m03_tres_chaves' and algo=='BELLMAN_FORD' and path:
                 save_json(output/'percurso_m03.json', [{'estado':encode(s,ids),'custo_acumulado':custo(graph,path[:idx+1])} for idx,s in enumerate(path)])
             if name=='m06_fonte' and algo=='BELLMAN_FORD':
-                save_json(output/'ciclo_negativo_m06.json',{'ciclo':[encode(s,ids) for s in cycle] if cycle else [],'custo':cost,'status':status})
+                grafo_consumivel=criar_grafo_estados(maze,fonte_consumivel=True)
+                ids_consumivel=bonus_index(maze,incluir_fonte=True)
+                dist_c,pred_c,ciclo_c,custo_ciclo_c=bellman_ford(grafo_consumivel,start)
+                if ciclo_c:
+                    status_c,caminho_c,passos_c,custo_c='CICLO_NEGATIVO',[],None,custo_ciclo_c
+                elif dist_c.get(ALVO) is None or dist_c.get(ALVO)==float('inf'):
+                    status_c,caminho_c,passos_c,custo_c='SEM_SOLUCAO',[],None,None
+                else:
+                    caminho_c=reconstruir(pred_c,ALVO)
+                    status_c='OK' if caminho_c else 'SEM_SOLUCAO'
+                    passos_c=len(caminho_c)-2 if caminho_c else None
+                    custo_c=custo(grafo_consumivel,caminho_c) if caminho_c else None
+                save_json(output/'ciclo_negativo_m06.json',{
+                    'ciclo':[encode(s,ids) for s in cycle] if cycle else [],
+                    'custo':cost,
+                    'status':status,
+                    'fonte_consumivel':{
+                        'status':status_c,
+                        'passos':passos_c,
+                        'custo':custo_c,
+                        'caminho':[encode(s,ids_consumivel) for s in caminho_c],
+                    },
+                })
             if name=='m05_bonus' and algo=='BELLMAN_FORD':
                 pos_graph=grafo_posicoes_ponderado(maze); pos_start=posicao_inicial(maze)
                 _,_,pos_cycle,pos_cycle_cost=bellman_ford(pos_graph,pos_start)

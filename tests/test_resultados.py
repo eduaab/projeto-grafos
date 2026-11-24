@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from src.graphs.io import mapa_input
 from src.graphs.estados import ALVO, criar_grafo_estados
-from src.graphs.resultados import generate, armadilhas, codigo_mapa, gerar_html_interativo
+from src.graphs.resultados import generate, armadilhas, bonus_index, codigo_mapa, gerar_html_interativo
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -88,3 +88,24 @@ def test_calcular_e_salvar_armadilhas_usa_nome_curto_do_mapa(tmp_path):
     with (tmp_path/'armadilhas_m04.csv').open(encoding='utf-8') as f:
         linhas = list(csv.DictReader(f))
     assert len(linhas) == 4
+
+
+def test_bonus_index_inclui_fonte_quando_pedido():
+    mapa = [list('#+*#')]
+    assert bonus_index(mapa) == {(0, 1): 0}
+    assert bonus_index(mapa, incluir_fonte=True) == {(0, 1): 0, (0, 2): 1}
+
+
+def test_m06_exporta_com_fonte_consumivel(tmp_path):
+    origem = ROOT / 'data' / 'mapas' / 'm06_fonte.txt'
+    pasta_mapas = tmp_path / 'mapas'
+    pasta_mapas.mkdir()
+    (pasta_mapas / origem.name).write_text(origem.read_text(encoding='utf-8'), encoding='utf-8')
+    saida = tmp_path / 'saida'
+    generate([pasta_mapas], saida)
+    dados = json.loads((saida / 'ciclo_negativo_m06.json').read_text(encoding='utf-8'))
+    assert dados['status'] == 'CICLO_NEGATIVO'
+    assert dados['custo'] < 0
+    assert dados['fonte_consumivel']['status'] == 'OK'
+    assert dados['fonte_consumivel']['passos'] == 10
+    assert dados['fonte_consumivel']['custo'] == 10
