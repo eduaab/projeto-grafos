@@ -23,7 +23,7 @@ export function MazeEditorGrid({ grid, onPaint }: MazeEditorGridProps) {
   const [isDragging, setIsDragging] = useState(false)
   const zoomCenter = useRef<{ x: number; y: number } | null>(null)
   const panDrag = useRef<{ pointerId: number; x: number; y: number; left: number; top: number } | null>(null)
-  const paintingRef = useRef(false)
+  const paintDrag = useRef<{ pointerId: number; x: number; y: number; cell: HTMLDivElement } | null>(null)
   const rows = grid.length
   const cols = grid[0]?.length ?? 0
   const fitZoom = viewport && cols > 0 && rows > 0 ? Math.min(
@@ -56,18 +56,6 @@ export function MazeEditorGrid({ grid, onPaint }: MazeEditorGridProps) {
     el.scrollLeft = center.x * el.scrollWidth - el.clientWidth / 2
     el.scrollTop = center.y * el.scrollHeight - el.clientHeight / 2
   }, [manualZoom])
-
-  useEffect(() => {
-    const stop = () => {
-      paintingRef.current = false
-    }
-    window.addEventListener('pointerup', stop)
-    window.addEventListener('pointercancel', stop)
-    return () => {
-      window.removeEventListener('pointerup', stop)
-      window.removeEventListener('pointercancel', stop)
-    }
-  }, [])
 
   const changeZoom = (factor: number) => {
     const el = viewportRef.current
@@ -106,6 +94,32 @@ export function MazeEditorGrid({ grid, onPaint }: MazeEditorGridProps) {
     if (event.pointerId !== panDrag.current?.pointerId) return
     panDrag.current = null
     setIsDragging(false)
+  }
+
+  const startPaint = (event: PointerEvent<HTMLDivElement>, row: number, col: number) => {
+    if (handMode || event.button !== 0 || paintDrag.current) return
+    event.preventDefault()
+    const cell = event.currentTarget
+    cell.setPointerCapture(event.pointerId)
+    paintDrag.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, cell }
+    onPaint(row, col)
+  }
+
+  const continuePaint = (event: PointerEvent<HTMLDivElement>) => {
+    const drag = paintDrag.current
+    if (!drag || event.pointerId !== drag.pointerId || !(event.buttons & 1)) return
+    if (event.clientX === drag.x && event.clientY === drag.y) return
+    drag.x = event.clientX
+    drag.y = event.clientY
+
+    const cell = document.elementFromPoint(drag.x, drag.y)?.closest<HTMLDivElement>('[data-editor-cell]')
+    if (!cell || cell === drag.cell || !event.currentTarget.contains(cell)) return
+    drag.cell = cell
+    onPaint(Number(cell.dataset.row), Number(cell.dataset.col))
+  }
+
+  const stopPaint = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerId === paintDrag.current?.pointerId) paintDrag.current = null
   }
 
   const gridStyle = {
@@ -153,6 +167,10 @@ export function MazeEditorGrid({ grid, onPaint }: MazeEditorGridProps) {
               style={gridStyle}
               role="img"
               aria-label={`Grade do editor, ${cols} por ${rows} células`}
+              onPointerMove={continuePaint}
+              onPointerUp={stopPaint}
+              onPointerCancel={stopPaint}
+              onLostPointerCapture={stopPaint}
               onContextMenu={(event) => event.preventDefault()}
             >
               {grid.map((row, r) =>
@@ -162,15 +180,10 @@ export function MazeEditorGrid({ grid, onPaint }: MazeEditorGridProps) {
                     <div
                       key={`${r}-${c}`}
                       className={`maze-cell maze-editor-cell maze-cell--${cell.type}`}
-                      onPointerDown={(event) => {
-                        if (handMode || event.button !== 0) return
-                        event.preventDefault()
-                        paintingRef.current = true
-                        onPaint(r, c)
-                      }}
-                      onPointerEnter={() => {
-                        if (!handMode && paintingRef.current) onPaint(r, c)
-                      }}
+                      data-editor-cell
+                      data-row={r}
+                      data-col={c}
+                      onPointerDown={(event) => startPaint(event, r, c)}
                     >
                       <MazeCellContent cell={cell} />
                     </div>
