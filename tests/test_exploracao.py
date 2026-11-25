@@ -44,6 +44,17 @@ def test_recusa_dijkstra_na_visualizacao():
     assert dados['algoritmos']['DIJKSTRA']['tempo_ms'] is None
 
 
+def test_custo_acumulado_do_percurso_usa_terreno_e_bonus():
+    mapa = [list(linha) for linha in ['#######', '#S,+.G#', '#######']]
+    algoritmos = explorar(mapa)['algoritmos']
+    for nome in ('BFS', 'DFS', 'BELLMAN_FORD'):
+        resultado = algoritmos[nome]
+        assert resultado['custos_acumulados'] == [0, 3, -1, 0, 1]
+        assert len(resultado['custos_acumulados']) == len(resultado['caminho'])
+        assert resultado['custos_acumulados'][-1] == resultado['custo']
+    assert algoritmos['DIJKSTRA']['custos_acumulados'] == []
+
+
 def test_fonte_consumivel_registra_objeto_e_preserva_mapa():
     mapa = [list(linha) for linha in ['#######', '#S*..G#', '#######']]
     dados = explorar(mapa, fonte_consumivel=True)

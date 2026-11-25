@@ -43,7 +43,7 @@ def explorar(mapa, fonte_consumivel=False):
                 eventos.append([indices[estado], valor, rodada])
 
         resultado = {'eventos': eventos, 'status': 'OK', 'caminho': [],
-                     'passos': None, 'custo': None, 'ciclo': [], 'classes': {},
+                     'passos': None, 'custo': None, 'custos_acumulados': [], 'ciclo': [], 'classes': {},
                      'tempo_ms': None}
         if nome == 'DIJKSTRA' and negativo:
             resultado['status'] = 'RECUSA'
@@ -69,8 +69,14 @@ def explorar(mapa, fonte_consumivel=False):
             resultado['status'] = 'SEM_SOLUCAO'
         else:
             caminho = reconstruir(predecessores, ALVO)
-            resultado['caminho'] = [indices[estado] for estado in caminho if estado != ALVO]
+            caminho_real = caminho[:-1]  # O arco de G para ALVO tem peso zero.
+            acumulados = [0] if caminho_real else []
+            for origem, destino in zip(caminho_real, caminho_real[1:]):
+                acumulados.append(acumulados[-1] + custo(grafo, (origem, destino)))
+
+            resultado['caminho'] = [indices[estado] for estado in caminho_real]
             resultado['passos'] = len(caminho) - 2
-            resultado['custo'] = custo(grafo, caminho)
+            resultado['custo'] = acumulados[-1] if acumulados else 0
+            resultado['custos_acumulados'] = acumulados
         dados['algoritmos'][nome] = resultado
     return dados

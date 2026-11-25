@@ -163,7 +163,9 @@ function makeRunner(name, start) {
   footer.className = 'panel-footer';
   panel.append(header, viewport, movement, footer);
   header.addEventListener('click', () => showDetails(name));
-  const events = isPathView() ? (result?.caminho || []).map((id) => [id, null, 0]) : result?.eventos || [];
+  const events = isPathView()
+    ? (result?.caminho || []).map((id, step) => [id, result.custos_acumulados?.[step], 0])
+    : result?.eventos || [];
   return { name, result, events, start, panel, badge, footer, cells, board, overlay, movement, viewport, surface: mapSurface,
     index: 0, counts: new Map(), state: null, event: null };
 }
@@ -359,6 +361,10 @@ function renderRoute(runner) {
     runner.movement.textContent = last
       ? `Passo ${last.step} · (${last.from[0]},${last.from[1]}) ${arrowsForMove(last.from, last.to)} (${last.to[0]},${last.to[1]}) · ${last.returning ? 'retorno por trecho já usado' : 'avanço'}`
       : runner.events.length ? 'Início do caminho · avance para acompanhar o sentido.' : 'Este resultado não possui um caminho final para reproduzir.';
+    const accumulatedCost = runner.event?.[1];
+    if (Number.isFinite(accumulatedCost)) {
+      runner.movement.textContent += ` · Custo acumulado: ${accumulatedCost.toLocaleString('pt-BR')}`;
+    }
   } else {
     runner.movement.textContent = runner.index === runner.events.length && runner.result?.caminho.length
       ? 'Setas do caminho final disponíveis. Use Reproduzir caminho final para ver a ordem e os retornos.'
@@ -589,6 +595,7 @@ function showDetails(name, address) {
   detailField(grid, 'Consumíveis usados', state?.[3].join(', ') || 'Nenhum');
   const valueLabel = name === 'DFS' ? 'Tempo de descoberta' : name === 'BFS' ? 'Distância em passos' : 'Estimativa de custo';
   detailField(grid, isPathView() ? 'Passo atual no percurso' : valueLabel, isPathView() ? Math.max(0, runner.index - 1) : runner.event?.[1]);
+  if (isPathView()) detailField(grid, 'Custo acumulado até a posição atual', runner.event?.[1]);
   if (!isPathView() && name === 'BELLMAN_FORD') detailField(grid, 'Rodada da atualização', runner.event?.[2]);
   if (address) {
     const cell = runner.cells.get(address);
