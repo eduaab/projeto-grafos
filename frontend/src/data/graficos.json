@@ -51,7 +51,7 @@
     "arquivo": "avd_exp4_localizacao.png",
     "grupo": "exploratorios",
     "titulo": "Intensidade por localização",
-    "legenda": "Intensidade conforme o local do evento."
+    "legenda": "Mapa da intensidade média dos eventos por país de ocorrência."
   },
   {
     "arquivo": "avd_exp4_setores.png",

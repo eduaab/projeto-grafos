@@ -56,7 +56,8 @@ function Cards() {
         <button type="button" className="btn ldt-seta" aria-label="Etapa anterior" onClick={() => escolher(selecionada - 1)}>←</button>
         <ol className="ldt-trilho" ref={trilhoRef}>
           {etapas.map((item, indice) => {
-            const capa = graficosDa(item)[0]
+            const graficos = graficosDa(item)
+            const capa = graficos[0]
             return (
               <li key={item.id}>
                 <button
@@ -68,12 +69,16 @@ function Cards() {
                   <span className="ldt-numero">{String(indice + 1).padStart(2, '0')}</span>
                   <span className="ldt-card-titulo">{item.titulo}</span>
                   <span className="ldt-card-resumo">{item.resumo}</span>
-                  <span className="ldt-card-capa">
-                    {capa ? <img src={`/parte2/${capa.arquivo}`} alt="" loading="lazy" /> : <span>sem gráfico</span>}
-                  </span>
-                  <span className="ldt-card-rodape">
-                    {item.graficos.length} gráfico{item.graficos.length === 1 ? '' : 's'}
-                  </span>
+                  {capa && (
+                    <>
+                      <span className="ldt-card-capa">
+                        <img src={`/parte2/${capa.arquivo}`} alt="" loading="lazy" />
+                      </span>
+                      <span className="ldt-card-rodape">
+                        {graficos.length} gráfico{graficos.length === 1 ? '' : 's'}
+                      </span>
+                    </>
+                  )}
                 </button>
               </li>
             )
