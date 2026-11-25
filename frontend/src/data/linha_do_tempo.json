@@ -1,0 +1,72 @@
+[
+  {
+    "id": "dataset",
+    "titulo": "Escolha do dataset",
+    "resumo": "ICEWS Coded Event Data (Harvard Dataverse), um arquivo por ano de 1995 a 2022.",
+    "detalhe": "Cada linha é um evento entre dois atores, com país de origem, país de destino, intensidade de −10 a +10 e código CAMEO.",
+    "arquivos": ["data/dataset_parte2/README.md"],
+    "graficos": []
+  },
+  {
+    "id": "piloto",
+    "titulo": "Piloto com 1995",
+    "resumo": "Exploração de um único ano para conhecer colunas, tipos, nulos e duplicados.",
+    "detalhe": "Leitura do arquivo de 1995, conversão de tipos, contagem de ausências, IDs repetidos e coordenadas fora de faixa.",
+    "arquivos": ["data/dataset_parte2/EDA.ipynb"],
+    "graficos": []
+  },
+  {
+    "id": "verificacao",
+    "titulo": "Verificação dos 28 anos",
+    "resumo": "Mesma checagem do piloto aplicada a todos os anos, lendo cada arquivo em partes.",
+    "detalhe": "Confere as colunas de cada ano, conta nulos (o texto \"NULL\" de 2017 passa a valer como ausente), duplicados, estatísticas de intensidade e presença de cada país por ano.",
+    "arquivos": ["data/dataset_parte2/resumir_anos.py"],
+    "graficos": ["avd_apoio_heatmap_ausencias.png"]
+  },
+  {
+    "id": "grafo",
+    "titulo": "Grafo de países",
+    "resumo": "Os 28 anos unidos em um grafo dirigido: 250 países e 29.381 arestas.",
+    "detalhe": "Uma aresta por par ordenado de países, com peso igual à intensidade média, número de eventos e a marcação par_fraco para pares com 1 evento. Nomes de países padronizados (Macedônia do Norte, Curaçao).",
+    "arquivos": ["data/dataset_parte2/gerar_arestas.py", "src/graphs/io.py", "src/graphs/graph.py"],
+    "graficos": ["avd_exp1_graus.png", "avd_exp2_histograma_peso.png", "avd_exp3_eventos_vs_peso.png"]
+  },
+  {
+    "id": "recorte",
+    "titulo": "Ciclos negativos e recorte acíclico",
+    "resumo": "Recorte sem ciclos para o Bellman-Ford e peso transformado para o Dijkstra.",
+    "detalhe": "O recorte acíclico ordena os países pela atividade internacional e mantém só as arestas que seguem essa ordem. O Dijkstra usa o custo 10 − peso.",
+    "arquivos": ["src/graphs/graph.py", "src/benchmark_parte2.py"],
+    "graficos": []
+  },
+  {
+    "id": "benchmark",
+    "titulo": "Benchmark dos algoritmos",
+    "resumo": "BFS, DFS, Dijkstra e Bellman-Ford em 10%, 50% e 100% dos países.",
+    "detalhe": "5 repetições com seed 42 e consultas entre pares de países. Resultado em out/parte2/parte2_report.json.",
+    "arquivos": ["src/benchmark_parte2.py", "out/parte2/parte2_report.json"],
+    "graficos": ["alg_01_tempo_medio.png", "alg_02_escalabilidade.png", "alg_03_bfs_vs_dijkstra.png"]
+  },
+  {
+    "id": "exploratorios",
+    "titulo": "Análise exploratória",
+    "resumo": "Intensidade média por ano, família CAMEO, localização, setor e veículo.",
+    "detalhe": "Lê os arquivos brutos dos 28 anos e agrupa a intensidade por cada dimensão.",
+    "arquivos": ["data/dataset_parte2/Parte2_ICEWS.ipynb"],
+    "graficos": [
+      "avd_exp4_ano.png",
+      "avd_exp4_cameo.png",
+      "avd_exp4_localizacao.png",
+      "avd_exp4_setores.png",
+      "avd_exp4_veiculos.png"
+    ]
+  },
+  {
+    "id": "explanatorios",
+    "titulo": "Gráficos explanatórios",
+    "resumo": "Os dois gráficos que sustentam as conclusões do grupo.",
+    "detalhe": "",
+    "arquivos": ["data/dataset_parte2/Parte2_ICEWS.ipynb"],
+    "graficos": ["avd_explanatorio1_nucleos.png", "avd_explanatorio2_domestico_setor.png"]
+  }
+]

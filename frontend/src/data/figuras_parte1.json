@@ -1,0 +1,7 @@
+[
+  { "arquivo": "arvore_bfs_m02.png", "titulo": "Árvore da BFS", "legenda": "Mapa m02." },
+  { "arquivo": "grafo_camadas_m02.png", "titulo": "Grafo em camadas", "legenda": "Mapa m02." },
+  { "arquivo": "heatmap_multiplicidade_m08.png", "titulo": "Heatmap de multiplicidade", "legenda": "Mapa m08." },
+  { "arquivo": "percurso_m03.png", "titulo": "Percurso", "legenda": "Mapa m03." },
+  { "arquivo": "percurso_m08.png", "titulo": "Percurso", "legenda": "Mapa m08." }
+]
