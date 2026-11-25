@@ -102,7 +102,7 @@ function addMap(id, data, title) {
   mapSelect.appendChild(option);
 }
 
-function makeRunner(name) {
+function makeRunner(name, start) {
   const result = currentMap.algoritmos?.[name];
   const panel = document.createElement('article');
   panel.className = 'panel';
@@ -162,10 +162,9 @@ function makeRunner(name) {
   const footer = document.createElement('div');
   footer.className = 'panel-footer';
   panel.append(header, viewport, movement, footer);
-  panelContainer.appendChild(panel);
   header.addEventListener('click', () => showDetails(name));
   const events = isPathView() ? (result?.caminho || []).map((id) => [id, null, 0]) : result?.eventos || [];
-  return { name, result, events, badge, footer, cells, board, overlay, movement, viewport, surface: mapSurface,
+  return { name, result, events, start, panel, badge, footer, cells, board, overlay, movement, viewport, surface: mapSurface,
     index: 0, counts: new Map(), state: null, event: null };
 }
 
@@ -375,26 +374,140 @@ function arrowsForMove(from, to) {
 
 function render() {
   for (const runner of runners) {
-    setRunnerPosition(runner, position);
+    setRunnerPosition(runner, Math.max(0, position - runner.start));
     renderRunner(runner);
   }
+  renderComparison();
   byId('progress').value = position;
-  byId('progressText').textContent = `${position.toLocaleString('pt-BR')} / ${maximum.toLocaleString('pt-BR')} ${isPathView() ? 'posições' : 'eventos'}`;
+  const progressUnit = runners.some((runner) => runner.start && runner.events.length)
+    ? 'avanços' : isPathView() ? 'posições' : 'eventos';
+  byId('progressText').textContent = `${position.toLocaleString('pt-BR')} / ${maximum.toLocaleString('pt-BR')} ${progressUnit}`;
   byId('back').disabled = !position || loading;
   byId('restart').disabled = !position || loading;
   byId('next').disabled = position >= maximum || loading;
   byId('play').disabled = !maximum || loading;
 }
 
+// [IA] ChatGPT – visualização comparativa dos resultados do simulador.
+const comparisonMetrics = [
+  { name: 'Custo do percurso', value: (result) => result.status === 'OK' ? result.custo : null },
+  { name: 'Passos no percurso', value: (result) => result.status === 'OK' ? result.passos : null },
+  { name: 'Tempo Python (ms)', value: (result) => result.tempo_ms, unit: 'ms' },
+];
+
+const comparisonNumber = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 3 });
+
+let comparisonRunners;
+let comparisonPhase;
+
+function comparisonChart(metric, entries) {
+  const chart = document.createElement('div');
+  chart.className = 'comparison-chart';
+  const title = document.createElement('h3');
+  title.textContent = metric.name;
+  const list = document.createElement('ul');
+  list.setAttribute('aria-label', metric.name);
+  chart.append(title, list);
+
+  const rows = entries.map(({ name, result, phase }) => ({
+    name,
+    result,
+    phase,
+    value: phase === 'done' ? metric.value(result) : null,
+  }));
+  const values = rows.map(({ value }) => value).filter(Number.isFinite);
+  const min = Math.min(0, ...values);
+  const max = Math.max(0, ...values);
+  const percentage = (value) => 100 * (value - min) / (max - min || 1);
+  const baseline = percentage(0);
+
+  for (const { name, result, phase, value } of rows) {
+    const row = document.createElement('li');
+    row.dataset.algorithm = name;
+    const label = document.createElement('strong');
+    label.textContent = algorithmNames[name];
+    const track = document.createElement('span');
+    track.className = 'comparison-track';
+    track.setAttribute('aria-hidden', 'true');
+    const summary = document.createElement('span');
+    summary.className = 'comparison-value';
+    if (Number.isFinite(value)) {
+      const bar = document.createElement('span');
+      const tip = percentage(value);
+      track.style.setProperty('--zero', baseline + '%');
+      bar.className = 'comparison-bar';
+      bar.classList.toggle('zero', value === 0);
+      bar.style.left = Math.min(tip, baseline) + '%';
+      bar.style.width = Math.abs(tip - baseline) + '%';
+      track.appendChild(bar);
+      summary.textContent = metric.unit && value > 0 && value < 0.001
+        ? '< 0,001 ms'
+        : comparisonNumber.format(value) + (metric.unit ? ' ' + metric.unit : '');
+    } else {
+      track.classList.add('missing');
+      if (phase === 'pending') {
+        summary.textContent = 'Aguardando conclusão';
+      } else if (!result) {
+        summary.textContent = 'Aguardando cálculo';
+      } else {
+        summary.textContent = result.status === 'OK' ? 'Indisponível' : statusNames[result.status] || 'Indisponível';
+      }
+    }
+    row.append(label, summary, track);
+    list.appendChild(row);
+  }
+  return chart;
+}
+
+function renderComparison() {
+  const entries = runners.map(({ name, result, index, events }) => {
+    let phase = 'unavailable';
+    if (result && events.length) phase = index === events.length ? 'done' : 'pending';
+    return { name, result, phase };
+  });
+  const phase = loading ? 'loading' : entries.map((entry) => entry.phase).join(',');
+  if (comparisonRunners === runners && comparisonPhase === phase) return;
+  comparisonRunners = runners;
+  comparisonPhase = phase;
+
+  const charts = byId('comparisonCharts');
+  const note = byId('comparisonNote');
+  if (loading || !entries.length) {
+    note.textContent = loading ? 'Calculando os resultados do mapa…' : 'Selecione um ou mais algoritmos para comparar.';
+    charts.replaceChildren();
+    return;
+  }
+  note.textContent = 'Os valores aparecem quando cada algoritmo termina. O tempo é o da execução em Python.';
+  charts.replaceChildren(...comparisonMetrics.map((metric) => comparisonChart(metric, entries)));
+}
+
+function updatePlaybackBounds() {
+  maximum = Math.max(0, ...runners.map(({ start, events }) => events.length ? start + events.length : 0));
+  position = Math.min(position, maximum);
+  byId('progress').max = maximum;
+}
+
+function restartPlayback() {
+  position = 0;
+  for (const runner of runners) runner.start = 0;
+  updatePlaybackBounds();
+  render();
+}
+
 function configurePanels(reset = true) {
   stop();
-  if (reset) position = 0;
-  panelContainer.replaceChildren();
+  const previous = new Map();
+  if (reset) {
+    position = 0;
+  } else {
+    for (const runner of runners) previous.set(runner.name, runner);
+  }
+
   const names = [...algorithmPicker.querySelectorAll('input:checked')].map((input) => input.value);
+  runners = names.map((name) => previous.get(name) || makeRunner(name, position));
+  panelContainer.replaceChildren(...runners.map((runner) => runner.panel));
   panelContainer.classList.toggle('compare', names.length > 1);
-  runners = names.map(makeRunner);
-  maximum = Math.max(0, ...runners.map((runner) => runner.events.length));
-  position = Math.min(position, maximum);
+  updatePlaybackBounds();
   if (!names.length) {
     const empty = document.createElement('p');
     empty.className = 'notice';
@@ -405,7 +518,6 @@ function configurePanels(reset = true) {
   byId('viewHint').textContent = isPathView()
     ? 'As setas indicam o sentido real do percurso. O contador mostra passagens pelo caminho final.'
     : 'Os números contam estados processados. A exploração pode trocar de ramo.';
-  byId('progress').max = maximum;
   render();
   layoutObserver.disconnect();
   layoutObserver.observe(document.querySelector('.playback'));
@@ -525,7 +637,7 @@ function advance(amount) {
 function play() {
   if (timer !== null) { stop(); return; }
   focusMaps();
-  if (position === maximum) { position = 0; render(); }
+  if (position === maximum) restartPlayback();
   byId('play').textContent = 'Pausar';
   timer = window.setInterval(() => advance(Number(byId('batch').value)), Number(byId('speed').value));
 }
@@ -599,7 +711,7 @@ byId('calculate').addEventListener('click', calculate);
 byId('play').addEventListener('click', play);
 byId('next').addEventListener('click', () => { stop(); advance(Number(byId('batch').value)); });
 byId('back').addEventListener('click', () => { stop(); advance(-Number(byId('batch').value)); });
-byId('restart').addEventListener('click', () => { stop(); position = 0; render(); });
+byId('restart').addEventListener('click', () => { stop(); restartPlayback(); });
 byId('progress').addEventListener('input', () => { stop(); position = Number(byId('progress').value); render(); });
 byId('speed').addEventListener('change', () => { if (timer !== null) { stop(); play(); } });
 byId('layer').addEventListener('change', render);

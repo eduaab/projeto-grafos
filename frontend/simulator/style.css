@@ -257,3 +257,74 @@ dialog::-webkit-scrollbar {
   .primary-metrics { gap: 8px; }
   .primary-metrics .detail { padding: 12px; }
 }
+
+.comparison {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--paper);
+}
+.comparison h2 { margin: 0; }
+#comparisonNote { margin: 8px 0 0; }
+#comparisonCharts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+#comparisonCharts:empty { margin: 0; }
+.comparison-chart {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffaf4;
+}
+.comparison-chart h3 { margin: 0; font-size: 15px; }
+.comparison-chart ul { display: grid; list-style: none; gap: 12px; margin: 14px 0 0; padding: 0; }
+.comparison-chart li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 5px 10px;
+  font-size: 13px;
+}
+.comparison-chart [data-algorithm="BFS"] { --algorithm-color: #25689d; }
+.comparison-chart [data-algorithm="DFS"] { --algorithm-color: #a64e24; }
+.comparison-chart [data-algorithm="DIJKSTRA"] { --algorithm-color: #29745d; }
+.comparison-chart [data-algorithm="BELLMAN_FORD"] { --algorithm-color: #794c99; }
+.comparison-chart strong::before {
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--algorithm-color);
+}
+.comparison-track {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 12px;
+  border-radius: 3px;
+  background: #eee6dc;
+}
+.comparison-track.missing { visibility: hidden; }
+.comparison-track:not(.missing)::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: -2px;
+  bottom: -2px;
+  left: var(--zero);
+  width: 1px;
+  background: #857364;
+}
+.comparison-bar {
+  position: absolute;
+  inset-block: 0;
+  border-radius: 3px;
+  background: var(--algorithm-color);
+}
+.comparison-bar.zero { min-width: 3px; transform: translateX(-50%); }
+.comparison-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 650; }

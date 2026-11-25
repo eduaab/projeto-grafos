@@ -29,6 +29,11 @@
       <label class="progress"><span id="progressLabel">Exploração</span><input id="progress" type="range" min="0" max="0" value="0"><span id="progressText">0 eventos</span></label>
     </section>
     <p class="hint">Os algoritmos selecionados avançam juntos. Em Caminho final, as setas mostram o sentido e o passo atual. Os contadores de cada visualização são independentes.</p>
+    <section class="comparison" aria-labelledby="comparisonTitle">
+      <h2 id="comparisonTitle">Comparação dos algoritmos</h2>
+      <p id="comparisonNote" class="hint" role="status"></p>
+      <div id="comparisonCharts"></div>
+    </section>
   </main>
   <dialog id="details"><div class="dialog-heading"><h2 id="detailsTitle">Detalhes</h2><button id="closeDetails" aria-label="Fechar detalhes">×</button></div><div id="detailsBody"></div></dialog>
   <script>const DATA = __DATA__; const DEFAULT_MAP=__DEFAULT__;</script>
