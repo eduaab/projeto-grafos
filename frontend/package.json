@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/sync-mapas.mjs && node scripts/sync-graficos.mjs",
+    "predev": "node scripts/sync-mapas.mjs && node scripts/sync-graficos.mjs && node scripts/sync-resultados.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/sync-mapas.mjs && node scripts/sync-graficos.mjs",
+    "prebuild": "node scripts/sync-mapas.mjs && node scripts/sync-graficos.mjs && node scripts/sync-resultados.mjs",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"

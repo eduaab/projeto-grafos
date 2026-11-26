@@ -47,4 +47,5 @@ frontend/*.local
 frontend/public/mapas/
 frontend/public/parte1/
 frontend/public/parte2/
+frontend/public/resultados/
 frontend/src/data/mapas.manifest.json

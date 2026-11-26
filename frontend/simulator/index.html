@@ -7,14 +7,14 @@
   <style>__STYLE__</style>
 </head>
 <body>
-  <header class="site-header"><a href="/">Projeto Grafos</a><nav aria-label="Navegação"><a href="/labirintos">Mapas</a><a href="/editor">Editor</a><a href="/graficos">Gráficos</a></nav></header>
+  <header class="site-header"><a href="/" class="brand">Projeto Grafos</a><nav class="site-nav" aria-label="Navegação principal"><a class="site-nav-link" href="/">Início</a><a class="site-nav-link" href="/labirintos">Mapas</a><a class="site-nav-link" href="/editor">Editor</a><a class="site-nav-link" href="/labirinto_interativo.html" aria-current="page">Simulador</a></nav></header>
   <main>
-    <div class="heading"><div><span class="eyebrow">EXPLORAÇÃO DO GRAFO DE ESTADOS</span><h1>Simulador</h1><p>Acompanhe cada visita, inclusive fora do caminho final.</p></div><label class="import-button">Importar .txt<input id="importFile" type="file" accept=".txt" hidden></label></div>
     <p id="message" role="status" hidden></p>
     <section class="selection" aria-label="Configuração">
       <label>Mapa<select id="mapSelect"></select></label>
       <fieldset id="algorithms" class="algorithm-picker"><legend>Algoritmos para comparar</legend><label><input type="checkbox" value="BFS" checked> BFS</label><label><input type="checkbox" value="DFS"> DFS</label><label><input type="checkbox" value="DIJKSTRA"> Dijkstra</label><label><input type="checkbox" value="BELLMAN_FORD"> Bellman-Ford</label><button id="selectAll" type="button">Selecionar todos</button></fieldset>
       <label class="check"><input id="source" type="checkbox"> Fonte consumível</label>
+      <label class="import-button">Importar .txt<input id="importFile" type="file" accept=".txt" hidden></label>
       <button id="calculate" type="button" hidden>Calcular exploração</button>
     </section>
     <div class="view-controls"><label>Visualização<select id="view"><option value="exploration">Exploração completa</option><option value="path">Reproduzir caminho final</option></select></label><button id="focusMaps" type="button">Focar nos mapas</button><p id="viewHint" class="hint">Os números contam estados processados. A exploração pode trocar de ramo.</p></div>

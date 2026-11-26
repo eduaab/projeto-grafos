@@ -332,3 +332,162 @@ dialog::-webkit-scrollbar {
 }
 .comparison-bar.zero { min-width: 3px; transform: translateX(-50%); }
 .comparison-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 650; }
+
+/* [IA] Gemini – Alinhar header ao tema do site e padronizar controles e botões de execução. */
+.site-header {
+  min-height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+  padding: 8px clamp(22px, 2.15vw, 44px);
+  border-bottom: 1px solid var(--border);
+  background: #f4e8da;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+.site-header .brand {
+  font-size: clamp(1.2rem, 1.25vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.site-header .site-nav {
+  display: flex;
+  gap: clamp(24px, 2.15vw, 40px);
+  font-size: clamp(1rem, 1vw, 1.125rem);
+}
+.site-nav-link {
+  padding-block: 6px;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+}
+.site-nav-link:hover,
+.site-nav-link[aria-current="page"] {
+  color: var(--accent);
+}
+.site-nav-link[aria-current="page"] {
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.selection {
+  align-items: end;
+  gap: 16px;
+}
+.selection select,
+.selection .algorithm-picker label,
+.selection button,
+.selection .import-button {
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.selection .import-button {
+  flex-direction: row;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 14px;
+}
+.selection .check {
+  height: 40px;
+  padding: 0;
+  align-items: center;
+}
+
+.view-controls {
+  align-items: end;
+  gap: 16px;
+}
+.view-controls select,
+.view-controls button {
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.view-controls .hint {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.playback {
+  align-items: end;
+  gap: 14px;
+}
+.playback .buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.playback .buttons button,
+.playback select {
+  height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.playback label {
+  gap: 5px;
+}
+.playback .progress {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 5px;
+}
+.playback .progress #progressLabel {
+  grid-row: 1;
+  grid-column: 1;
+}
+.playback .progress #progressText {
+  grid-row: 1;
+  grid-column: 2;
+  justify-self: end;
+}
+.playback .progress #progress {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  height: 38px;
+  margin: 0;
+}
+
+@media (max-width: 650px) {
+  .site-header {
+    padding: 8px 16px;
+    gap: 14px;
+  }
+  .site-header .site-nav {
+    gap: 14px;
+    font-size: .92rem;
+  }
+  .selection,
+  .view-controls,
+  .playback {
+    align-items: stretch;
+  }
+  .selection .import-button {
+    width: 100%;
+  }
+  .view-controls .hint {
+    min-height: 0;
+  }
+  .playback .buttons {
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .playback .buttons button {
+    flex: 1;
+    padding: 0 6px;
+    font-size: 12px;
+  }
+  .playback .progress #progress {
+    height: 24px;
+  }
+}

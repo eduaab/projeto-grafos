@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { GraficoGaleria } from '../components/GraficoGaleria'
 import { LinhaDoTempo } from '../components/LinhaDoTempo'
+import { ResultadosParte1 } from '../components/ResultadosParte1'
+import { ResultadosParte2 } from '../components/ResultadosParte2'
 import figurasParte1 from '../data/figuras_parte1.json'
 import graficos from '../data/graficos.json'
 import { MazeGrid } from '../components/MazeGrid'
@@ -118,6 +120,7 @@ export function Home() {
           <a href="/labirinto_interativo.html" className="btn">Simulador</a>
         </div>
         <GraficoGaleria itens={figurasParte1} pasta="/parte1" compacta />
+        <ResultadosParte1 />
       </section>
 
       <section id="parte2" className="home-secao">
@@ -127,6 +130,7 @@ export function Home() {
           <p>Grafo dirigido com 250 países e 29.381 arestas, consultas entre pares e comparação dos algoritmos.</p>
         </header>
         <GraficoGaleria itens={ALGORITMOS} pasta="/parte2" compacta />
+        <ResultadosParte2 />
       </section>
 
       <section id="documentacao" className="home-secao">
