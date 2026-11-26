@@ -5,7 +5,7 @@ Projeto final de **Teoria dos Grafos e Análise e Visualização de Dados (AVD),
 - **Parte 1 — Labirinto com chaves.** Converte mapas de texto em grafos dirigidos de estados e compara BFS, DFS, Dijkstra e Bellman-Ford.
 - **Parte 2 — ICEWS.** Usa os mesmos algoritmos em uma rede dirigida e ponderada de interações entre países e territórios. O site reúne os experimentos e as visualizações de AVD.
 
-[Relatório do Projeto (PDF)](docs/RELATORIO_DO_PROJETO.pdf) · [Declaração de Uso de IA (Google Docs)](https://docs.google.com/document/d/1bpXSd3KlEAW76wDqYB074qnSrVh9aNnY/edit?usp=sharing)
+[Relatório do Projeto (PDF)](docs/RELATORIO_DO_PROJETO.pdf) · [Declaração de Uso de IA (Google Docs)](https://docs.google.com/document/d/19C3gqRZpTVaySLhPagJ_3efLgbrvHpUWrRSy-6ksJ9I/edit?tab=t.0) 
 
 ## Equipe
 
