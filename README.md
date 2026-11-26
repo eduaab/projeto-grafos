@@ -5,6 +5,8 @@ Projeto final de **Teoria dos Grafos e Análise e Visualização de Dados (AVD),
 - **Parte 1 — Labirinto com chaves.** Converte mapas de texto em grafos dirigidos de estados e compara BFS, DFS, Dijkstra e Bellman-Ford.
 - **Parte 2 — ICEWS.** Usa os mesmos algoritmos em uma rede dirigida e ponderada de interações entre países e territórios. O site reúne os experimentos e as visualizações de AVD.
 
+## Documentos do projeto
+
 [Relatório do Projeto (PDF)](docs/RELATORIO_DO_PROJETO.pdf) · [Declaração de Uso de IA (Google Docs)](https://docs.google.com/document/d/19C3gqRZpTVaySLhPagJ_3efLgbrvHpUWrRSy-6ksJ9I/edit?tab=t.0) 
 
 ## Equipe
@@ -125,10 +127,5 @@ Use os nomes dos países conforme o CSV. `--target` seleciona o destino nas cons
 | `out/parte1/` e `out/parte2/` | Saídas, gráficos e resultados publicados. |
 | `docs/` | Relatório do projeto e documentação de apoio. |
 
-## Documentos da entrega
-
-- [Relatório do Projeto](docs/RELATORIO_DO_PROJETO.pdf), também disponível no card **Relatório técnico (PDF)** da home.
-- [Declaração de Uso de IA (Google Docs)](https://docs.google.com/document/d/1bpXSd3KlEAW76wDqYB074qnSrVh9aNnY/edit?usp=sharing). O enunciado pede a versão assinada em `docs/DECLARACAO_IA.pdf`.
-- Arquivos de resultados das duas partes em `out/` e instruções de reprodução neste README.
 
 <!-- [IA] Codex — revisão dos comandos, organização do README e integração do relatório na home. -->
