@@ -4,6 +4,7 @@
 @media(max-width:1000px){.workspace{grid-template-columns:minmax(0,1fr)}.legend{position:static;display:flex;gap:12px;flex-wrap:wrap;align-items:center}.legend h2{width:100%;margin:0}.legend dl,.legend hr{display:none}.legend label{margin:0}.legend .hint{width:100%;margin:0}.legend .sample{margin:0}.legend>label{min-width:130px}.selection{align-items:center}}
 @media(max-width:650px){main{padding:22px 14px}.panels.compare{grid-template-columns:minmax(0,1fr)}.site-header{padding:16px}.site-header nav{gap:12px;font-size:13px}.heading{align-items:start}.import-button{font-size:12px}.selection>label{flex:1}.selection>label:first-child{min-width:180px}.playback{gap:12px;padding:12px}.buttons{width:100%}.buttons button{flex:1;font-size:12px;padding:10px 5px}.panel-heading{padding:12px}.board-scroll{padding:10px}}
 
+/* [IA] ChatGPT – Estilos da seleção múltipla, dos contadores e das setas do percurso. */
 /* Seleção múltipla e direção do percurso. */
 .algorithm-picker {
   display: flex;
@@ -128,6 +129,7 @@ line.route-line.returning { stroke-dasharray: 4 2; }
   .view-controls label { width: 100%; }
 }
 
+/* [IA] ChatGPT – Ajustar enquadramento, zoom e controles da animação. */
 /* Controles sempre acessíveis e enquadramento automático por painel. */
 main {
   padding-bottom: calc(var(--playback-height, 150px) + 42px);
@@ -195,6 +197,7 @@ main {
   .view-controls { margin-bottom: 12px; }
 }
 
+/* [IA] ChatGPT – Destacar as métricas nos cards do simulador. */
 /* Navegação discreta e hierarquia dos resultados no card. */
 .board-scroll, .legend, dialog {
   scrollbar-width: none;
@@ -258,6 +261,7 @@ dialog::-webkit-scrollbar {
   .primary-metrics .detail { padding: 12px; }
 }
 
+/* [IA] ChatGPT – Organizar os gráficos comparativos e aplicar cores por algoritmo. */
 .comparison {
   margin-top: 24px;
   padding: 20px;

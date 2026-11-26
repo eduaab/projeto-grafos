@@ -56,6 +56,7 @@ function Cards() {
         <button type="button" className="btn ldt-seta" aria-label="Etapa anterior" onClick={() => escolher(selecionada - 1)}>←</button>
         <ol className="ldt-trilho" ref={trilhoRef}>
           {etapas.map((item, indice) => {
+            // [IA] ChatGPT – Remover a capa e a contagem nas etapas sem gráficos.
             const graficos = graficosDa(item)
             const capa = graficos[0]
             return (

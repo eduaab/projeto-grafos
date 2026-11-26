@@ -96,6 +96,7 @@ export function MazeEditorGrid({ grid, onPaint }: MazeEditorGridProps) {
     setIsDragging(false)
   }
 
+  // [IA] ChatGPT – Corrigir a pintura duplicada ao distinguir clique de arrasto.
   const startPaint = (event: PointerEvent<HTMLDivElement>, row: number, col: number) => {
     if (handMode || event.button !== 0 || paintDrag.current) return
     event.preventDefault()

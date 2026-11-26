@@ -68,6 +68,7 @@ def explorar(mapa, fonte_consumivel=False):
         elif distancias.get(ALVO) is None or distancias.get(ALVO) == float('inf'):
             resultado['status'] = 'SEM_SOLUCAO'
         else:
+            # [IA] ChatGPT – Registrar no simulador a soma dos pesos a cada passo.
             caminho = reconstruir(predecessores, ALVO)
             caminho_real = caminho[:-1]  # O arco de G para ALVO tem peso zero.
             acumulados = [0] if caminho_real else []

@@ -163,6 +163,7 @@ function makeRunner(name, start) {
   footer.className = 'panel-footer';
   panel.append(header, viewport, movement, footer);
   header.addEventListener('click', () => showDetails(name));
+  // [IA] ChatGPT – Associar a cada passo o custo acumulado calculado em Python.
   const events = isPathView()
     ? (result?.caminho || []).map((id, step) => [id, result.custos_acumulados?.[step], 0])
     : result?.eventos || [];
@@ -361,6 +362,7 @@ function renderRoute(runner) {
     runner.movement.textContent = last
       ? `Passo ${last.step} · (${last.from[0]},${last.from[1]}) ${arrowsForMove(last.from, last.to)} (${last.to[0]},${last.to[1]}) · ${last.returning ? 'retorno por trecho já usado' : 'avanço'}`
       : runner.events.length ? 'Início do caminho · avance para acompanhar o sentido.' : 'Este resultado não possui um caminho final para reproduzir.';
+    // [IA] ChatGPT – Exibir o custo acumulado no painel durante o percurso.
     const accumulatedCost = runner.event?.[1];
     if (Number.isFinite(accumulatedCost)) {
       runner.movement.textContent += ` · Custo acumulado: ${accumulatedCost.toLocaleString('pt-BR')}`;
@@ -465,6 +467,7 @@ function comparisonChart(metric, entries) {
   return chart;
 }
 
+// [IA] ChatGPT – Revelar as métricas conforme cada algoritmo conclui sua animação.
 function renderComparison() {
   const entries = runners.map(({ name, result, index, events }) => {
     let phase = 'unavailable';
@@ -487,6 +490,7 @@ function renderComparison() {
   charts.replaceChildren(...comparisonMetrics.map((metric) => comparisonChart(metric, entries)));
 }
 
+// [IA] ChatGPT – Ajustar os controles para algoritmos que começam em momentos diferentes.
 function updatePlaybackBounds() {
   maximum = Math.max(0, ...runners.map(({ start, events }) => events.length ? start + events.length : 0));
   position = Math.min(position, maximum);
@@ -500,6 +504,7 @@ function restartPlayback() {
   render();
 }
 
+// [IA] ChatGPT – Preservar o progresso dos algoritmos ao adicionar outro.
 function configurePanels(reset = true) {
   stop();
   const previous = new Map();
@@ -595,6 +600,7 @@ function showDetails(name, address) {
   detailField(grid, 'Consumíveis usados', state?.[3].join(', ') || 'Nenhum');
   const valueLabel = name === 'DFS' ? 'Tempo de descoberta' : name === 'BFS' ? 'Distância em passos' : 'Estimativa de custo';
   detailField(grid, isPathView() ? 'Passo atual no percurso' : valueLabel, isPathView() ? Math.max(0, runner.index - 1) : runner.event?.[1]);
+  // [IA] ChatGPT – Mostrar o custo acumulado no card do estado atual.
   if (isPathView()) detailField(grid, 'Custo acumulado até a posição atual', runner.event?.[1]);
   if (!isPathView() && name === 'BELLMAN_FORD') detailField(grid, 'Rodada da atualização', runner.event?.[2]);
   if (address) {

@@ -44,6 +44,7 @@ def test_recusa_dijkstra_na_visualizacao():
     assert dados['algoritmos']['DIJKSTRA']['tempo_ms'] is None
 
 
+# [IA] ChatGPT – Testar custo por passo com terreno e bônus.
 def test_custo_acumulado_do_percurso_usa_terreno_e_bonus():
     mapa = [list(linha) for linha in ['#######', '#S,+.G#', '#######']]
     algoritmos = explorar(mapa)['algoritmos']
