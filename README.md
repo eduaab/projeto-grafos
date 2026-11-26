@@ -7,7 +7,7 @@ Projeto final de **Teoria dos Grafos e Análise e Visualização de Dados (AVD),
 
 ## Documentos do projeto
 
-[Relatório do Projeto (PDF)](docs/RELATORIO_DO_PROJETO.pdf) · [Declaração de Uso de IA (PDF)](docs\Copy_of_DECLARACAO_USO_IA_2026-2.docx__283_29_assinado_assinado_assinado_assinado_assinado.pdf) 
+[Relatório do Projeto (PDF)](docs/RELATORIO_DO_PROJETO.pdf) · [Declaração de Uso de IA (PDF)](docs/Copy_of_DECLARACAO_USO_IA_2026-2.docx__283_29_assinado_assinado_assinado_assinado_assinado.pdf)
 
 ## Equipe
 
