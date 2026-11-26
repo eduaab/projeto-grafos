@@ -14,6 +14,8 @@ const ARQUIVOS = [
   'out/parte1/comparacao_modelagem.csv',
   'out/parte1/bellman_ford_g_pos_m05.json',
   'out/parte2/parte2_report.json',
+  // [IA] Codex – publica o PDF do relatório junto aos resultados do site.
+  'docs/RELATORIO_DO_PROJETO.pdf',
 ]
 
 mkdirSync(DESTINO, { recursive: true })

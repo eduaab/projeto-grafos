@@ -29,7 +29,12 @@ const DOCUMENTOS = [
     descricao: 'Relatórios de testes de BFS, DFS, Dijkstra e Bellman-Ford.',
     href: `${REPOSITORIO}/tree/main/docs`,
   },
-  { titulo: 'Relatório técnico (PDF)', descricao: 'Em produção.', href: '' },
+  // [IA] Codex – link para o PDF incluído na compilação do site.
+  {
+    titulo: 'Relatório técnico (PDF)',
+    descricao: 'Modelagem, resultados dos labirintos, experimentos com ICEWS e análise visual.',
+    href: `${import.meta.env.BASE_URL}resultados/RELATORIO_DO_PROJETO.pdf`,
+  },
 ]
 
 export function Home() {
