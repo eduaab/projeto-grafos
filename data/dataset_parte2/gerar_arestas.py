@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Gera a lista de arestas do grafo de países (todos os anos juntos).
 
-Entrada: processado/pares_paises_por_ano.csv.gz (gerado por resumir_anos.py)
+Entrada: processado/pares_paises_por_ano.csv.gz (gerado por Resumir_Anos.ipynb)
 Saídas:  arestas_paises.csv
          paises_padronizados.csv  (nomes de países unificados e quantos eventos foram afetados)
 
@@ -11,6 +11,7 @@ peso = média da intensidade de todos os eventos do par.
 Como rodar (dentro de data/dataset_parte2/):
     python gerar_arestas.py
 """
+# [IA] Claude – apoio com pandas na agregação dos pares por país e na padronização dos nomes
 import argparse
 from pathlib import Path
 

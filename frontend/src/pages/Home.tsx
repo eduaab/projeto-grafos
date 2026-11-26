@@ -14,6 +14,7 @@ const COVER_LEGEND = [
   ['~', 'Água'], [',', 'Lama'],
 ]
 
+// [IA] Claude – seções da home (linha do tempo, Parte 1, Parte 2 e documentação)
 const REPOSITORIO = 'https://github.com/eduaab/projeto-grafos'
 const ALGORITMOS = graficos.filter((grafico) => grafico.grupo === 'algoritmos')
 

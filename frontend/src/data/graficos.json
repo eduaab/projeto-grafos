@@ -24,6 +24,12 @@
     "legenda": "Um ponto por país, com a diagonal y = x."
   },
   {
+    "arquivo": "avd_exp1_distribuicao_graus.png",
+    "grupo": "exploratorios",
+    "titulo": "Distribuição dos graus",
+    "legenda": "Número de países por faixa de 25 graus, comparando entrada e saída."
+  },
+  {
     "arquivo": "avd_exp2_histograma_peso.png",
     "grupo": "exploratorios",
     "titulo": "Distribuição do peso",

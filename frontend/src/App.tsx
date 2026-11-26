@@ -13,6 +13,7 @@ function App() {
         <Route path="labirintos" element={<MazeGallery />} />
         <Route path="labirintos/:id" element={<MazeDetail />} />
         <Route path="editor" element={<Editor />} />
+        {/* [IA] Claude – redirecionamento da antiga página de gráficos */}
         <Route path="graficos" element={<Navigate to="/#avd" replace />} />
         <Route path="importar-exportar" element={<Navigate to="/editor#arquivo" replace />} />
       </Route>

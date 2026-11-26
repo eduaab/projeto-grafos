@@ -1,3 +1,4 @@
+// [IA] Claude – script de cópia dos gráficos para o site
 // Copia os gráficos de out/parte1 e out/parte2 para frontend/public,
 // para o site sempre mostrar a versão gerada pelos scripts e notebooks.
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs'

@@ -1,15 +1,26 @@
+/* [IA] Claude – estilos da linha do tempo de AVD */
 .ldt-modos { display: flex; gap: 8px; margin-bottom: 24px; }
 
 .etapa-resumo { color: var(--ink); font-size: 1.0625rem; }
 .etapa-detalhe { margin-top: 8px; color: var(--ink-muted); max-width: 75ch; }
 .etapa-texto-grupo {
   margin: 14px 0;
-  padding: 12px 14px;
+  padding: 12px 16px;
   max-width: 75ch;
-  border: 1px dashed var(--surface-border-strong);
+  border: 1px solid var(--surface-border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius);
-  color: var(--ink-muted);
-  font-style: italic;
+  background: var(--bg-raised);
+  color: var(--ink);
+}
+.etapa-texto-grupo p { margin: 0; }
+.etapa-texto-grupo .etapa-texto-grupo-rotulo {
+  margin-bottom: 4px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 .etapa-arquivos {
   display: flex;

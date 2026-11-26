@@ -43,6 +43,7 @@
 }
 .home-key b { color: var(--accent); margin-right: 3px; }
 
+/* [IA] Claude – estilos das seções da home */
 .home-indice {
   position: sticky;
   top: var(--site-header-height);

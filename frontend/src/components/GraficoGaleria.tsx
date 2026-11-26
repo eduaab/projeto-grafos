@@ -1,3 +1,4 @@
+// [IA] Claude – componente da galeria de gráficos com janela ampliada
 import { useEffect, useRef, useState } from 'react'
 import { CloseIcon } from './icons'
 import './GraficoGaleria.css'

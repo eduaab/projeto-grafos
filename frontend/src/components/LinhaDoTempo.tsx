@@ -1,3 +1,4 @@
+// [IA] Claude – componente da linha do tempo de AVD (cards e seções)
 import { useRef, useState } from 'react'
 import etapas from '../data/linha_do_tempo.json'
 import graficos from '../data/graficos.json'
@@ -24,15 +25,21 @@ function Arquivos({ etapa }: { etapa: Etapa }) {
   )
 }
 
-function TextoDoGrupo() {
-  return <p className="etapa-texto-grupo">Decisões e motivos desta etapa (texto do grupo).</p>
+function TextoDoGrupo({ texto }: { texto?: string }) {
+  if (!texto) return null
+  return (
+    <div className="etapa-texto-grupo">
+      <p className="etapa-texto-grupo-rotulo">Decisões do grupo</p>
+      <p>{texto}</p>
+    </div>
+  )
 }
 
 function DetalheEtapa({ etapa }: { etapa: Etapa }) {
   return (
     <>
       {etapa.detalhe && <p className="etapa-detalhe">{etapa.detalhe}</p>}
-      <TextoDoGrupo />
+      <TextoDoGrupo texto={etapa.decisoes} />
       <Arquivos etapa={etapa} />
       <GraficoGaleria itens={graficosDa(etapa)} pasta="/parte2" compacta />
     </>

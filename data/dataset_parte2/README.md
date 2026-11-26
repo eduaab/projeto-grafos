@@ -51,7 +51,7 @@ Usar `--de` e/ou `--ate` baixa **só os eventos** desse intervalo (sem os PDFs).
 python baixar_icews.py --eventos
 ```
 
-São mais de 1,7 GB baixados, e o espaço ocupado depois de descompactar é maior. Confira o espaço em disco antes.
+São mais de 1,7 GB baixados, e depois de descompactar os 28 anos ocupam cerca de 5 GB. Confira o espaço em disco antes.
 
 ### 4. Documentação + eventos juntos
 
@@ -97,23 +97,20 @@ data/dataset_parte2/
 
 Se a execução for interrompida, rode o mesmo comando de novo: o que já foi baixado e extraído é pulado.
 
-## Resumo de todos os anos (`resumir_anos.py`)
+## Resumo de todos os anos (`Resumir_Anos.ipynb`)
 
-Depois de baixar os eventos, rode (dentro desta pasta):
+Depois de baixar os eventos, abra e execute o notebook `Resumir_Anos.ipynb`
+(com `anos = None` para processar todos os anos encontrados em `raw/`, ou uma
+lista como `[1995, 2017]` para testar só alguns anos).
 
-```bash
-python resumir_anos.py                    # todos os anos encontrados em raw/
-python resumir_anos.py --anos 1995 1996   # só alguns anos
-```
-
-O script continua o piloto de 1995 do `EDA.ipynb` para todos os anos. Como os
-brutos somam mais de 1,7 GB, cada ano é lido em partes e só o resumo dele fica
+O notebook continua o piloto de 1995 do `EDA.ipynb` para todos os anos. Como os
+brutos descompactados somam cerca de 5 GB, cada ano é lido em partes e só o resumo dele fica
 na memória. Nenhuma linha é apagada: ausências, duplicatas e eventos sem país
 são contados e relatados.
 
 Antes de qualquer análise, ele confere se todos os arquivos têm as mesmas
 colunas do primeiro ano. Se algum ano for diferente, ele para e mostra a
-diferença (use `--ignorar-diferencas` para continuar mesmo assim).
+diferença (mude `ignorar_diferencas = True` para continuar mesmo assim).
 
 Saídas em `processado/`:
 
@@ -129,7 +126,7 @@ Saídas em `processado/`:
 
 ## Arestas do grafo de países (`gerar_arestas.py`)
 
-Depois de rodar `resumir_anos.py`, rode (dentro desta pasta):
+Depois de rodar `Resumir_Anos.ipynb`, rode (dentro desta pasta):
 
 ```bash
 python gerar_arestas.py

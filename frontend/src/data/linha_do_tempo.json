@@ -4,6 +4,7 @@
     "titulo": "Escolha do dataset",
     "resumo": "ICEWS Coded Event Data (Harvard Dataverse), um arquivo por ano de 1995 a 2022.",
     "detalhe": "Cada linha é um evento entre dois atores, com país de origem, país de destino, intensidade de −10 a +10 e código CAMEO.",
+    "decisoes": "Escolhemos o ICEWS por já trazer interações dirigidas com pesos positivos e negativos (−10 a +10), o que encaixa direto na comparação entre BFS, DFS, Dijkstra e Bellman-Ford. Pegamos a série completa de 1995 a 2022 (mais de 20 milhões de eventos) para não ficar preso a um recorte curto.",
     "arquivos": ["data/dataset_parte2/README.md"],
     "graficos": []
   },
@@ -12,6 +13,7 @@
     "titulo": "Piloto com 1995",
     "resumo": "Exploração de um único ano para conhecer colunas, tipos, nulos e duplicados.",
     "detalhe": "Leitura do arquivo de 1995, conversão de tipos, contagem de ausências, IDs repetidos e coordenadas fora de faixa.",
+    "decisoes": "Usamos 1995 (151.310 registros) como piloto para inspecionar a base antes de processar cerca de 5 GB de arquivos. Decidimos manter os nulos sem apagar linhas nem preencher automaticamente, e manter os extremos de intensidade (como −10), já que vêm da própria escala CAMEO e não são erros de digitação.",
     "arquivos": ["data/dataset_parte2/EDA.ipynb"],
     "graficos": []
   },
@@ -20,7 +22,8 @@
     "titulo": "Verificação dos 28 anos",
     "resumo": "Mesma checagem do piloto aplicada a todos os anos, lendo cada arquivo em partes.",
     "detalhe": "Confere as colunas de cada ano, conta nulos (o texto \"NULL\" de 2017 passa a valer como ausente), duplicados, estatísticas de intensidade e presença de cada país por ano.",
-    "arquivos": ["data/dataset_parte2/resumir_anos.py"],
+    "decisoes": "Como os arquivos brutos somam cerca de 5 GB, processamos um ano por vez em blocos de 200 mil linhas e salvamos só os resumos. O heatmap de correlação mostra que os nulos não são aleatórios (País do local, Latitude e Longitude falham juntos com r = 1,00; Cidade e Província têm r = 0,69), então filtramos cada campo só nas análises que precisam dele.",
+    "arquivos": ["data/dataset_parte2/Resumir_Anos.ipynb"],
     "graficos": ["avd_apoio_heatmap_ausencias.png"]
   },
   {
@@ -28,14 +31,21 @@
     "titulo": "Grafo de países",
     "resumo": "Os 28 anos unidos em um grafo dirigido: 250 países e 29.381 arestas.",
     "detalhe": "Uma aresta por par ordenado de países, com peso igual à intensidade média, número de eventos e a marcação par_fraco para pares com 1 evento. Nomes de países padronizados (Macedônia do Norte, Curaçao).",
+    "decisoes": "No piloto testamos nós por ator e mês, mas mudamos para nós por país juntando os 28 anos para evitar fragmentação de homônimos e enxergar as relações globais. Unificamos grafias quebradas da Macedônia do Norte e de Curaçao e marcamos os 4.284 pares com 1 evento para testar a robustez sem apagar dados da rede principal.",
     "arquivos": ["data/dataset_parte2/gerar_arestas.py", "src/graphs/io.py", "src/graphs/graph.py"],
-    "graficos": ["avd_exp1_graus.png", "avd_exp2_histograma_peso.png", "avd_exp3_eventos_vs_peso.png"]
+    "graficos": [
+      "avd_exp1_graus.png",
+      "avd_exp1_distribuicao_graus.png",
+      "avd_exp2_histograma_peso.png",
+      "avd_exp3_eventos_vs_peso.png"
+    ]
   },
   {
     "id": "recorte",
     "titulo": "Ciclos negativos e recorte acíclico",
     "resumo": "Recorte sem ciclos para o Bellman-Ford e peso transformado para o Dijkstra.",
     "detalhe": "O recorte acíclico ordena os países pela atividade internacional e mantém só as arestas que seguem essa ordem. O Dijkstra usa o custo 10 − peso.",
+    "decisoes": "Como o grafo completo tem 2.940 arestas negativas e forma ciclos negativos, criamos um recorte acíclico mantendo só as arestas que já vão do país mais ativo para o menos ativo (sem inverter nenhum sentido), permitindo rodar o Bellman-Ford com custos finitos. Para o Dijkstra, transformamos o peso em 10 − peso para trabalhar com atrito não negativo (0 a 20).",
     "arquivos": ["src/graphs/graph.py", "src/benchmark_parte2.py"],
     "graficos": []
   },
@@ -44,6 +54,7 @@
     "titulo": "Benchmark dos algoritmos",
     "resumo": "BFS, DFS, Dijkstra e Bellman-Ford em 10%, 50% e 100% dos países.",
     "detalhe": "5 repetições com seed 42 e consultas entre pares de países. Resultado em out/parte2/parte2_report.json.",
+    "decisoes": "Deixamos a leitura do CSV e a montagem do grafo fora do cronômetro para medir só o tempo dos algoritmos. Testamos subgrafos de 10%, 50% e 100% dos países para observar a escalabilidade na prática e repetimos Dijkstra e Bellman-Ford sem os pares fracos para medir quanto as rotas e ciclos dependiam de arestas com 1 evento.",
     "arquivos": ["src/benchmark_parte2.py", "out/parte2/parte2_report.json"],
     "graficos": ["alg_01_tempo_medio.png", "alg_02_escalabilidade.png", "alg_03_bfs_vs_dijkstra.png"]
   },
@@ -52,6 +63,7 @@
     "titulo": "Análise exploratória",
     "resumo": "Intensidade média por ano, família CAMEO, localização, setor e veículo.",
     "detalhe": "Lê os arquivos brutos dos 28 anos e agrupa a intensidade por cada dimensão.",
+    "decisoes": "Voltamos aos arquivos brutos para entender o que puxa a intensidade média para cima ou para baixo além do grafo agregado. Normalizamos 1,38 milhão de códigos CAMEO que perderam zeros à esquerda e agrupamos os 20,19 milhões de eventos por ano, setor de origem, veículo e país de ocorrência.",
     "arquivos": ["data/dataset_parte2/Parte2_ICEWS.ipynb"],
     "graficos": [
       "avd_exp4_ano.png",
@@ -65,7 +77,8 @@
     "id": "explanatorios",
     "titulo": "Gráficos explanatórios",
     "resumo": "Os dois gráficos que sustentam as conclusões do grupo.",
-    "detalhe": "",
+    "detalhe": "Comparamos pares de baixo volume com conflitos de alto volume (≥ 1.000 eventos e peso < −2) e contrastamos eventos domésticos, bilaterais e setores de origem na mesma escala.",
+    "decisoes": "Esses dois gráficos resumem o que a média sozinha esconde: 55 das 63 arestas com peso −10 vêm de um único evento (ruído amostral), enquanto os 22 conflitos recorrentes de alto volume ficam bem separados. Além disso, eventos bilaterais e órgãos diplomáticos têm média positiva (+1,05 a +1,68), enquanto eventos domésticos (−1,47) e setores como Dissidência (−4,01), Polícia (−3,88) e Forças armadas (−3,24) concentram a hostilidade.",
     "arquivos": ["data/dataset_parte2/Parte2_ICEWS.ipynb"],
     "graficos": ["avd_explanatorio1_nucleos.png", "avd_explanatorio2_domestico_setor.png"]
   }
